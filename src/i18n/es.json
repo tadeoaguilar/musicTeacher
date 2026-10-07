@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Music Teacher",
+    "tagline": "Escalas de bajo, en imágenes",
+    "nav": {
+      "scales": "Escalas"
+    },
+    "language": "Idioma"
+  },
+  "scales": {
+    "heading": "{{key}} {{scale}}",
+    "intro": "Todas las notas de la escala a lo largo del mástil. El anillo que pulsa marca la tónica más grave: el mejor lugar para empezar.",
+    "formula": "Fórmula",
+    "notes": "Notas",
+    "names": {
+      "major": "Mayor",
+      "minor": "Menor natural",
+      "ionian": "Jónico",
+      "dorian": "Dórico",
+      "phrygian": "Frigio",
+      "lydian": "Lidio",
+      "mixolydian": "Mixolidio",
+      "aeolian": "Eólico",
+      "locrian": "Locrio"
+    },
+    "descriptions": {
+      "major": "La escala de referencia de la música occidental: brillante y estable.",
+      "minor": "Las mismas notas que el modo eólico: oscura y melancólica.",
+      "ionian": "1.er modo de la escala mayor: idéntico a la escala mayor.",
+      "dorian": "2.º modo: menor con la 6.ª mayor. Básico en funk, jazz y música latina.",
+      "phrygian": "3.er modo: menor con la 2.ª menor. Sonido flamenco y metal.",
+      "lydian": "4.º modo: mayor con la 4.ª aumentada. Soñador y flotante.",
+      "mixolydian": "5.º modo: mayor con la 7.ª menor. Blues, rock y funk sobre acordes dominantes.",
+      "aeolian": "6.º modo: la escala menor natural.",
+      "locrian": "7.º modo: 2.ª menor y 5.ª disminuida. Tenso; se usa sobre acordes semidisminuidos."
+    },
+    "legend": {
+      "root": "Tónica",
+      "start": "Empieza aquí",
+      "path": "Digitación de una octava"
+    }
+  },
+  "controls": {
+    "key": "Tonalidad",
+    "scale": "Escala",
+    "strings": "Cuerdas",
+    "tuning": "Afinación",
+    "frets": "Trastes",
+    "labels": "Etiquetas",
+    "labelNote": "Notas",
+    "labelInterval": "Intervalos",
+    "leftHanded": "Zurdo",
+    "tunings": {
+      "standard": "Estándar",
+      "dropD": "Drop D",
+      "halfDown": "Medio tono abajo",
+      "wholeDown": "Un tono abajo (Re estándar)",
+      "highC": "Do agudo",
+      "dropA": "Drop A"
+    }
+  },
+  "player": {
+    "play": "Tocar escala",
+    "stop": "Detener",
+    "tempo": "Tempo",
+    "bpm": "{{bpm}} BPM",
+    "direction": "Dirección",
+    "up": "Ascendente",
+    "down": "Descendente",
+    "upDown": "Subir y bajar",
+    "loop": "Repetir",
+    "hint": "Consejo: toca cualquier traste para escucharlo."
+  },
+  "fretboard": {
+    "label": "{{scale}} en un bajo de {{strings}} cuerdas",
+    "string": "cuerda {{note}}",
+    "note": "{{note}}, {{interval}}, cuerda {{string}}, traste {{fret}}",
+    "root": "tónica",
+    "start": "nota inicial",
+    "degree": "grado {{degree}}"
+  }
+}

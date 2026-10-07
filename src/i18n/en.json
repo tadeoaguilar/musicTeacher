@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Music Teacher",
+    "tagline": "Bass scales, visualized",
+    "nav": {
+      "scales": "Scales"
+    },
+    "language": "Language"
+  },
+  "scales": {
+    "heading": "{{key}} {{scale}}",
+    "intro": "Every note of the scale across the neck. The pulsing ring marks the lowest root — the best place to start.",
+    "formula": "Formula",
+    "notes": "Notes",
+    "names": {
+      "major": "Major",
+      "minor": "Natural minor",
+      "ionian": "Ionian",
+      "dorian": "Dorian",
+      "phrygian": "Phrygian",
+      "lydian": "Lydian",
+      "mixolydian": "Mixolydian",
+      "aeolian": "Aeolian",
+      "locrian": "Locrian"
+    },
+    "descriptions": {
+      "major": "The reference scale of Western music: bright and stable.",
+      "minor": "Same notes as the Aeolian mode: dark and melancholic.",
+      "ionian": "1st mode of the major scale — identical to the major scale.",
+      "dorian": "2nd mode: minor with a raised 6th. A funk, jazz and Latin staple.",
+      "phrygian": "3rd mode: minor with a flat 2nd. Spanish and metal flavor.",
+      "lydian": "4th mode: major with a raised 4th. Dreamy and floating.",
+      "mixolydian": "5th mode: major with a flat 7th. Blues, rock and funk over dominant chords.",
+      "aeolian": "6th mode: the natural minor scale.",
+      "locrian": "7th mode: flat 2nd and flat 5th. Tense; used over half-diminished chords."
+    },
+    "legend": {
+      "root": "Root",
+      "start": "Start here",
+      "path": "One-octave fingering"
+    }
+  },
+  "controls": {
+    "key": "Key",
+    "scale": "Scale",
+    "strings": "Strings",
+    "tuning": "Tuning",
+    "frets": "Frets",
+    "labels": "Labels",
+    "labelNote": "Notes",
+    "labelInterval": "Intervals",
+    "leftHanded": "Left-handed",
+    "tunings": {
+      "standard": "Standard",
+      "dropD": "Drop D",
+      "halfDown": "Half step down",
+      "wholeDown": "Whole step down (D standard)",
+      "highC": "High C",
+      "dropA": "Drop A"
+    }
+  },
+  "player": {
+    "play": "Play scale",
+    "stop": "Stop",
+    "tempo": "Tempo",
+    "bpm": "{{bpm}} BPM",
+    "direction": "Direction",
+    "up": "Ascending",
+    "down": "Descending",
+    "upDown": "Up & down",
+    "loop": "Loop",
+    "hint": "Tip: tap any fret to hear it."
+  },
+  "fretboard": {
+    "label": "{{scale}} on a {{strings}}-string bass",
+    "string": "{{note}} string",
+    "note": "{{note}}, {{interval}}, {{string}} string, fret {{fret}}",
+    "root": "root",
+    "start": "starting note",
+    "degree": "degree {{degree}}"
+  }
+}
