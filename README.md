@@ -30,6 +30,10 @@ A chromatic tuner that listens through the microphone.
 - Tap a string to hear its reference pitch; A4 calibration from 432 to 446 Hz
 - Pitch detection (YIN) finds the right octave even on low B, where the fundamental is weak; audio never leaves the device
 
+## Roadmap
+
+Next up: Arpeggios, real bass samples and Ear Training. See [docs/ROADMAP.md](docs/ROADMAP.md).
+
 ## Commands
 
 ```sh
