@@ -11,6 +11,14 @@ An interactive bass fretboard that shows every note of a scale across the neck. 
 - Note names or interval labels; English (C D E) and Spanish (Do Re Mi)
 - Synthesized bass playback with tempo, direction and loop; tap any fret to hear it
 
+## Arpeggios
+
+Every chord tone across the neck, played as a one- or two-octave arpeggio in one hand position.
+
+- 12 chord types: triads (major, minor, diminished, augmented, sus4), 7th chords (maj7, 7, m7, m7♭5, °7) and 6th chords
+- Correct spelling for every key (C°7 is C E♭ G♭ B♭♭); notes or interval labels
+- Same neck options and playback as Scales
+
 ## Metronome
 
 A metronome for learning rhythm.
@@ -32,7 +40,7 @@ A chromatic tuner that listens through the microphone.
 
 ## Roadmap
 
-Next up: Arpeggios, real bass samples and Ear Training. See [docs/ROADMAP.md](docs/ROADMAP.md).
+Next up: real bass samples and Ear Training. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Commands
 
@@ -49,12 +57,12 @@ npm run build        # static site in dist/
 
 ```
 src/
-  theory/      pure TypeScript music theory (no React, no audio), fully unit-tested
+  theory/      pure TypeScript music theory: notes, scales, chords, fretboard (no React, no audio), fully unit-tested
   rhythm/      pure TypeScript rhythm: meters, patterns, bar timing, trainers, notation layout
   pitch/       pure TypeScript pitch detection (YIN), note reading and smoothing for the tuner
   audio/       Tone.js (lazy-loaded on first click): scale player and metronome engine; microphone input
   components/  Fretboard (hand-written SVG), Controls, Metronome and Tuner widgets
-  features/    one folder per site section (scales/, metronome/, tuner/)
+  features/    one folder per site section (scales/, arpeggios/, metronome/, tuner/)
   i18n/        en/es UI strings (react-i18next)
   app/         router (/:lang/<section>) and layout
 ```

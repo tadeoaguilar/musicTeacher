@@ -1,6 +1,6 @@
 import { useId } from 'react'
 import { useTranslation } from 'react-i18next'
-import { BPM_MAX, BPM_MIN } from '../../features/scales/scaleState'
+import { BPM_MAX, BPM_MIN } from '../../app/neckSettings'
 import { DIRECTIONS, type Direction } from '../../theory/sequence'
 import { Segmented, Toggle } from './fields'
 import styles from './Controls.module.css'
@@ -10,12 +10,14 @@ type Props = {
   bpm: number
   direction: Direction
   loop: boolean
+  /** Play button text; "Play scale" if not given. */
+  playLabel?: string
   onPlay: () => void
   onStop: () => void
   onChange: (patch: { bpm?: number; direction?: Direction; loop?: boolean }) => void
 }
 
-export function Transport({ isPlaying, bpm, direction, loop, onPlay, onStop, onChange }: Props) {
+export function Transport({ isPlaying, bpm, direction, loop, playLabel, onPlay, onStop, onChange }: Props) {
   const { t } = useTranslation()
   const tempoId = useId()
 
@@ -27,7 +29,7 @@ export function Transport({ isPlaying, bpm, direction, loop, onPlay, onStop, onC
         onClick={isPlaying ? onStop : onPlay}
       >
         <span aria-hidden>{isPlaying ? '■' : '▶'}</span>
-        {isPlaying ? t('player.stop') : t('player.play')}
+        {isPlaying ? t('player.stop') : (playLabel ?? t('player.play'))}
       </button>
 
       <div className={styles.field}>

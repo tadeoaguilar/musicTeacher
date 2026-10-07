@@ -1,0 +1,124 @@
+.header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 32px;
+  align-items: end;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.description {
+  grid-column: 1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  max-width: 60ch;
+}
+
+.facts {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+.facts > div {
+  display: grid;
+  grid-template-columns: 76px auto;
+  align-items: center;
+}
+.facts dt {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.facts dd {
+  margin: 0;
+}
+
+.chips {
+  display: grid;
+  grid-template-columns: repeat(7, 40px);
+  gap: 4px;
+}
+.chip {
+  display: grid;
+  place-items: center;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--control-bg);
+  font-size: 14px;
+  font-weight: 700;
+}
+.rootChip {
+  background: var(--root);
+  color: #fff;
+}
+
+.legendRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 24px;
+}
+.intro {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 70ch;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+  font-weight: 600;
+}
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--note);
+}
+.swatchRoot {
+  background: var(--root);
+}
+.swatchStart {
+  margin: 0 3px;
+  background: var(--root);
+  box-shadow:
+    0 0 0 2px var(--bg),
+    0 0 0 4px var(--root);
+}
+.swatchPath {
+  box-shadow: inset 0 0 0 2.5px var(--path);
+}
+
+@media (max-width: 720px) {
+  .header {
+    grid-template-columns: 1fr;
+  }
+  .facts {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .chips {
+    grid-template-columns: repeat(7, minmax(0, 40px));
+  }
+}

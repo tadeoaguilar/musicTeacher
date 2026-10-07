@@ -4,6 +4,7 @@
     "tagline": "Escalas de bajo, en imágenes",
     "nav": {
       "scales": "Escalas",
+      "arpeggios": "Arpegios",
       "metronome": "Metrónomo",
       "tuner": "Afinador"
     },
@@ -42,9 +43,50 @@
       "path": "Digitación de una octava"
     }
   },
+  "arpeggios": {
+    "intro": "Todas las notas del acorde a lo largo del mástil. El anillo que pulsa marca la tónica más grave: el mejor lugar para empezar.",
+    "pathOne": "Digitación de una octava",
+    "pathTwo": "Digitación de dos octavas",
+    "play": "Tocar arpegio",
+    "groups": {
+      "triad": "Tríadas",
+      "seventh": "Acordes de séptima",
+      "sixth": "Acordes de sexta"
+    },
+    "names": {
+      "maj": "Tríada mayor",
+      "min": "Tríada menor",
+      "dim": "Tríada disminuida",
+      "aug": "Tríada aumentada",
+      "sus4": "Cuarta suspendida",
+      "maj7": "Séptima mayor",
+      "dom7": "Séptima de dominante",
+      "m7": "Menor séptima",
+      "m7b5": "Semidisminuido (m7♭5)",
+      "dim7": "Séptima disminuida",
+      "maj6": "Sexta mayor",
+      "m6": "Menor sexta"
+    },
+    "descriptions": {
+      "maj": "Tónica, 3ª mayor y 5ª: la base de la mayoría de las líneas de bajo.",
+      "min": "Tónica, 3ª menor y 5ª: más oscura que la mayor.",
+      "dim": "Dos 3ªs menores apiladas: tensa, pide resolver.",
+      "aug": "Dos 3ªs mayores apiladas: inestable y soñadora.",
+      "sus4": "La 4ª sustituye a la 3ª: abierta, ni mayor ni menor.",
+      "maj7": "Tríada mayor más la 7ª mayor: el sonido suave de las baladas de jazz y el soul.",
+      "dom7": "Tríada mayor más la 7ª menor: blues, funk y todo acorde de V grado.",
+      "m7": "Tríada menor más la 7ª menor: el acorde ii, básico en funk y R&B.",
+      "m7b5": "Tríada disminuida más la 7ª menor: el acorde ii en tonalidades menores.",
+      "dim7": "3ªs menores apiladas hasta arriba: un acorde de paso lleno de tensión.",
+      "maj6": "Tríada mayor más la 6ª: el color clásico del swing y del walking bass.",
+      "m6": "Tríada menor más la 6ª mayor: un sonido menor latino y de jazz."
+    }
+  },
   "controls": {
     "key": "Tonalidad",
     "scale": "Escala",
+    "chord": "Acorde",
+    "octaves": "Octavas",
     "strings": "Cuerdas",
     "tuning": "Afinación",
     "frets": "Trastes",
