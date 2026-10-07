@@ -4,6 +4,8 @@ import { Link, NavLink, Navigate, Outlet, useLocation, useParams } from 'react-r
 import { LOCALES, isLocale } from '../i18n'
 import styles from './Layout.module.css'
 
+const SECTIONS = ['scales', 'metronome'] as const
+
 const LANGUAGE_NAMES = { en: 'English', es: 'Español' }
 
 /** Shell for every /:lang route: header, navigation for current and future sections, language switch. */
@@ -41,12 +43,15 @@ export function Layout() {
         </Link>
 
         <nav className={styles.nav}>
-          <NavLink
-            to={`/${lang}/scales`}
-            className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
-          >
-            {t('app.nav.scales')}
-          </NavLink>
+          {SECTIONS.map((section) => (
+            <NavLink
+              key={section}
+              to={`/${lang}/${section}`}
+              className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
+            >
+              {t(`app.nav.${section}`)}
+            </NavLink>
+          ))}
         </nav>
 
         <div className={styles.languages} role="group" aria-label={t('app.language')}>

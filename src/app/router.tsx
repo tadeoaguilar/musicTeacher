@@ -1,4 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router'
+import { MetronomePage } from '../features/metronome/MetronomePage'
 import { ScalesPage } from '../features/scales/ScalesPage'
 import { detectLocale } from '../i18n'
 import { Layout } from './Layout'
@@ -11,6 +12,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Navigate to="scales" replace /> },
       { path: 'scales', element: <ScalesPage /> },
+      { path: 'metronome', element: <MetronomePage /> },
       // Future sections (arpeggios, grooves, lessons, ear training) are added here.
       { path: '*', element: <Navigate to="scales" replace /> },
     ],

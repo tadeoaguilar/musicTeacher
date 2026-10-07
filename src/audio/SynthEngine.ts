@@ -1,37 +1,20 @@
 import type * as ToneLib from 'tone'
 import { midiToFrequency } from '../theory/notes'
 import type { AudioEngine, SequenceOptions } from './AudioEngine'
+import { createBassSynth, loadTone, type BassSynth, type Tone } from './tone'
 
-type Tone = typeof ToneLib
-
-/** A plucky, synthesized electric-bass tone built with Tone.js (loaded on first use). */
+/** Plays scales with the shared synthesized bass. */
 export class SynthEngine implements AudioEngine {
   private tone: Tone | undefined
-  private synth: ToneLib.PolySynth<ToneLib.MonoSynth> | undefined
+  private synth: BassSynth | undefined
   private sequence: ToneLib.Sequence<number> | undefined
   private onNote: SequenceOptions['onNote'] | undefined
   /** Bumped by stop(), so a sequence still loading when Stop is pressed never starts. */
   private generation = 0
 
-  private async ready(): Promise<{ Tone: Tone; synth: ToneLib.PolySynth<ToneLib.MonoSynth> }> {
-    this.tone ??= await import('tone')
-    const Tone = this.tone
-    // Browsers only allow audio after a user gesture; every call site is a click.
-    await Tone.start()
-    this.synth ??= new Tone.PolySynth(Tone.MonoSynth, {
-      oscillator: { type: 'fatsawtooth', count: 2, spread: 8 },
-      filter: { type: 'lowpass', Q: 1.5, rolloff: -24 },
-      envelope: { attack: 0.004, decay: 0.35, sustain: 0.35, release: 0.5 },
-      filterEnvelope: {
-        attack: 0.002,
-        decay: 0.25,
-        sustain: 0.25,
-        release: 0.4,
-        baseFrequency: 120,
-        octaves: 3.2,
-      },
-      volume: -8,
-    }).toDestination()
+  private async ready(): Promise<{ Tone: Tone; synth: BassSynth }> {
+    const Tone = (this.tone = await loadTone())
+    this.synth ??= createBassSynth(Tone).toDestination()
     return { Tone, synth: this.synth }
   }
 

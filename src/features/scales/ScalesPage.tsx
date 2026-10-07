@@ -11,15 +11,25 @@ import { formatInterval, formatNote } from '../../theory/notes'
 import { resolveScale } from '../../theory/scales'
 import { buildPlaySequence } from '../../theory/sequence'
 import { getTuning } from '../../theory/tunings'
-import { useScaleStore, type ScaleSettings } from './scaleState'
-import { useScaleUrlSync } from './useScaleUrlSync'
+import { useUrlSync } from '../../app/useUrlSync'
+import {
+  pickSettings,
+  settingsFromParams,
+  settingsToParams,
+  useScaleStore,
+  type ScaleSettings,
+} from './scaleState'
 import styles from './ScalesPage.module.css'
 
 export function ScalesPage() {
   const { t } = useTranslation()
   const { lang } = useParams()
   const locale = isLocale(lang) ? lang : 'en'
-  const settings = useScaleUrlSync()
+  const settings = useUrlSync(useScaleStore, {
+    pick: pickSettings,
+    fromParams: settingsFromParams,
+    toParams: settingsToParams,
+  })
   const { activeIndex, isPlaying, set, setPlayback } = useScaleStore()
   const { key, scale, frets, direction, loop, bpm } = settings
   const tuning = getTuning(settings.tuning)!

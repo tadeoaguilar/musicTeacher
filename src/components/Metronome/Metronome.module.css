@@ -1,0 +1,204 @@
+/* Beat lights */
+.lights {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.beatCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.light {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  background: var(--control-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    background 60ms,
+    transform 60ms;
+}
+.light:hover {
+  border-color: var(--control-hover);
+}
+.accent {
+  border-color: var(--root);
+}
+.silent {
+  opacity: 0.4;
+  border-style: dashed;
+  border-color: var(--muted);
+}
+.light.on {
+  background: var(--note);
+  color: #fff;
+  transform: scale(1.12);
+}
+.light.accent.on {
+  background: var(--root);
+}
+.light.silent.on {
+  background: var(--control-hover);
+  color: var(--text);
+}
+.countIn .light.on {
+  background: var(--active);
+  color: var(--active-text);
+}
+
+.subLights {
+  display: flex;
+  gap: 4px;
+}
+.subLight {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--control-hover);
+}
+.subLight.on {
+  background: var(--accent);
+}
+
+/* Pendulum */
+.pendulum {
+  display: block;
+  width: 180px;
+  height: auto;
+  margin: 0 auto;
+}
+.pendulumBody {
+  fill: var(--wood-center);
+  stroke: var(--wood-edge);
+  stroke-width: 2;
+}
+.pendulumScale {
+  fill: none;
+  stroke: var(--inlay);
+  stroke-width: 2;
+  stroke-dasharray: 2 6;
+}
+.pendulumArmGroup {
+  transform-origin: 100px 132px;
+}
+.pendulumArm {
+  stroke: var(--fret-wire);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.pendulumWeight {
+  fill: var(--root);
+}
+.pendulumPivot {
+  fill: var(--nut);
+}
+
+/* Rhythm notation */
+.staff {
+  display: block;
+  width: 100%;
+  max-width: 920px;
+  min-width: 600px;
+  margin: 0 auto;
+  height: auto;
+}
+.staffLine,
+.barLine {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+.barLine {
+  stroke-width: 2.5;
+}
+.timeSig {
+  fill: var(--text);
+  font-size: 26px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+.count {
+  fill: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+.glyph {
+  fill: var(--text);
+  stroke: var(--text);
+  transition:
+    fill 60ms,
+    stroke 60ms;
+}
+.glyph ellipse,
+.glyph circle,
+.glyph rect {
+  stroke: none;
+}
+.glyph .hollow {
+  fill: none;
+  stroke: inherit;
+  stroke-width: 2.2;
+}
+.glyphActive {
+  fill: var(--root);
+  stroke: var(--root);
+}
+.stem {
+  stroke-width: 1.8;
+}
+.flag {
+  stroke: none;
+}
+.restStroke {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.beam {
+  fill: var(--text);
+}
+.tuplet path {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.4;
+}
+.tuplet text {
+  fill: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  text-anchor: middle;
+}
+
+/* Trainers */
+.trainers {
+  display: grid;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+.trainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.help {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+}
