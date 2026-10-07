@@ -21,6 +21,15 @@ A metronome for learning rhythm.
 - Speed trainer, gap (silent bars) trainer, tap tempo, count-in; a swinging pendulum
 - The audio clock is scheduled from a Web Worker timer, so timing stays steady in background tabs
 
+## Tuner
+
+A chromatic tuner that listens through the microphone.
+
+- Pick your bass (4, 5 or 6 strings) and tuning; the string you're playing lights up
+- Shows the nearest note, how many cents flat or sharp, and the frequency
+- Tap a string to hear its reference pitch; A4 calibration from 432 to 446 Hz
+- Pitch detection (YIN) finds the right octave even on low B, where the fundamental is weak; audio never leaves the device
+
 ## Commands
 
 ```sh
@@ -38,9 +47,10 @@ npm run build        # static site in dist/
 src/
   theory/      pure TypeScript music theory (no React, no audio), fully unit-tested
   rhythm/      pure TypeScript rhythm: meters, patterns, bar timing, trainers, notation layout
-  audio/       Tone.js (lazy-loaded on first click): scale player and metronome engine
-  components/  Fretboard (hand-written SVG) and Controls
-  features/    one folder per site section (scales/, metronome/)
+  pitch/       pure TypeScript pitch detection (YIN), note reading and smoothing for the tuner
+  audio/       Tone.js (lazy-loaded on first click): scale player and metronome engine; microphone input
+  components/  Fretboard (hand-written SVG), Controls, Metronome and Tuner widgets
+  features/    one folder per site section (scales/, metronome/, tuner/)
   i18n/        en/es UI strings (react-i18next)
   app/         router (/:lang/<section>) and layout
 ```

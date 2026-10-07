@@ -1,6 +1,6 @@
 import type * as ToneLib from 'tone'
 import { midiToFrequency } from '../theory/notes'
-import type { AudioEngine, SequenceOptions } from './AudioEngine'
+import type { AudioEngine, NoteOptions, SequenceOptions } from './AudioEngine'
 import { createBassSynth, loadTone, type BassSynth, type Tone } from './tone'
 
 /** Plays scales with the shared synthesized bass. */
@@ -18,9 +18,9 @@ export class SynthEngine implements AudioEngine {
     return { Tone, synth: this.synth }
   }
 
-  async playNote(midi: number): Promise<void> {
+  async playNote(midi: number, { a4, duration }: NoteOptions = {}): Promise<void> {
     const { synth } = await this.ready()
-    synth.triggerAttackRelease(midiToFrequency(midi), '8n')
+    synth.triggerAttackRelease(midiToFrequency(midi, a4), duration ?? '8n')
   }
 
   async playSequence(midis: number[], { bpm, loop, onNote }: SequenceOptions): Promise<void> {

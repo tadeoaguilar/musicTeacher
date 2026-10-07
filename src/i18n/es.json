@@ -4,7 +4,8 @@
     "tagline": "Escalas de bajo, en imágenes",
     "nav": {
       "scales": "Escalas",
-      "metronome": "Metrónomo"
+      "metronome": "Metrónomo",
+      "tuner": "Afinador"
     },
     "language": "Idioma"
   },
@@ -162,5 +163,27 @@
     "reachedTarget": "objetivo alcanzado",
     "bar": "Compás {{bar}}",
     "shortcuts": "Atajos: Espacio iniciar/detener · T marcar tempo · ↑↓ tempo (Mayús ×5)"
+  },
+  "tuner": {
+    "title": "Afinador",
+    "description": "Toca una cuerda al aire y afina hasta centrar la aguja. Toca una cuerda en pantalla para oír su nota.",
+    "start": "Iniciar afinador",
+    "stop": "Detener",
+    "idle": "Pulsa Iniciar y toca una cuerda",
+    "listening": "Toca una cuerda",
+    "inTune": "Afinado",
+    "flat": "{{cents}} cents bajo",
+    "sharp": "{{cents}} cents alto",
+    "strings": "Cuerdas",
+    "playString": "Tocar {{note}}",
+    "playHint": "Toca para oír la nota de esta cuerda",
+    "string": "Cuerda",
+    "a4": "Referencia La4",
+    "privacy": "Usa tu micrófono. El audio se analiza en este dispositivo y nunca se envía a ningún sitio.",
+    "errors": {
+      "denied": "Se bloqueó el acceso al micrófono. Permítelo en los ajustes del sitio de tu navegador e inténtalo de nuevo.",
+      "no-device": "No se encontró ningún micrófono. Conecta uno e inténtalo de nuevo.",
+      "unsupported": "Este navegador no puede usar el micrófono aquí. Prueba un Chrome, Firefox o Safari reciente con HTTPS."
+    }
   }
 }

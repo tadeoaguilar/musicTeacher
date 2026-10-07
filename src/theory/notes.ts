@@ -68,6 +68,12 @@ export function formatInterval(label: string): string {
   return prettyAccidentals(label)
 }
 
-export function midiToFrequency(midi: number): number {
-  return 440 * 2 ** ((midi - 69) / 12)
+/** `a4` is the reference pitch in Hz (concert pitch is 440). */
+export function midiToFrequency(midi: number, a4 = 440): number {
+  return a4 * 2 ** ((midi - 69) / 12)
+}
+
+/** Fractional MIDI number, e.g. 55 Hz → 33 (A1); 56 Hz → ~33.31. */
+export function frequencyToMidi(hz: number, a4 = 440): number {
+  return 69 + 12 * Math.log2(hz / a4)
 }

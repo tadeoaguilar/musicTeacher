@@ -8,6 +8,7 @@ Guidance for Claude Code (and any contributor) working in this repository. `READ
 
 - **Scales** (`/:lang/scales`): SVG bass fretboard showing every note of a scale, with synthesized playback.
 - **Metronome** (`/:lang/metronome`): meters, subdivisions, swing, accents, rhythm patterns in notation played by the bass, speed/gap trainers, tap tempo, count-in.
+- **Tuner** (`/:lang/tuner`): microphone pitch detection showing the nearest note, cents off and the matching string for the chosen tuning; reference tones; A4 calibration.
 
 Planned sections (see the comment in `src/app/router.tsx`): arpeggios, grooves, lessons, ear training.
 
@@ -37,8 +38,9 @@ npm run build          # tsc -b && vite build → dist/
 src/
   theory/      Pure TS music theory: notes, spelling, scales/modes, tunings, fretboard, play sequences
   rhythm/      Pure TS rhythm: meters (TICKS_PER_QUARTER = 48), patterns, bar timing, swing, trainers, tap tempo, notation layout
-  audio/       Tone.js engines (lazy-loaded): SynthEngine (scales), MetronomeEngine, worker ticker
-  components/  Presentational UI: Fretboard (hand-written SVG), Controls, Metronome widgets
+  pitch/       Pure TS pitch: YIN detection + downsampling, readNote/matchString, reading smoother
+  audio/       Tone.js engines (lazy-loaded): SynthEngine (scales, reference tones), MetronomeEngine, worker ticker; MicInput (plain Web Audio)
+  components/  Presentational UI: Fretboard (hand-written SVG), Controls (incl. shared TuningFields), Metronome and Tuner widgets
   features/    One folder per section: <Section>Page.tsx + <section>State.ts (Zustand store + URL codec) + tests
   i18n/        en.json / es.json + i18next setup, locale detection
   app/         Router (/:lang/<section>), Layout (header, nav, language switch), useUrlSync
@@ -47,7 +49,7 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
 
 ### Layering rules
 
-- `theory/` and `rhythm/` are **pure**: no React, no Tone.js, no DOM. All musical logic goes here and gets unit tests.
+- `theory/`, `rhythm/` and `pitch/` are **pure**: no React, no Tone.js, no DOM. All musical logic goes here and gets unit tests.
 - `audio/` depends on `theory/`/`rhythm/` but never on React. Engines are module singletons (`audioEngine`, `metronomeEngine`).
 - `components/` take props; they don't read stores or the URL.
 - `features/<section>/` wires stores, URL, audio and components together.
@@ -57,8 +59,10 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
 - **All on-screen settings live in the URL.** Each section's state file exports `DEFAULT_*`, `*FromParams` (validates and ignores bad input, falls back to defaults), `*ToParams` (omits defaults to keep URLs short), a Zustand store, and a `pick*` selector. The page calls `useUrlSync(store, { pick, fromParams, toParams })` from `src/app/useUrlSync.ts`. Changing URL param names breaks shared links — avoid it.
   - Scales params: `key scale tuning frets labels lefty bpm dir loop`
   - Metronome params: `ts bpm sub swing acc pat root click bass count sp gap`
+  - Tuner params: `tuning a4`
 - **Tone.js is lazy-loaded** through `loadTone()` in `src/audio/tone.ts` (it's most of the bundle) and must be first called from a user gesture. Import it only as `import type * as ToneLib from 'tone'` elsewhere. The bass voice is shared via `createBassSynth()`.
 - **Metronome timing**: `ticker.worker.ts` posts a tick every 25 ms (workers aren't throttled in background tabs); `MetronomeEngine` schedules sounds ~150 ms ahead on the audio clock. Keep scheduling on the audio clock, not `setTimeout`.
+- **Tuner pipeline**: `MicInput` (`src/audio/MicInput.ts`) opens the mic with echo cancellation, noise suppression and auto gain **off** (they filter out bass), reads an 8192-sample `AnalyserNode` window every 50 ms, downsamples to ~12 kHz and runs YIN (`src/pitch/detect.ts`, 27–500 Hz). The page smooths readings (`createSmoother`) and maps them with `readNote(hz, a4)` / `matchString`. Don't swap YIN for FFT peak-picking: low strings have weak fundamentals and FFT reports the wrong octave. The tuner deliberately doesn't load Tone.js; reference tones go through `audioEngine.playNote(midi, { a4, duration })`.
 - **Swappable audio**: `AudioEngine` interface in `src/audio/AudioEngine.ts`. For real bass samples, add a `SamplerEngine` implementing it and export it as `audioEngine`.
 - **Note spelling is musical**, not just chromatic (F major has Bb, not A#). Use `resolveScale`, `spell`, `formatNote(name, locale)` — never hand-build note names. Spanish uses Do Re Mi.
 - **Styling**: CSS Modules per component (`*.module.css`). Colors are CSS custom properties in `src/index.css` with a `prefers-color-scheme: dark` variant — use the tokens, don't hardcode colors.
@@ -79,6 +83,7 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
 - Prefer `as const` arrays + type guards (`isKeyId`, `isMeterId`, `isLocale`) over enums.
 - Short JSDoc comments on exported functions/types explaining _why_; keep the existing sparse comment style.
 - Every user-visible string goes through `t()`; never ship English-only text.
+- e2e tests that need the microphone stub `navigator.mediaDevices.getUserMedia` with an oscillator stream via `page.addInitScript` (see `e2e/tuner.spec.ts`). Chromium's `--use-fake-device-for-media-stream` hangs on macOS waiting for OS mic permission.
 - Accessibility: e2e tests select by role/label (`getByRole`, `getByLabel`), so keep controls labelled.
 
 ## Git & deploy
