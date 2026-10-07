@@ -1,0 +1,136 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.description {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  gap: 24px 40px;
+  align-items: center;
+}
+
+.tempo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.bpmRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.bpm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  line-height: 1;
+}
+.bpm output {
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+.bpm span {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.nudge {
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--control-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 26px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.nudge:hover {
+  background: var(--control-hover);
+}
+.bpmSlider {
+  width: 100%;
+  accent-color: var(--accent);
+  min-height: 36px;
+}
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.tap {
+  min-height: 48px;
+  padding: 0 20px;
+  border: 2px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tap:active {
+  background: var(--control-bg);
+}
+
+.visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.status {
+  margin: 0;
+  min-height: 1.4em;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+.help {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.notation {
+  overflow-x: auto;
+}
+
+/* Keyboard shortcuts mean nothing on touch screens. */
+@media (hover: none) {
+  .shortcuts {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .stage {
+    grid-template-columns: 1fr;
+  }
+  .bpm output {
+    font-size: 60px;
+  }
+}

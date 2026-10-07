@@ -32,6 +32,8 @@
 
 .segmented {
   display: inline-flex;
+  flex-wrap: wrap;
+  max-width: 100%;
   border-radius: 8px;
   background: var(--control-bg);
   padding: 3px;
@@ -74,6 +76,23 @@
   font: inherit;
   font-size: 14px;
   max-width: 100%;
+}
+
+.number {
+  width: 84px;
+  min-height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--control-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.number:disabled,
+.range:disabled {
+  opacity: 0.45;
 }
 
 .toggle {
@@ -167,7 +186,8 @@
 
 button:focus-visible,
 select:focus-visible,
-input[type='range']:focus-visible {
+input[type='range']:focus-visible,
+input[type='number']:focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
