@@ -57,7 +57,7 @@ describe('intervals', () => {
 
 describe('getFretboardNotes', () => {
   it('finds every D dorian note on a 24-fret 4-string', () => {
-    const notes = getFretboardNotes(fourString, 24, 'D', 'dorian')
+    const notes = getFretboardNotes(fourString, 24, resolveScale('D', 'dorian'))
     // D dorian has only natural notes: on each string 25 frets contain 15 natural notes,
     // except when starting on a natural note at both ends (E, A, D, G all natural).
     const perString = (s: number) => notes.filter((n) => n.string === s).map((n) => n.fret)
@@ -66,7 +66,7 @@ describe('getFretboardNotes', () => {
   })
 
   it('marks roots and the lowest root as the starting note', () => {
-    const notes = getFretboardNotes(fourString, 24, 'A', 'major')
+    const notes = getFretboardNotes(fourString, 24, resolveScale('A', 'major'))
     const start = notes.filter((n) => n.isStart)
     expect(start).toHaveLength(1)
     // A on the E string fret 5 ties open A; the thicker string wins.
@@ -75,29 +75,29 @@ describe('getFretboardNotes', () => {
   })
 
   it('respects the fret count', () => {
-    const notes = getFretboardNotes(fourString, 20, 'C', 'major')
+    const notes = getFretboardNotes(fourString, 20, resolveScale('C', 'major'))
     expect(Math.max(...notes.map((n) => n.fret))).toBe(20)
   })
 
   it('applies alternate tunings', () => {
     const dropD = getTuning('4-drop-d')!
     expect(openStringMidi(dropD)[0]).toBe(openStringMidi(fourString)[0] - 2)
-    const notes = getFretboardNotes(dropD, 24, 'D', 'major')
+    const notes = getFretboardNotes(dropD, 24, resolveScale('D', 'major'))
     expect(notes.find((n) => n.isStart)).toMatchObject({ string: 0, fret: 0 })
   })
 
   it('supports 5 and 6 string basses', () => {
-    const five = getFretboardNotes(getTuning('5-standard')!, 24, 'E', 'minor')
+    const five = getFretboardNotes(getTuning('5-standard')!, 24, resolveScale('E', 'minor'))
     expect(new Set(five.map((n) => n.string)).size).toBe(5)
     // Low B string, fret 5 is E.
     expect(five.find((n) => n.isStart)).toMatchObject({ string: 0, fret: 5 })
-    const six = getFretboardNotes(getTuning('6-standard')!, 24, 'C', 'major')
+    const six = getFretboardNotes(getTuning('6-standard')!, 24, resolveScale('C', 'major'))
     expect(new Set(six.map((n) => n.string)).size).toBe(6)
   })
 })
 
 describe('buildPlaySequence', () => {
-  const notes = getFretboardNotes(fourString, 24, 'A', 'major')
+  const notes = getFretboardNotes(fourString, 24, resolveScale('A', 'major'))
 
   it('plays one octave in a single hand position', () => {
     const seq = buildPlaySequence(notes, 'up')

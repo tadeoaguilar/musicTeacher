@@ -1,5 +1,5 @@
 import { noteChroma, noteMidi } from './notes'
-import { resolveScale, type KeyId, type ScaleId } from './scales'
+import type { NoteSet } from './scales'
 import type { Tuning } from './tunings'
 
 export type FretNote = {
@@ -11,7 +11,7 @@ export type FretNote = {
   name: string
   /** Interval label from the tonic, e.g. "b3". */
   interval: string
-  /** Scale degree, 1-7. */
+  /** Position in the scale or chord, 1-based. */
   degree: number
   isRoot: boolean
   /** The lowest root on the neck: where to start playing the scale. */
@@ -25,14 +25,8 @@ export function openStringMidi(tuning: Tuning): number[] {
   return tuning.strings.map(noteMidi)
 }
 
-/** Every scale note on the neck, ordered by string then fret. */
-export function getFretboardNotes(
-  tuning: Tuning,
-  fretCount: number,
-  key: KeyId,
-  scaleId: ScaleId,
-): FretNote[] {
-  const scale = resolveScale(key, scaleId)
+/** Every note of a scale or chord on the neck, ordered by string then fret. */
+export function getFretboardNotes(tuning: Tuning, fretCount: number, scale: NoteSet): FretNote[] {
   const tonicChroma = noteChroma(scale.tonic)
   const degreeBySemitone = new Map(scale.semitones.map((st, i) => [st, i]))
 

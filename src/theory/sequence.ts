@@ -4,17 +4,26 @@ export type Direction = 'up' | 'down' | 'upDown'
 
 export const DIRECTIONS: Direction[] = ['up', 'down', 'upDown']
 
+export type Octaves = 1 | 2
+
+export const OCTAVES: Octaves[] = [1, 2]
+
 /**
- * One octave of the scale from the starting root, played in a single hand
- * position: each pitch uses the fret closest to the starting fret, preferring
- * moving across strings over sliding up one string.
+ * One or two octaves of the scale or chord from the starting root, played in a
+ * single hand position: each pitch uses the fret closest to the starting fret,
+ * preferring moving across strings over sliding up one string.
  */
-export function buildPlaySequence(fretNotes: FretNote[], direction: Direction, loop = false): FretNote[] {
+export function buildPlaySequence(
+  fretNotes: FretNote[],
+  direction: Direction,
+  loop = false,
+  octaves: Octaves = 1,
+): FretNote[] {
   const start = fretNotes.find((n) => n.isStart)
   if (!start) return []
 
   const pitches = [...new Set(fretNotes.map((n) => n.midi))]
-    .filter((m) => m >= start.midi && m <= start.midi + 12)
+    .filter((m) => m >= start.midi && m <= start.midi + 12 * octaves)
     .sort((a, b) => a - b)
 
   const up = pitches.map((midi) => {

@@ -14,7 +14,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 | #   | Feature                                   | Depends on                    | Size                        |
 | --- | ----------------------------------------- | ----------------------------- | --------------------------- |
-| 1   | [Arpeggios](#1-arpeggios)                 | nothing; mostly reuses Scales | M                           |
+| 1   | ✅ [Arpeggios](#1-arpeggios)              | nothing; mostly reuses Scales | M                           |
 | 2   | [Real bass samples](#2-real-bass-samples) | your recordings               | M + a recording session     |
 | 3   | [Ear Training](#3-ear-training)           | benefits from 1 and 2         | L (3 PRs, one per exercise) |
 
@@ -23,6 +23,8 @@ The recording for step 2 can happen while step 1 is being built. Ear training co
 ---
 
 ## 1. Arpeggios
+
+> **Status:** implemented, except the diatonic-arpeggios stretch goal.
 
 **Route:** `/:lang/arpeggios`.
 
@@ -37,10 +39,11 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
   - `degrees` are letter steps from the root. That keeps spelling correct for chords:
     - Cdim7 = C E♭ G♭ B♭♭
     - F#7 = F# A# C# E
-    - B♭m7♭5 = B♭ D♭ F♭ A♭
+    - in the B♭/A♯ key, m7♭5 is spelled A♯ C♯ E G♯, because the fewest-accidentals rule avoids B♭m7♭5's F♭
   - Scales use degrees `0–6`, so their behavior doesn't change. **The existing scale tests must pass unchanged.**
   - `intervalLabels` labels each tone by its degree instead of its index, so a 7th chord reads R 3 5 ♭7.
   - The tonic choice that needs the fewest accidentals (D♭ vs C#) carries over as is.
+  - Chord IDs: `dom7` and `maj6` rather than `7` and `6`, because JavaScript orders numeric-looking keys first.
 - **New `src/theory/chords.ts`**:
 
   | id     | semitones | degrees |
@@ -51,11 +54,11 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
   | `aug`  | 0 4 8     | 0 2 4   |
   | `sus4` | 0 5 7     | 0 3 4   |
   | `maj7` | 0 4 7 11  | 0 2 4 6 |
-  | `7`    | 0 4 7 10  | 0 2 4 6 |
+  | `dom7` | 0 4 7 10  | 0 2 4 6 |
   | `m7`   | 0 3 7 10  | 0 2 4 6 |
   | `m7b5` | 0 3 6 10  | 0 2 4 6 |
   | `dim7` | 0 3 6 9   | 0 2 4 6 |
-  | `6`    | 0 4 7 9   | 0 2 4 5 |
+  | `maj6` | 0 4 7 9   | 0 2 4 5 |
   | `m6`   | 0 3 7 9   | 0 2 4 5 |
 
   It exports `CHORD_IDS` and `isChordId`, following `SCALE_IDS` and `isScaleId`.
@@ -90,7 +93,7 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
   - 2-octave sequences stay in one position;
   - URL round-trip and fallback to defaults.
 - **E2E:**
-  - `/en/arpeggios?key=G&chord=7` shows "G7" and marks only G B D F;
+  - `/en/arpeggios?key=G&chord=dom7` shows "G7" and marks only G B D F;
   - switching to Spanish shows "Sol7".
 
 ---

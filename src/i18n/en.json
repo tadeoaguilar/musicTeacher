@@ -4,6 +4,7 @@
     "tagline": "Bass scales, visualized",
     "nav": {
       "scales": "Scales",
+      "arpeggios": "Arpeggios",
       "metronome": "Metronome",
       "tuner": "Tuner"
     },
@@ -42,9 +43,50 @@
       "path": "One-octave fingering"
     }
   },
+  "arpeggios": {
+    "intro": "Every chord tone across the neck. The pulsing ring marks the lowest root — the best place to start.",
+    "pathOne": "One-octave fingering",
+    "pathTwo": "Two-octave fingering",
+    "play": "Play arpeggio",
+    "groups": {
+      "triad": "Triads",
+      "seventh": "Seventh chords",
+      "sixth": "Sixth chords"
+    },
+    "names": {
+      "maj": "Major triad",
+      "min": "Minor triad",
+      "dim": "Diminished triad",
+      "aug": "Augmented triad",
+      "sus4": "Suspended 4th",
+      "maj7": "Major 7th",
+      "dom7": "Dominant 7th",
+      "m7": "Minor 7th",
+      "m7b5": "Half-diminished (m7♭5)",
+      "dim7": "Diminished 7th",
+      "maj6": "Major 6th",
+      "m6": "Minor 6th"
+    },
+    "descriptions": {
+      "maj": "Root, major 3rd and 5th: the foundation of most bass lines.",
+      "min": "Root, minor 3rd and 5th: darker than major.",
+      "dim": "Two minor 3rds stacked: tense, it wants to resolve.",
+      "aug": "Two major 3rds stacked: unstable and dreamy.",
+      "sus4": "The 4th replaces the 3rd: open, neither major nor minor.",
+      "maj7": "Major triad plus the major 7th: the smooth sound of jazz ballads and soul.",
+      "dom7": "Major triad plus the flat 7th: blues, funk and every V chord.",
+      "m7": "Minor triad plus the flat 7th: the ii chord, and a funk and R&B staple.",
+      "m7b5": "Diminished triad plus the flat 7th: the ii chord in minor keys.",
+      "dim7": "Minor 3rds stacked all the way up: a passing chord full of tension.",
+      "maj6": "Major triad plus the 6th: classic swing and walking-bass color.",
+      "m6": "Minor triad plus the major 6th: a Latin and jazz minor sound."
+    }
+  },
   "controls": {
     "key": "Key",
     "scale": "Scale",
+    "chord": "Chord",
+    "octaves": "Octaves",
     "strings": "Strings",
     "tuning": "Tuning",
     "frets": "Frets",

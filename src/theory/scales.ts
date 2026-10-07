@@ -49,30 +49,43 @@ export function keySpellings(key: KeyId): string[] {
   return KEY_SPELLINGS[key]
 }
 
-export type ResolvedScale = {
+/** Which notes make up a scale or chord, relative to its root. */
+export type NoteSetFormula = {
+  /** Semitones above the root for each tone. */
+  semitones: readonly number[]
+  /**
+   * Letter steps above the root for each tone (0 = root, 2 = third, 6 = seventh).
+   * They decide the spelling: a diminished 7th is Bbb in C, not A.
+   */
+  degrees: readonly number[]
+}
+
+export type NoteSet = {
   tonic: string
-  /** Note names in scale order, one per letter, e.g. ["D","E","F","G","A","B","C"]. */
+  /** Note names in order, e.g. ["D","E","F","G","A","B","C"] or ["G","B","D","F"]. */
   notes: string[]
-  /** Interval labels relative to the major scale, e.g. ["R","2","b3","4","5","6","b7"]. */
+  /** Interval labels relative to the major scale, e.g. ["R","2","b3"] or ["R","3","5","b7"]. */
   intervals: string[]
-  /** Semitones above the tonic for each degree. */
+  /** Semitones above the tonic for each tone. */
   semitones: readonly number[]
 }
 
 const MAJOR = FORMULAS.major
+const SCALE_DEGREES = [0, 1, 2, 3, 4, 5, 6]
 
-function intervalLabels(semitones: readonly number[]): string[] {
+function intervalLabels({ semitones, degrees }: NoteSetFormula): string[] {
   return semitones.map((st, i) => {
     if (i === 0) return 'R'
-    const diff = st - MAJOR[i]
-    return (diff < 0 ? 'b'.repeat(-diff) : '#'.repeat(diff)) + (i + 1)
+    const degree = degrees[i]
+    const diff = st - MAJOR[degree]
+    return (diff < 0 ? 'b'.repeat(-diff) : '#'.repeat(diff)) + (degree + 1)
   })
 }
 
-function spellScale(tonic: string, semitones: readonly number[]): string[] {
+function spellNotes(tonic: string, { semitones, degrees }: NoteSetFormula): string[] {
   const start = LETTERS.indexOf(parseNote(tonic)!.letter)
   const tonicChroma = noteChroma(tonic)
-  return semitones.map((st, i) => spell(LETTERS[(start + i) % 7], (tonicChroma + st) % 12))
+  return semitones.map((st, i) => spell(LETTERS[(start + degrees[i]) % 7], (tonicChroma + st) % 12))
 }
 
 function accidentalCount(notes: string[]): number {
@@ -80,15 +93,19 @@ function accidentalCount(notes: string[]): number {
 }
 
 /**
- * Resolves a key + scale into correctly spelled notes (each letter used once),
- * picking the enharmonic tonic that needs the fewest accidentals (Db major, C# minor).
+ * Resolves a key + formula into correctly spelled notes, picking the
+ * enharmonic tonic that needs the fewest accidentals (Db major, C# minor).
  */
-export function resolveScale(key: KeyId, scaleId: ScaleId): ResolvedScale {
-  const semitones = FORMULAS[scaleId]
+export function resolveNoteSet(key: KeyId, formula: NoteSetFormula): NoteSet {
   const [tonic, notes] = KEY_SPELLINGS[key]
-    .map((t) => [t, spellScale(t, semitones)] as const)
+    .map((t) => [t, spellNotes(t, formula)] as const)
     .reduce((best, candidate) =>
       accidentalCount(candidate[1]) < accidentalCount(best[1]) ? candidate : best,
     )
-  return { tonic, notes, intervals: intervalLabels(semitones), semitones }
+  return { tonic, notes, intervals: intervalLabels(formula), semitones: formula.semitones }
+}
+
+/** A scale uses each letter once, so its spelling never repeats a letter name. */
+export function resolveScale(key: KeyId, scaleId: ScaleId): NoteSet {
+  return resolveNoteSet(key, { semitones: FORMULAS[scaleId], degrees: SCALE_DEGREES })
 }
