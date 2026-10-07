@@ -7,6 +7,7 @@ import { audioEngine } from '../../audio/SynthEngine'
 import { MicError, micInput } from '../../audio/MicInput'
 import { Slider } from '../../components/Controls/fields'
 import { TuningFields } from '../../components/Controls/TuningFields'
+import { InputLevel } from '../../components/Tuner/InputLevel'
 import { StringButtons } from '../../components/Tuner/StringButtons'
 import { TunerMeter } from '../../components/Tuner/TunerMeter'
 import { isLocale } from '../../i18n'
@@ -30,8 +31,15 @@ export function TunerPage() {
     fromParams: tunerFromParams,
     toParams: tunerToParams,
   })
-  const { listening, hz, error, set, setLive } = useTunerStore(
-    useShallow(({ listening, hz, error, set, setLive }) => ({ listening, hz, error, set, setLive })),
+  const { listening, hz, level, error, set, setLive } = useTunerStore(
+    useShallow(({ listening, hz, level, error, set, setLive }) => ({
+      listening,
+      hz,
+      level,
+      error,
+      set,
+      setLive,
+    })),
   )
   const tuning = getTuning(settings.tuning)!
   const smoother = useRef(createSmoother())
@@ -40,7 +48,7 @@ export function TunerPage() {
   useEffect(
     () => () => {
       micInput.stop()
-      useTunerStore.getState().setLive({ listening: false, hz: null })
+      useTunerStore.getState().setLive({ listening: false, hz: null, level: 0 })
     },
     [],
   )
@@ -48,14 +56,16 @@ export function TunerPage() {
   const stop = () => {
     micInput.stop()
     smoother.current.reset()
-    setLive({ listening: false, hz: null })
+    setLive({ listening: false, hz: null, level: 0 })
   }
 
   const start = async () => {
     setLive({ error: undefined })
     smoother.current.reset()
     try {
-      const started = await micInput.start((raw) => setLive({ hz: smoother.current.push(raw) }))
+      const started = await micInput.start((frame) =>
+        setLive({ hz: smoother.current.push(frame.hz), level: frame.level }),
+      )
       setLive({ listening: started })
     } catch (e) {
       setLive({ error: e instanceof MicError ? e.reason : 'unsupported' })
@@ -93,6 +103,7 @@ export function TunerPage() {
             <span aria-hidden>{listening ? '■' : '🎤'}</span>
             {listening ? t('tuner.stop') : t('tuner.start')}
           </button>
+          {listening && <InputLevel level={level} />}
           {error && (
             <p className={styles.error} role="alert">
               {t(`tuner.errors.${error}`)}

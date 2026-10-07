@@ -37,6 +37,8 @@ type LiveState = {
   listening: boolean
   /** Smoothed detected pitch in Hz, or null when no note is ringing. */
   hz: number | null
+  /** Microphone RMS level, 0–1. */
+  level: number
   error: MicErrorReason | undefined
 }
 
@@ -50,6 +52,7 @@ export const useTunerStore = create<TunerStore>((set) => ({
   ...DEFAULT_TUNER,
   listening: false,
   hz: null,
+  level: 0,
   error: undefined,
   set: (patch) => set(patch),
   setLive: (patch) => set(patch),

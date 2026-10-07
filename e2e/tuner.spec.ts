@@ -6,21 +6,24 @@ import { expect, test, type Page } from '@playwright/test'
  * analyser to pitch detection, is the app's real code. (Chromium's own fake
  * microphone waits for OS mic permission on macOS, so it can't run everywhere.)
  */
-async function fakeMicrophone(page: Page, hz: number) {
-  await page.addInitScript((hz) => {
-    navigator.mediaDevices.getUserMedia = async () => {
-      const context = new AudioContext()
-      await context.resume()
-      const out = context.createMediaStreamDestination()
-      ;[0.3, 1, 0.6, 0.3].forEach((amp, h) => {
-        const osc = new OscillatorNode(context, { frequency: hz * (h + 1) })
-        const gain = new GainNode(context, { gain: amp * 0.25 })
-        osc.connect(gain).connect(out)
-        osc.start()
-      })
-      return out.stream
-    }
-  }, hz)
+async function fakeMicrophone(page: Page, hz: number, volume = 0.25) {
+  await page.addInitScript(
+    ([hz, volume]) => {
+      navigator.mediaDevices.getUserMedia = async () => {
+        const context = new AudioContext()
+        await context.resume()
+        const out = context.createMediaStreamDestination()
+        ;[0.3, 1, 0.6, 0.3].forEach((amp, h) => {
+          const osc = new OscillatorNode(context, { frequency: hz * (h + 1) })
+          const gain = new GainNode(context, { gain: amp * volume })
+          osc.connect(gain).connect(out)
+          osc.start()
+        })
+        return out.stream
+      }
+    },
+    [hz, volume],
+  )
 }
 
 /** A1 played 20 cents flat. */
@@ -58,4 +61,14 @@ test('keeps tuning and A4 in the URL and speaks Spanish', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Tocar La1' })).toHaveAttribute('data-active', 'true')
   await expect(page).toHaveURL(/tuning=5-standard/)
   await expect(page).toHaveURL(/a4=432/)
+})
+
+test('hears a quiet G string, like an unplugged bass on a laptop mic', async ({ page }) => {
+  // About −55 dBFS: far below what the first version of the tuner could hear.
+  await fakeMicrophone(page, 98, 0.0015)
+  await page.goto('/en/tuner')
+  await page.getByRole('button', { name: 'Start tuner' }).click()
+  await expect(page.getByRole('meter', { name: 'Input level' })).toBeVisible()
+  await expect(page.getByRole('img', { name: /^G2, / })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Play G2' })).toHaveAttribute('data-active', 'true')
 })

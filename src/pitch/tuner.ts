@@ -35,6 +35,8 @@ export function matchString(midi: number, tuning: Tuning): number | undefined {
 }
 
 const HISTORY = 5
+/** A note shows only after this many readings, so one bad frame can't flash a wrong note. */
+const MIN_READINGS = 3
 /** A plucked note fades in and out of detection; hold it through this many missed readings. */
 const HOLD = 6
 
@@ -55,11 +57,11 @@ export function createSmoother() {
     push(hz: number | null): number | null {
       if (hz === null) {
         if (++missed > HOLD) history = []
-        return history.length ? median(history) : null
+      } else {
+        missed = 0
+        history = [...history.slice(-(HISTORY - 1)), hz]
       }
-      missed = 0
-      history = [...history.slice(-(HISTORY - 1)), hz]
-      return median(history)
+      return history.length >= MIN_READINGS ? median(history) : null
     },
     reset() {
       history = []
