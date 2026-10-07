@@ -179,6 +179,8 @@
     "playHint": "Tap to hear this string's pitch",
     "string": "String",
     "a4": "A4 reference",
+    "level": "Input level",
+    "levelHint": "If this bar barely moves when you play, move the bass closer to the microphone or check your input device.",
     "privacy": "Uses your microphone. Audio is analyzed on this device and never sent anywhere.",
     "errors": {
       "denied": "Microphone access was blocked. Allow it in your browser's site settings and try again.",

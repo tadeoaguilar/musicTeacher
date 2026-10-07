@@ -1,4 +1,4 @@
-import { detectPitch, downsample } from '../pitch/detect'
+import { detectPitch, downsample, rms } from '../pitch/detect'
 import { MAX_HZ, MIN_HZ } from '../pitch/tuner'
 
 export type MicErrorReason = 'denied' | 'no-device' | 'unsupported'
@@ -17,9 +17,16 @@ const WINDOW = 8192
 const DETECT_RATE = 12000
 const INTERVAL_MS = 50
 
+export type MicFrame = {
+  /** Detected pitch, or null when no clear note is ringing. */
+  hz: number | null
+  /** RMS input level, 0–1. */
+  level: number
+}
+
 /**
- * Listens to the microphone and reports the detected pitch (Hz, or null for no
- * clear note) about 20 times a second. Uses plain Web Audio, so the tuner never
+ * Listens to the microphone and reports the input level and detected pitch
+ * about 20 times a second. Uses plain Web Audio, so the tuner never
  * loads Tone.js.
  */
 class MicInput {
@@ -30,7 +37,7 @@ class MicInput {
   private generation = 0
 
   /** Resolves true once listening, or false if stop() was called while waiting for permission. */
-  async start(onPitch: (hz: number | null) => void): Promise<boolean> {
+  async start(onFrame: (frame: MicFrame) => void): Promise<boolean> {
     this.stop()
     const generation = this.generation
     if (!navigator.mediaDevices?.getUserMedia) throw new MicError('unsupported')
@@ -73,7 +80,7 @@ class MicInput {
         minHz: MIN_HZ,
         maxHz: MAX_HZ,
       })
-      onPitch(pitch?.hz ?? null)
+      onFrame({ hz: pitch?.hz ?? null, level: rms(samples) })
     }
     this.frame = requestAnimationFrame(tick)
     return true

@@ -20,6 +20,17 @@ function bassTone(hz: number, harmonics = [0.3, 1, 0.6, 0.3, 0.15]) {
   return out
 }
 
+/** White noise plus 60/120 Hz hum at a given RMS level, seeded so tests are repeatable. */
+function roomNoise(seed: number, level: number) {
+  let state = seed
+  const random = () => (state = (state * 16807) % 2147483647) / 2147483647
+  return new Float32Array(WINDOW).map((_, i) => {
+    const gauss = Math.sqrt(-2 * Math.log(random() + 1e-12)) * Math.cos(2 * Math.PI * random())
+    const hum = 0.3 * Math.sin((2 * Math.PI * 60 * i) / RATE) + 0.2 * Math.sin((2 * Math.PI * 120 * i) / RATE)
+    return level * (gauss + hum)
+  })
+}
+
 const detect = (samples: Float32Array) =>
   detectPitch(downsample(samples, FACTOR), RATE / FACTOR, { minHz: MIN_HZ, maxHz: MAX_HZ })
 
@@ -51,12 +62,29 @@ describe('detectPitch', () => {
   })
 
   it('ignores noise', () => {
-    let seed = 1
-    const noise = new Float32Array(WINDOW).map(() => {
-      seed = (seed * 16807) % 2147483647
-      return (seed / 2147483647 - 0.5) * 0.5
-    })
+    const noise = roomNoise(1, 0.15)
     expect(detect(noise)).toBeNull()
+  })
+
+  it('ignores quiet room noise with mains hum', () => {
+    for (let seed = 1; seed <= 20; seed++) expect(detect(roomNoise(seed, 0.002))).toBeNull()
+  })
+
+  // An unplugged bass heard by a laptop mic: very quiet, with room noise 10 dB below it.
+  it.each(['E1', 'A1', 'D2', 'G2'])('finds a quiet %s through room noise', (note) => {
+    const target = midiToFrequency(noteMidi(note))
+    const level = 0.003
+    let found = 0
+    for (let seed = 1; seed <= 20; seed++) {
+      const tone = bassTone(target).map((v) => v * (level / 0.2))
+      const noise = roomNoise(seed, level / Math.sqrt(10))
+      const pitch = detect(tone.map((v, i) => v + noise[i]))
+      if (!pitch) continue
+      // Whatever is reported must be the right note, never another octave.
+      expect(Math.abs(centsOff(pitch.hz, target))).toBeLessThan(15)
+      found++
+    }
+    expect(found).toBeGreaterThanOrEqual(17)
   })
 })
 
@@ -102,9 +130,16 @@ describe('createSmoother', () => {
     expect(s.push(110)).toBeCloseTo(55, 0)
   })
 
+  it('waits for a few readings before showing a note', () => {
+    const s = createSmoother()
+    expect(s.push(70)).toBeNull()
+    expect(s.push(55)).toBeNull()
+    expect(s.push(55)).toBe(55)
+  })
+
   it('holds the note through brief dropouts, then lets go', () => {
     const s = createSmoother()
-    s.push(55)
+    for (let i = 0; i < 3; i++) s.push(55)
     for (let i = 0; i < 6; i++) expect(s.push(null)).toBe(55)
     expect(s.push(null)).toBeNull()
   })

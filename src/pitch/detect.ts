@@ -7,8 +7,14 @@ export type Pitch = {
 export type DetectOptions = {
   minHz: number
   maxHz: number
-  /** YIN threshold: lower rejects more noise but can miss weak notes. */
+  /** YIN threshold: a dip under this is taken as the period straight away. */
   threshold?: number
+  /**
+   * Noisy input (a quiet string, a laptop mic) may never dip under the
+   * threshold; then the clearest dip is still accepted if it is under this.
+   * Room noise and hum stay above it.
+   */
+  maxAperiodicity?: number
   /** Below this RMS level the input is treated as silence. */
   minRms?: number
 }
@@ -21,11 +27,11 @@ export type DetectOptions = {
 export function detectPitch(
   samples: Float32Array,
   sampleRate: number,
-  { minHz, maxHz, threshold = 0.15, minRms = 0.005 }: DetectOptions,
+  { minHz, maxHz, threshold = 0.15, maxAperiodicity = 0.5, minRms = 0.0003 }: DetectOptions,
 ): Pitch | null {
-  let energy = 0
-  for (const s of samples) energy += s * s
-  if (Math.sqrt(energy / samples.length) < minRms) return null
+  // The gate is low on purpose: an unplugged bass heard by a laptop mic is very quiet.
+  // The periodicity checks below are what reject noise.
+  if (rms(samples) < minRms) return null
 
   const tauMin = Math.max(2, Math.floor(sampleRate / maxHz))
   const tauMax = Math.min(Math.ceil(sampleRate / minHz), Math.floor(samples.length / 2))
@@ -45,10 +51,15 @@ export function detectPitch(
     cmnd[tau] = runningSum === 0 ? 1 : (d * tau) / runningSum
   }
 
-  // The first dip under the threshold is the period; later dips are its multiples.
+  let clearest = Infinity
+  for (let k = tauMin; k <= tauMax; k++) clearest = Math.min(clearest, cmnd[k])
+  if (clearest >= maxAperiodicity) return null
+  // Clean input: the first dip under the threshold. Noisy input: the first dip about
+  // as deep as the clearest one. Either way the earliest wins, because later dips
+  // are multiples of the period (an octave or more too low).
+  const limit = clearest < threshold ? threshold : clearest * 1.1 + 0.02
   let tau = tauMin
-  while (tau <= tauMax && cmnd[tau] >= threshold) tau++
-  if (tau > tauMax) return null
+  while (tau <= tauMax && cmnd[tau] >= limit) tau++
   while (tau < tauMax && cmnd[tau + 1] < cmnd[tau]) tau++
 
   // Parabolic interpolation between samples, for accuracy finer than one sample.
@@ -57,6 +68,13 @@ export function detectPitch(
   const period = curve > 0 ? tau + (a - c) / (2 * curve) : tau
 
   return { hz: sampleRate / period, clarity: Math.max(0, 1 - b) }
+}
+
+/** Root-mean-square level, 0–1. */
+export function rms(samples: Float32Array): number {
+  let energy = 0
+  for (const s of samples) energy += s * s
+  return Math.sqrt(energy / samples.length)
 }
 
 /**

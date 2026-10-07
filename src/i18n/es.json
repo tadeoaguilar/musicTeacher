@@ -179,6 +179,8 @@
     "playHint": "Toca para oír la nota de esta cuerda",
     "string": "Cuerda",
     "a4": "Referencia La4",
+    "level": "Nivel de entrada",
+    "levelHint": "Si la barra apenas se mueve al tocar, acerca el bajo al micrófono o revisa el dispositivo de entrada.",
     "privacy": "Usa tu micrófono. El audio se analiza en este dispositivo y nunca se envía a ningún sitio.",
     "errors": {
       "denied": "Se bloqueó el acceso al micrófono. Permítelo en los ajustes del sitio de tu navegador e inténtalo de nuevo.",
