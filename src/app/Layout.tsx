@@ -4,7 +4,7 @@ import { Link, NavLink, Navigate, Outlet, useLocation, useParams } from 'react-r
 import { LOCALES, isLocale } from '../i18n'
 import styles from './Layout.module.css'
 
-const SECTIONS = ['scales', 'metronome'] as const
+const SECTIONS = ['scales', 'metronome', 'tuner'] as const
 
 const LANGUAGE_NAMES = { en: 'English', es: 'Español' }
 

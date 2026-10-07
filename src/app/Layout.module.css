@@ -73,10 +73,21 @@
 }
 
 @media (max-width: 560px) {
+  /* Brand and language switch share the top row; section tabs get a row of their own. */
   .header {
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+  .brand {
+    margin-right: auto;
   }
   .brand small {
     display: none;
+  }
+  .nav {
+    order: 1;
+    flex-basis: 100%;
+    margin-right: 0;
+    overflow-x: auto;
   }
 }

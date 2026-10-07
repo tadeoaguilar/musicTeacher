@@ -1,0 +1,165 @@
+.meter {
+  --meter-color: var(--accent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.inTune {
+  --meter-color: var(--in-tune);
+}
+
+.gauge {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  overflow: visible;
+}
+
+.zone {
+  fill: none;
+  stroke: var(--in-tune);
+  stroke-width: 14;
+  opacity: 0.35;
+}
+
+.tick {
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.centerTick {
+  stroke: var(--text);
+  stroke-width: 3;
+}
+
+.gaugeLabel {
+  fill: var(--muted);
+  font-size: 22px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.needle {
+  transform-box: view-box;
+  transform-origin: 160px 170px;
+  transition: transform 120ms ease-out;
+}
+.needle line {
+  stroke: var(--meter-color);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.needleIdle {
+  opacity: 0.25;
+}
+.hub {
+  fill: var(--meter-color);
+}
+
+.readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-height: 132px;
+}
+
+.noteName {
+  font-size: clamp(56px, 14vw, 84px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--meter-color);
+}
+.noteName sub {
+  font-size: 0.4em;
+  font-weight: 700;
+  color: var(--muted);
+  vertical-align: baseline;
+  margin-left: 2px;
+}
+
+.status {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.inTune .status {
+  color: var(--in-tune);
+}
+
+.hz {
+  font-size: 13px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.strings {
+  display: grid;
+  grid-auto-columns: minmax(0, 76px);
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.string {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 4px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--control-bg);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background 120ms,
+    border-color 120ms;
+}
+.string:hover {
+  background: var(--control-hover);
+}
+.stringActive,
+.stringActive:hover {
+  border-color: var(--accent);
+  background: var(--surface);
+}
+
+.stringNote {
+  font-size: 22px;
+  font-weight: 800;
+}
+.stringNote sub {
+  font-size: 0.55em;
+  color: var(--muted);
+  vertical-align: baseline;
+}
+
+.string {
+  container-type: inline-size;
+}
+
+.stringNumber {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Six strings on a narrow phone: show just the number. */
+@container (max-width: 60px) {
+  .stringWord {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .needle {
+    transition: none;
+  }
+}

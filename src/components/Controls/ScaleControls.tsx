@@ -2,15 +2,9 @@ import { useTranslation } from 'react-i18next'
 import type { ScaleSettings } from '../../features/scales/scaleState'
 import { formatNote, type Locale } from '../../theory/notes'
 import { KEY_IDS, SCALE_IDS, isScaleId, keySpellings } from '../../theory/scales'
-import {
-  FRET_COUNTS,
-  STRING_COUNTS,
-  defaultTuningFor,
-  getTuning,
-  tuningsFor,
-  type StringCount,
-} from '../../theory/tunings'
+import { FRET_COUNTS } from '../../theory/tunings'
 import { Segmented, Select, Toggle } from './fields'
+import { TuningFields } from './TuningFields'
 import styles from './Controls.module.css'
 
 type Props = {
@@ -21,9 +15,6 @@ type Props = {
 
 export function ScaleControls({ settings, locale, onChange }: Props) {
   const { t } = useTranslation()
-  const tuning = getTuning(settings.tuning)!
-  const stringCount = tuning.strings.length as StringCount
-  const tuningLabel = (strings: string[]) => strings.map((s) => formatNote(s, locale)).join(' ')
 
   return (
     <div className={styles.panel}>
@@ -47,21 +38,7 @@ export function ScaleControls({ settings, locale, onChange }: Props) {
           options={SCALE_IDS.map((id) => ({ value: id, label: t(`scales.names.${id}`) }))}
           onChange={(scale) => isScaleId(scale) && onChange({ scale })}
         />
-        <Segmented
-          label={t('controls.strings')}
-          value={stringCount}
-          options={STRING_COUNTS.map((n) => ({ value: n, label: n }))}
-          onChange={(n) => onChange({ tuning: defaultTuningFor(n).id })}
-        />
-        <Select
-          label={t('controls.tuning')}
-          value={settings.tuning}
-          options={tuningsFor(stringCount).map((tu) => ({
-            value: tu.id,
-            label: `${t(`controls.tunings.${tu.nameKey}`)} (${tuningLabel(tu.strings)})`,
-          }))}
-          onChange={(id) => onChange({ tuning: id })}
-        />
+        <TuningFields tuning={settings.tuning} locale={locale} onChange={(tuning) => onChange({ tuning })} />
         <Segmented
           label={t('controls.frets')}
           value={settings.frets}
