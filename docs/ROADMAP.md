@@ -184,6 +184,12 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 
 ### Exercise 1: Find the note on the neck
 
+> **Status:** implemented. Differences from this plan:
+>
+> - The note's name is shown by default ("Show the note's name" can be turned off for pure ear practice). With only the sound, the exercise would need perfect pitch.
+> - The right note in another octave counts as correct, with feedback on which way the octave was off.
+> - E2E tests read the asked note from the page, so there is no `?seed=` param.
+
 - The app plays a note; you tap where it is on the fretboard.
 - **Any position with the same pitch is correct.** E2 is right on the E string fret 12, the A string fret 7, or the D string fret 2.
 - After you answer, every correct position lights up, so you learn all the places a note lives.

@@ -8,10 +8,11 @@ Guidance for Claude Code (and any contributor) working in this repository. `READ
 
 - **Scales** (`/:lang/scales`): SVG bass fretboard showing every note of a scale, with synthesized playback.
 - **Arpeggios** (`/:lang/arpeggios`): chord tones of 12 chord types across the neck, 1- or 2-octave arpeggio playback in one position.
+- **Ear Training** (`/:lang/ear`): exercise 1, "Find the note" (tap where a named, played note is; 3 levels; weighted practice of missed notes). Intervals and play-it-back are next (see the roadmap).
 - **Metronome** (`/:lang/metronome`): meters, subdivisions, swing, accents, rhythm patterns in notation played by the bass, speed/gap trainers, tap tempo, count-in.
 - **Tuner** (`/:lang/tuner`): microphone pitch detection showing the nearest note, cents off and the matching string for the chosen tuning; reference tones; A4 calibration.
 
-Planned sections (see the comment in `src/app/router.tsx`): grooves, lessons, ear training. **[`docs/ROADMAP.md`](docs/ROADMAP.md) has the agreed plan for real bass samples (recorded by the user) and Ear Training. Read it before starting either.**
+Planned sections (see the comment in `src/app/router.tsx`): grooves, lessons. **[`docs/ROADMAP.md`](docs/ROADMAP.md) has the agreed plan for real bass samples (recorded by the user) and the remaining Ear Training exercises. Read it before starting either.**
 
 ## Stack
 
@@ -39,6 +40,7 @@ npm run build          # tsc -b && vite build → dist/
 src/
   theory/      Pure TS music theory: notes, spelling, scales/modes, tunings, fretboard, play sequences
   rhythm/      Pure TS rhythm: meters (TICKS_PER_QUARTER = 48), patterns, bar timing, swing, trainers, tap tempo, notation layout
+  ear/         Pure TS ear training: seeded RNG (`createRandom`), question generators (`findNote.ts`), score/streak and per-item stats with weighted repetition (`progress.ts`)
   pitch/       Pure TS pitch: YIN detection + downsampling, readNote/matchString, reading smoother
   audio/       Tone.js engines (lazy-loaded): SynthEngine (scales, reference tones), MetronomeEngine, worker ticker; MicInput (plain Web Audio)
   components/  Presentational UI: Fretboard (hand-written SVG), Controls (incl. shared TuningFields), Metronome and Tuner widgets
@@ -50,7 +52,7 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
 
 ### Layering rules
 
-- `theory/`, `rhythm/` and `pitch/` are **pure**: no React, no Tone.js, no DOM. All musical logic goes here and gets unit tests.
+- `theory/`, `rhythm/`, `pitch/` and `ear/` are **pure**: no React, no Tone.js, no DOM. All musical logic goes here and gets unit tests.
 - `audio/` depends on `theory/`/`rhythm/` but never on React. Engines are module singletons (`audioEngine`, `metronomeEngine`).
 - `components/` take props; they don't read stores or the URL.
 - `features/<section>/` wires stores, URL, audio and components together.
@@ -63,8 +65,10 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
   - The shared neck and playback params (`tuning frets labels lefty bpm dir loop`) are parsed by `neckFromParams` / `neckToParams` in `src/app/neckSettings.ts`; reuse them for any new fretboard section.
   - Metronome params: `ts bpm sub swing acc pat root click bass count sp gap`
   - Tuner params: `tuning a4`
+  - Ear params: `level name tuning frets lefty`
 - **Tone.js is lazy-loaded** through `loadTone()` in `src/audio/tone.ts` (it's most of the bundle) and must be first called from a user gesture. Import it only as `import type * as ToneLib from 'tone'` elsewhere. The bass voice is shared via `createBassSynth()`.
 - **Metronome timing**: `ticker.worker.ts` posts a tick every 25 ms (workers aren't throttled in background tabs); `MetronomeEngine` schedules sounds ~150 ms ahead on the audio clock. Keep scheduling on the audio clock, not `setTimeout`.
+- **Fretboard quiz mode**: pass `onFretTap` to `Fretboard` and every fret cell becomes a labelled, keyboard-reachable button ("A string, fret 5") that reports the tap instead of playing it; `marks` draws `target` / `octave` / `wrong` answers. Without `onFretTap` the cells stay `aria-hidden` (Scales/Arpeggios shouldn't get 100 extra tab stops). Per-device stats use `useItemStats` (`src/features/ear/`), which wraps `localStorage` in try/catch.
 - **Tuner pipeline**: `MicInput` (`src/audio/MicInput.ts`) opens the mic with echo cancellation, noise suppression and auto gain **off** (they filter out bass), reads an 8192-sample `AnalyserNode` window every 50 ms, downsamples to ~12 kHz and runs YIN (`src/pitch/detect.ts`, 27–500 Hz). The page smooths readings (`createSmoother`) and maps them with `readNote(hz, a4)` / `matchString`. Detection is tuned for quiet, noisy input (an unplugged bass on a laptop mic): a very low RMS gate (0.0003) and a fallback that accepts the clearest dip when noise keeps it above the YIN threshold (`maxAperiodicity`). Room noise and hum are rejected by periodicity, not by the gate, so don't raise the gate to fix false notes. The smoother needs 3 readings before showing a note. Don't swap YIN for FFT peak-picking: low strings have weak fundamentals and FFT reports the wrong octave. The tuner deliberately doesn't load Tone.js; reference tones go through `audioEngine.playNote(midi, { a4, duration })`.
 - **Swappable audio**: `AudioEngine` interface in `src/audio/AudioEngine.ts`. For real bass samples, add a `SamplerEngine` implementing it and export it as `audioEngine`.
 - **Scales and chords share one model**: a `NoteSetFormula` (`semitones` + letter-step `degrees`) resolved by `resolveNoteSet(key, formula)` in `src/theory/scales.ts` (`resolveScale` wraps it; chord formulas live in `src/theory/chords.ts`). `getFretboardNotes` and `buildPlaySequence` work on any resolved `NoteSet`. Shared UI: `KeyField`/`NeckFields` (`src/components/Controls/NeckFields.tsx`) and `NoteSetHeader`/`NeckLegend` (`src/components/NoteSet/`).

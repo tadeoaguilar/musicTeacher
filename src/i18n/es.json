@@ -5,6 +5,7 @@
     "nav": {
       "scales": "Escalas",
       "arpeggios": "Arpegios",
+      "ear": "Oído",
       "metronome": "Metrónomo",
       "tuner": "Afinador"
     },
@@ -82,6 +83,43 @@
       "m6": "Tríada menor más la 6ª mayor: un sonido menor latino y de jazz."
     }
   },
+  "ear": {
+    "title": "Entrenamiento auditivo",
+    "description": "Aprende dónde está cada nota en el mástil, por su nombre y de oído.",
+    "findNote": "Encuentra la nota",
+    "prompt": "Toca dónde está esta nota en el mástil (trastes 0–{{max}}). Pulsa Escuchar para oírla antes.",
+    "promptHidden": "Pulsa Escuchar y toca la nota que oíste (trastes 0–{{max}}).",
+    "hiddenName": "Oculta: encuéntrala de oído",
+    "hear": "Escuchar",
+    "next": "Siguiente nota",
+    "exact": "¡Correcto! La misma nota que sonó, en la misma octava.",
+    "tappedHigher": "¡Nota correcta! La que sonó estaba una octava más abajo.",
+    "tappedLower": "¡Nota correcta! La que sonó estaba una octava más arriba.",
+    "wrong": "Casi: tocaste {{tapped}}. Están marcados todos los {{note}}.",
+    "marks": {
+      "target": "{{note}}, la nota que sonó, traste {{fret}}",
+      "octave": "{{note}} en otra octava, traste {{fret}}",
+      "wrong": "Tu respuesta: {{note}}"
+    },
+    "legend": {
+      "target": "La nota que sonó",
+      "octave": "Misma nota, otra octava",
+      "wrong": "Tu respuesta"
+    },
+    "fretboard": "Mástil del bajo: toca un traste para responder",
+    "progress": "Progreso",
+    "score": "Aciertos",
+    "streak": "Racha",
+    "best": "Mejor racha",
+    "practiceMore": "Practica más",
+    "level": "Nivel",
+    "levels": {
+      "1": "1 · Notas naturales, trastes 0–5",
+      "2": "2 · Todas las notas, trastes 0–12",
+      "3": "3 · Todas las notas, todo el mástil"
+    },
+    "showName": "Mostrar el nombre de la nota"
+  },
   "controls": {
     "key": "Tonalidad",
     "scale": "Escala",
@@ -121,7 +159,8 @@
     "note": "{{note}}, {{interval}}, cuerda {{string}}, traste {{fret}}",
     "root": "tónica",
     "start": "nota inicial",
-    "degree": "grado {{degree}}"
+    "degree": "grado {{degree}}",
+    "cell": "cuerda {{string}}, traste {{fret}}"
   },
   "metronome": {
     "title": "Metrónomo",

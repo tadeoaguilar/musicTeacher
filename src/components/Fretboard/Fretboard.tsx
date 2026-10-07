@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { FretNote } from '../../theory/fretboard'
 import { openStringMidi, positionKey } from '../../theory/fretboard'
@@ -10,6 +11,15 @@ import { Strings } from './Strings'
 import styles from './Fretboard.module.css'
 
 export type LabelMode = 'note' | 'interval'
+
+/** A quiz marker: the answer, the same note in another octave, or a wrong tap. */
+export type FretMark = {
+  string: number
+  fret: number
+  kind: 'target' | 'octave' | 'wrong'
+  label: string
+  ariaLabel: string
+}
 
 type Props = {
   tuning: Tuning
@@ -24,6 +34,12 @@ type Props = {
   active: string | null
   title: string
   onPlay: (midi: number) => void
+  /**
+   * Quiz mode: every fret becomes a labelled, keyboard-reachable button that
+   * reports the tap instead of playing it.
+   */
+  onFretTap?: (string: number, fret: number) => void
+  marks?: FretMark[]
 }
 
 export function Fretboard({
@@ -37,6 +53,8 @@ export function Fretboard({
   active,
   title,
   onPlay,
+  onFretTap,
+  marks = [],
 }: Props) {
   const { t } = useTranslation()
   const layout = createLayout(tuning.strings.length, fretCount, leftHanded)
@@ -58,11 +76,26 @@ export function Fretboard({
         <Neck layout={layout} fretCount={fretCount} stringCount={tuning.strings.length} />
         <Strings layout={layout} fretCount={fretCount} openNotes={tuning.strings} locale={locale} />
 
-        {/* Any fret, in the scale or not, can be clicked to hear it. */}
-        <g aria-hidden>
+        {/* Any fret, in the scale or not, can be clicked to hear it (or, in a quiz, to answer). */}
+        <g aria-hidden={onFretTap ? undefined : true}>
           {openMidis.map((openMidi, s) =>
             frets.map((fret) => {
               const [a, b] = cellEdges(fret).map(x)
+              const tap = () => (onFretTap ? onFretTap(s, fret) : onPlay(openMidi + fret))
+              const quiz = onFretTap && {
+                role: 'button',
+                tabIndex: 0,
+                'aria-label': t('fretboard.cell', {
+                  string: formatNote(tuning.strings[s], locale),
+                  fret,
+                }),
+                onKeyDown: (e: KeyboardEvent) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    tap()
+                  }
+                },
+              }
               return (
                 <rect
                   key={`${s}-${fret}`}
@@ -71,7 +104,8 @@ export function Fretboard({
                   y={stringY(s) - 22}
                   width={Math.abs(b - a)}
                   height={44}
-                  onClick={() => onPlay(openMidi + fret)}
+                  onClick={tap}
+                  {...quiz}
                 />
               )
             }),
@@ -103,6 +137,22 @@ export function Fretboard({
             />
           )
         })}
+
+        {marks.map((m) => (
+          <g
+            key={`mark-${positionKey(m)}`}
+            className={`${styles.mark} ${styles[m.kind]}`}
+            role="img"
+            aria-label={m.ariaLabel}
+            data-mark={m.kind}
+            transform={`translate(${x(noteX(m.fret))} ${stringY(m.string)})`}
+          >
+            <circle r={15} />
+            <text className={styles.markerLabel} aria-hidden>
+              {m.label}
+            </text>
+          </g>
+        ))}
       </svg>
     </div>
   )

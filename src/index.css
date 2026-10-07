@@ -9,6 +9,7 @@
   --on-accent: #ffffff;
   --focus: #2f80ed;
   --in-tune: #2b8a3e;
+  --wrong: #c92a2a;
   --control-bg: #ece8e0;
   --control-hover: #ddd7cc;
 
@@ -40,6 +41,7 @@
     --on-accent: #0f1a2b;
     --focus: #7fb0ff;
     --in-tune: #69db7c;
+    --wrong: #ff6b6b;
     --control-bg: #242930;
     --control-hover: #303640;
     --neck-bg: #16191d;
@@ -59,6 +61,7 @@
   --on-accent: #0f1a2b;
   --focus: #7fb0ff;
   --in-tune: #69db7c;
+  --wrong: #ff6b6b;
   --control-bg: #242930;
   --control-hover: #303640;
   --neck-bg: #16191d;
