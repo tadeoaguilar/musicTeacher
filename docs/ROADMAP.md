@@ -1,6 +1,6 @@
 # Roadmap
 
-Plans for the next three features: **Arpeggios**, **Real bass samples** and **Ear Training**. Scales, Metronome and Tuner are already shipped.
+Plans for **Arpeggios**, **Real bass samples** and **Ear Training**, and a log of where the work stands. Scales, Metronome and Tuner were shipped before this roadmap.
 
 Each feature gets its own branch and pull request and follows the "Adding a new section" checklist in [`CLAUDE.md`](../CLAUDE.md):
 
@@ -10,13 +10,63 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 - an e2e spec;
 - README and `CLAUDE.md` updates.
 
+## Where we left off (2026-10-07)
+
+**Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
+
+### Shipped
+
+| PR  | What                                                                                   |
+| --- | -------------------------------------------------------------------------------------- |
+| #1  | Metronome                                                                              |
+| #2  | `CLAUDE.md`                                                                            |
+| #3  | Tuner                                                                                  |
+| #4  | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass |
+| #5  | This roadmap                                                                           |
+| #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                   |
+| #7  | Ear Training, exercise 1 "Find the note"                                               |
+
+### Next session: pick one
+
+1. **Real bass samples (step 2)**, if the recordings are done. This is the plan for 2026-10-08.
+   - [ ] `brew install ffmpeg` (not installed yet; the processing script needs it).
+   - [ ] Record the 10 notes from the [recording guide](#recording-guide) somewhere quiet: E1 G1 A♯1 C♯2 E2 G2 A♯2 C♯3 E3 G3.
+   - [ ] Save them as WAV files named `E1.wav`, `G1.wav`, `As1.wav`, `Cs2.wav` … (`s` = sharp) in `recordings/bass/`. That folder is git-ignored, so the raw files stay local.
+   - [ ] Then build, in this order:
+     1. the processing script;
+     2. `SamplerEngine`;
+     3. `loadBassVoice`, so Metronome grooves and Tuner reference tones also use the recorded bass.
+2. **Ear Training, exercise 2 "Name the interval"**, which doesn't need the recordings. See [Exercise 2](#exercise-2-name-the-interval).
+   - Reuse the shared logic in `src/ear/`: `createRandom`, `pickWeighted`, `progress.ts` (score, `ItemStats`, `weightOf`, `weakest`).
+   - Reuse `useItemStats`, under a new key such as `ear.intervals`.
+   - Reuse the Fretboard quiz mode (`marks`) to show the interval's shape after answering.
+   - The page becomes tabbed: "Find the note" and "Intervals", with the URL saying which exercise is open.
+3. **Ear Training, exercise 3 "Play it back"**, after exercise 2. It reuses `micInput`, `createSmoother` and `readNote` from the tuner.
+
+### Decisions made along the way
+
+- **Workflow:** a feature branch and a pull request for each change. Merge (`gh pr merge N --merge`) only after CI passes and the change has been tried on a real bass. Then delete the branch locally and on GitHub.
+- **Spelling:** the fewest-accidentals rule applies to chords too, so in the B♭/A♯ key m7♭5 is A♯ C♯ E G♯, not B♭ D♭ F♭ A♭.
+- **Chord IDs:** `dom7` and `maj6` rather than `7` and `6`, because JavaScript sorts numeric-looking keys first.
+- **Find the note:**
+  - the name is shown by default, because sound alone would need perfect pitch;
+  - the right note in another octave counts as correct, with feedback on which way it was off;
+  - there is no `?seed=` param.
+- **Microphone e2e tests** stub `getUserMedia` with oscillators. Chromium's fake microphone hangs on macOS waiting for OS permission.
+- **Tuner detection** is tuned for quiet, noisy input: a low volume gate plus the `maxAperiodicity` fallback. Don't raise the gate to fix false notes (see `CLAUDE.md`).
+
+### Known follow-ups
+
+- Five sections overflow the phone tab row, which scrolls sideways. Consider grouping them ("Practice" and "Tools"); see [Cross-cutting](#cross-cutting).
+- The diatonic-arpeggios stretch goal is still open.
+
 ## Order
 
-| #   | Feature                                   | Depends on                    | Size                        |
-| --- | ----------------------------------------- | ----------------------------- | --------------------------- |
-| 1   | ✅ [Arpeggios](#1-arpeggios)              | nothing; mostly reuses Scales | M                           |
-| 2   | [Real bass samples](#2-real-bass-samples) | your recordings               | M + a recording session     |
-| 3   | [Ear Training](#3-ear-training)           | benefits from 1 and 2         | L (3 PRs, one per exercise) |
+| #   | Feature                                              | Depends on                    | Size                        |
+| --- | ---------------------------------------------------- | ----------------------------- | --------------------------- |
+| 1   | ✅ [Arpeggios](#1-arpeggios)                         | nothing; mostly reuses Scales | M                           |
+| 2   | [Real bass samples](#2-real-bass-samples)            | your recordings               | M + a recording session     |
+| 3   | 🟡 [Ear Training](#3-ear-training): 1 of 3 exercises | benefits from 1 and 2         | L (3 PRs, one per exercise) |
 
 The recording for step 2 can happen while step 1 is being built. Ear training comes last because it benefits from both: a realistic tone trains the ear better, and the exercises reuse the fretboard and the tuner's pitch detection.
 
@@ -133,7 +183,7 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 
   `s` means sharp, because `#` is awkward in file names. For 5-string coverage, also record `B0.wav` (open B) and `D1.wav`.
 
-- Put the files in `recordings/bass/`. That folder will be added to `.gitignore`, since the raw WAVs are large.
+- Put the files in `recordings/bass/`. That folder is git-ignored, since the raw WAVs are large.
 
 ### Processing script
 
@@ -243,5 +293,5 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 
 - [ ] Recording gear: an audio interface (DI) or a microphone?
 - [ ] Record B0 and D1 for 5-string players?
-- [ ] Which ear-training exercise ships first? Suggested: find the note, then intervals, then play-it-back.
-- [ ] Ship diatonic arpeggios with Arpeggios, or later?
+- [x] Which ear-training exercise ships first? Find the note shipped in #7. Intervals are next, then play-it-back.
+- [x] Ship diatonic arpeggios with Arpeggios, or later? Later: Arpeggios shipped in #6 without it.
