@@ -5,6 +5,7 @@
     "nav": {
       "scales": "Scales",
       "arpeggios": "Arpeggios",
+      "ear": "Ear training",
       "metronome": "Metronome",
       "tuner": "Tuner"
     },
@@ -82,6 +83,43 @@
       "m6": "Minor triad plus the major 6th: a Latin and jazz minor sound."
     }
   },
+  "ear": {
+    "title": "Ear Training",
+    "description": "Learn where every note lives on the neck, by name and by ear.",
+    "findNote": "Find the note",
+    "prompt": "Tap where this note is on the neck (frets 0–{{max}}). Press Hear it to listen first.",
+    "promptHidden": "Press Hear it, then tap the note you heard (frets 0–{{max}}).",
+    "hiddenName": "Hidden: find it by ear",
+    "hear": "Hear it",
+    "next": "Next note",
+    "exact": "Correct! The same note you heard, in the same octave.",
+    "tappedHigher": "Right note! The one you heard was an octave lower.",
+    "tappedLower": "Right note! The one you heard was an octave higher.",
+    "wrong": "Not quite: you tapped {{tapped}}. Every {{note}} is marked.",
+    "marks": {
+      "target": "{{note}}, the note you heard, fret {{fret}}",
+      "octave": "{{note}} in another octave, fret {{fret}}",
+      "wrong": "Your answer: {{note}}"
+    },
+    "legend": {
+      "target": "The note you heard",
+      "octave": "Same note, other octave",
+      "wrong": "Your answer"
+    },
+    "fretboard": "Bass neck: tap a fret to answer",
+    "progress": "Progress",
+    "score": "Score",
+    "streak": "Streak",
+    "best": "Best streak",
+    "practiceMore": "Practice more",
+    "level": "Level",
+    "levels": {
+      "1": "1 · Natural notes, frets 0–5",
+      "2": "2 · All notes, frets 0–12",
+      "3": "3 · All notes, whole neck"
+    },
+    "showName": "Show the note's name"
+  },
   "controls": {
     "key": "Key",
     "scale": "Scale",
@@ -121,7 +159,8 @@
     "note": "{{note}}, {{interval}}, {{string}} string, fret {{fret}}",
     "root": "root",
     "start": "starting note",
-    "degree": "degree {{degree}}"
+    "degree": "degree {{degree}}",
+    "cell": "{{string}} string, fret {{fret}}"
   },
   "metronome": {
     "title": "Metronome",

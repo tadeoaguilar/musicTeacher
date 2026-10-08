@@ -68,6 +68,36 @@
 .cell:hover {
   fill: rgb(255 255 255 / 0.08);
 }
+.cell:focus-visible {
+  fill: rgb(255 255 255 / 0.12);
+  outline: none;
+  stroke: var(--focus);
+  stroke-width: 2;
+}
+
+/* Quiz marks: shown after an answer; taps pass through to the cells. */
+.mark {
+  pointer-events: none;
+}
+.mark circle {
+  stroke: rgb(0 0 0 / 0.35);
+  stroke-width: 1;
+}
+.target circle {
+  fill: var(--in-tune);
+}
+.octave circle {
+  fill: var(--neck-bg);
+  stroke: var(--in-tune);
+  stroke-width: 3;
+  stroke-dasharray: 4 3;
+}
+.octave .markerLabel {
+  fill: var(--text);
+}
+.wrong circle {
+  fill: var(--wrong);
+}
 
 /* Note markers */
 .marker {

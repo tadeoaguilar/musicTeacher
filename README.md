@@ -19,6 +19,15 @@ Every chord tone across the neck, played as a one- or two-octave arpeggio in one
 - Correct spelling for every key (C°7 is C E♭ G♭ B♭♭); notes or interval labels
 - Same neck options and playback as Scales
 
+## Ear Training
+
+Learn where every note lives on the neck.
+
+- **Find the note**: the app names and plays a note; tap where it is on the neck. Afterwards every position of that note lights up, including other octaves
+- Three levels (natural notes in the first 5 frets → all notes to fret 12 → the whole neck), or hide the name to find it by ear
+- Score and streaks; notes you miss come up more often, and are remembered on your device
+- More exercises are planned: name the interval, and play it back on your bass
+
 ## Metronome
 
 A metronome for learning rhythm.
@@ -40,7 +49,7 @@ A chromatic tuner that listens through the microphone.
 
 ## Roadmap
 
-Next up: real bass samples and Ear Training. See [docs/ROADMAP.md](docs/ROADMAP.md).
+Next up: real bass samples, and more Ear Training exercises. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Commands
 
@@ -58,11 +67,12 @@ npm run build        # static site in dist/
 ```
 src/
   theory/      pure TypeScript music theory: notes, scales, chords, fretboard (no React, no audio), fully unit-tested
+  ear/         pure TypeScript ear-training logic: seeded question generators, scoring, weighted practice
   rhythm/      pure TypeScript rhythm: meters, patterns, bar timing, trainers, notation layout
   pitch/       pure TypeScript pitch detection (YIN), note reading and smoothing for the tuner
   audio/       Tone.js (lazy-loaded on first click): scale player and metronome engine; microphone input
   components/  Fretboard (hand-written SVG), Controls, Metronome and Tuner widgets
-  features/    one folder per site section (scales/, arpeggios/, metronome/, tuner/)
+  features/    one folder per site section (scales/, arpeggios/, ear/, metronome/, tuner/)
   i18n/        en/es UI strings (react-i18next)
   app/         router (/:lang/<section>) and layout
 ```
