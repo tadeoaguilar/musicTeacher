@@ -2,7 +2,9 @@
 
 The plan for a native Android version of Music Teacher, agreed on 2026-10-15.
 
-> **Status:** Phase 0 (this document). Next: Phase 1, the skeleton, once the app ID is chosen.
+> **Status:** Phase 0 (this document). Next: Phase 1, the skeleton.
+>
+> **Decided:** app ID `com.perceptronics.musicteacher` (permanent once published) · store name **Bassically** · free, no ads.
 
 ## Why
 
