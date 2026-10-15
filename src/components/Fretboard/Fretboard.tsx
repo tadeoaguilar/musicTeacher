@@ -12,11 +12,11 @@ import styles from './Fretboard.module.css'
 
 export type LabelMode = 'note' | 'interval'
 
-/** A quiz marker: the answer, the same note in another octave, or a wrong tap. */
+/** A quiz marker: the answer, the same note in another octave, a wrong tap, or an interval's lower note. */
 export type FretMark = {
   string: number
   fret: number
-  kind: 'target' | 'octave' | 'wrong'
+  kind: 'target' | 'octave' | 'wrong' | 'root' | 'octave' | 'wrong'
   label: string
   ariaLabel: string
 }

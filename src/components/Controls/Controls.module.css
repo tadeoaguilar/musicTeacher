@@ -43,6 +43,12 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(64px, 1fr));
 }
+/* In a grid the cells can get narrow: let long labels wrap instead of overlapping. */
+.wrap .segment {
+  padding: 6px 10px;
+  line-height: 1.25;
+  white-space: normal;
+}
 
 .segment {
   min-height: 36px;

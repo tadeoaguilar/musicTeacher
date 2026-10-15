@@ -98,6 +98,9 @@
 .wrong circle {
   fill: var(--wrong);
 }
+.root circle {
+  fill: var(--root);
+}
 
 /* Note markers */
 .marker {

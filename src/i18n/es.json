@@ -118,7 +118,58 @@
       "2": "2 · Todas las notas, trastes 0–12",
       "3": "3 · Todas las notas, todo el mástil"
     },
-    "showName": "Mostrar el nombre de la nota"
+    "showName": "Mostrar el nombre de la nota",
+    "exercises": "Ejercicios",
+    "intervals": {
+      "title": "Nombra el intervalo",
+      "prompt": "{{direction}}. Escucha las dos notas y elige el intervalo.",
+      "direction": {
+        "up": "Subiendo",
+        "down": "Bajando",
+        "together": "Juntas"
+      },
+      "hearFirst": "Solo la primera nota",
+      "next": "Siguiente intervalo",
+      "answers": "¿Qué intervalo es?",
+      "correct": "¡Correcto! {{interval}}.",
+      "wrong": "Casi: era {{interval}}, no {{answer}}. Los dos están en el mástil.",
+      "names": {
+        "m2": "2ª menor",
+        "M2": "2ª mayor",
+        "m3": "3ª menor",
+        "M3": "3ª mayor",
+        "P4": "4ª justa",
+        "TT": "Tritono",
+        "P5": "5ª justa",
+        "m6": "6ª menor",
+        "M6": "6ª mayor",
+        "m7": "7ª menor",
+        "M7": "7ª mayor",
+        "P8": "Octava"
+      },
+      "marks": {
+        "low": "Nota grave, {{note}}, traste {{fret}}",
+        "high": "{{interval}} arriba, {{note}}, traste {{fret}}",
+        "wrong": "Tu respuesta, {{interval}}, traste {{fret}}"
+      },
+      "legend": {
+        "low": "Nota grave",
+        "high": "El intervalo"
+      },
+      "fretboard": "Mástil del bajo: la forma del intervalo aparece al responder. Toca un traste para oírlo.",
+      "levels": {
+        "1": "1 · 4ª, 5ª y octavas",
+        "2": "2 · Suma 3ª y 6ª",
+        "3": "3 · Todos los intervalos"
+      },
+      "play": "Notas",
+      "playModes": {
+        "up": "Subiendo",
+        "down": "Bajando",
+        "together": "Juntas",
+        "mixed": "Mezcla"
+      }
+    }
   },
   "controls": {
     "key": "Tonalidad",
