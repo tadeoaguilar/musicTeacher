@@ -10,25 +10,22 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 - an e2e spec;
 - README and `CLAUDE.md` updates.
 
-## Where we left off (2026-10-07)
+## Where we left off (2026-10-15)
 
 **Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
 
 ### Shipped
 
-| PR  | What                                                                                   |
-| --- | -------------------------------------------------------------------------------------- |
-| #1  | Metronome                                                                              |
-| #2  | `CLAUDE.md`                                                                            |
-| #3  | Tuner                                                                                  |
-| #4  | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass |
-| #5  | This roadmap                                                                           |
-| #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                   |
-| #7  | Ear Training, exercise 1 "Find the note"                                               |
-
-### In progress (2026-10-15)
-
-**Real bass samples (step 2)**: built on `feature/bass-samples`; waiting for a try on a real bass before merging. The user recorded the 10 notes in Ableton Live (processed with ffmpeg from MacPorts; Homebrew doesn't work on their Intel Mac).
+| PR  | What                                                                                       |
+| --- | ------------------------------------------------------------------------------------------ |
+| #1  | Metronome                                                                                  |
+| #2  | `CLAUDE.md`                                                                                |
+| #3  | Tuner                                                                                      |
+| #4  | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass     |
+| #5  | This roadmap                                                                               |
+| #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                       |
+| #7  | Ear Training, exercise 1 "Find the note"                                                   |
+| #9  | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds |
 
 ### Next session: pick one
 
@@ -62,7 +59,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #   | Feature                                              | Depends on                    | Size                        |
 | --- | ---------------------------------------------------- | ----------------------------- | --------------------------- |
 | 1   | ✅ [Arpeggios](#1-arpeggios)                         | nothing; mostly reuses Scales | M                           |
-| 2   | 🟡 [Real bass samples](#2-real-bass-samples)         | your recordings               | M + a recording session     |
+| 2   | ✅ [Real bass samples](#2-real-bass-samples)         | your recordings               | M + a recording session     |
 | 3   | 🟡 [Ear Training](#3-ear-training): 1 of 3 exercises | benefits from 1 and 2         | L (3 PRs, one per exercise) |
 
 The recording for step 2 can happen while step 1 is being built. Ear training comes last because it benefits from both: a realistic tone trains the ear better, and the exercises reuse the fretboard and the tuner's pitch detection.
@@ -147,7 +144,7 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 
 ## 2. Real bass samples
 
-> **Status:** implemented on `feature/bass-samples`. Differences from this plan:
+> **Status:** shipped in #9. ffmpeg came from MacPorts (`sudo port install ffmpeg`). Differences from this plan:
 >
 > - There is no separate `SamplerEngine`. `SynthEngine` became `BassEngine` (`src/audio/BassEngine.ts`), which plays whatever `loadBassVoice` returns, so the sampler and synth share one engine.
 > - The decoded samples are cached in `tone.ts`, so `BassEngine` and `MetronomeEngine` fetch them only once.
