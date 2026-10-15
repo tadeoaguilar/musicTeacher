@@ -26,16 +26,15 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                       |
 | #7  | Ear Training, exercise 1 "Find the note"                                                   |
 | #9  | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds |
+| #11 | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page           |
 
 ### Next session: pick one
 
-1. **Ear Training, exercise 2 "Name the interval"**. See [Exercise 2](#exercise-2-name-the-interval).
-   - Reuse the shared logic in `src/ear/`: `createRandom`, `pickWeighted`, `progress.ts` (score, `ItemStats`, `weightOf`, `weakest`).
-   - Reuse `useItemStats`, under a new key such as `ear.intervals`.
-   - Reuse the Fretboard quiz mode (`marks`) to show the interval's shape after answering.
-   - The page becomes tabbed: "Find the note" and "Intervals", with the URL saying which exercise is open.
-2. **Ear Training, exercise 3 "Play it back"**, after exercise 2. It reuses `micInput`, `createSmoother` and `readNote` from the tuner.
-3. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
+1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
+   - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
+   - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
+   - Move the oscillator microphone stub from `e2e/tuner.spec.ts` to `e2e/helpers/fakeMicrophone.ts`.
+2. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
 
 ### Decisions made along the way
 
@@ -252,7 +251,7 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 
 ### Exercise 2: Name the interval
 
-> **Status:** implemented on `feature/ear-intervals`. Details decided while building it:
+> **Status:** shipped in #11. Details decided while building it:
 >
 > - The URL keeps the open exercise (`ex=interval`) and how notes are played (`play=up|down|together|mixed`, default up). Level, tuning and frets are shared with Find the note.
 > - Notes stay within frets 0–12, where shapes are learned. The shape is the lowest position with the smallest stretch, upper note on the same or a higher string (open strings count).
