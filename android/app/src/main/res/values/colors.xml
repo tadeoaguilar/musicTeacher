@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The bg token in src/index.css -->
+    <color name="background">#F5F3EE</color>
+    <color name="launcher_background">#F5F3EE</color>
+</resources>

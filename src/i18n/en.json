@@ -319,5 +319,8 @@
       "no-device": "No microphone was found. Connect one and try again.",
       "unsupported": "This browser can't use the microphone here. Try a recent Chrome, Firefox or Safari over HTTPS."
     }
+  },
+  "android": {
+    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web."
   }
 }

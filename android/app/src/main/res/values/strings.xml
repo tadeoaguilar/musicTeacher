@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The store name. Every other string comes from the web app's src/i18n/*.json. -->
+    <string name="app_name" translatable="false">Bassically</string>
+</resources>
