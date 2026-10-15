@@ -30,6 +30,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ### Next session: pick one
 
+0. **Android app**: a native Kotlin version for the Play Store. See [`ANDROID.md`](ANDROID.md) for the phases and what's needed from the user.
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
