@@ -1,33 +1,33 @@
 import type * as ToneLib from 'tone'
 import { midiToFrequency } from '../theory/notes'
 import type { AudioEngine, NoteOptions, SequenceOptions } from './AudioEngine'
-import { createBassSynth, loadTone, type BassSynth, type Tone } from './tone'
+import { loadBassVoice, loadTone, type BassVoice, type Tone } from './tone'
 
-/** Plays scales with the shared synthesized bass. */
-export class SynthEngine implements AudioEngine {
+/** Plays notes and scales with the shared bass voice (the recorded bass, or the synth). */
+export class BassEngine implements AudioEngine {
   private tone: Tone | undefined
-  private synth: BassSynth | undefined
+  private voice: Promise<BassVoice> | undefined
   private sequence: ToneLib.Sequence<number> | undefined
   private onNote: SequenceOptions['onNote'] | undefined
   /** Bumped by stop(), so a sequence still loading when Stop is pressed never starts. */
   private generation = 0
 
-  private async ready(): Promise<{ Tone: Tone; synth: BassSynth }> {
+  private async ready(): Promise<{ Tone: Tone; voice: BassVoice }> {
     const Tone = (this.tone = await loadTone())
-    this.synth ??= createBassSynth(Tone).toDestination()
-    return { Tone, synth: this.synth }
+    this.voice ??= loadBassVoice(Tone).then((voice) => voice.toDestination())
+    return { Tone, voice: await this.voice }
   }
 
   async playNote(midi: number, { a4, duration }: NoteOptions = {}): Promise<void> {
-    const { synth } = await this.ready()
-    synth.triggerAttackRelease(midiToFrequency(midi, a4), duration ?? '8n')
+    const { voice } = await this.ready()
+    voice.triggerAttackRelease(midiToFrequency(midi, a4), duration ?? '8n')
   }
 
   async playSequence(midis: number[], { bpm, loop, onNote }: SequenceOptions): Promise<void> {
     this.stop()
     this.onNote = onNote
     const generation = this.generation
-    const { Tone, synth } = await this.ready()
+    const { Tone, voice } = await this.ready()
     if (generation !== this.generation) return
 
     const transport = Tone.getTransport()
@@ -35,7 +35,7 @@ export class SynthEngine implements AudioEngine {
     const indices = midis.map((_, i) => i)
     this.sequence = new Tone.Sequence<number>(
       (time, i) => {
-        synth.triggerAttackRelease(midiToFrequency(midis[i]), '8n', time)
+        voice.triggerAttackRelease(midiToFrequency(midis[i]), '8n', time)
         Tone.getDraw().schedule(() => onNote(i), time)
         if (!loop && i === midis.length - 1) {
           transport.scheduleOnce(
@@ -71,4 +71,4 @@ export class SynthEngine implements AudioEngine {
   }
 }
 
-export const audioEngine: AudioEngine = new SynthEngine()
+export const audioEngine: AudioEngine = new BassEngine()
