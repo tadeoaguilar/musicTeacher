@@ -16,21 +16,22 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ### Shipped
 
-| PR  | What                                                                                       |
-| --- | ------------------------------------------------------------------------------------------ |
-| #1  | Metronome                                                                                  |
-| #2  | `CLAUDE.md`                                                                                |
-| #3  | Tuner                                                                                      |
-| #4  | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass     |
-| #5  | This roadmap                                                                               |
-| #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                       |
-| #7  | Ear Training, exercise 1 "Find the note"                                                   |
-| #9  | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds |
-| #11 | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page           |
+| PR            | What                                                                                               |
+| ------------- | -------------------------------------------------------------------------------------------------- |
+| #1            | Metronome                                                                                          |
+| #2            | `CLAUDE.md`                                                                                        |
+| #3            | Tuner                                                                                              |
+| #4            | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass             |
+| #5            | This roadmap                                                                                       |
+| #6            | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                               |
+| #7            | Ear Training, exercise 1 "Find the note"                                                           |
+| #9            | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds         |
+| #11           | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                   |
+| #13, #14, #16 | Android app (Bassically): plan, skeleton, and the Kotlin port of the music logic with parity tests |
 
 ### Next session: pick one
 
-0. **Android app**: a native Kotlin version for the Play Store. See [`ANDROID.md`](ANDROID.md) for the phases and what's needed from the user.
+0. **Android app**: phases 0–2 are done; next is Phase 3, the audio engine. See [`ANDROID.md`](ANDROID.md).
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.

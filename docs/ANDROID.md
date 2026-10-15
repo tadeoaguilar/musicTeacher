@@ -2,7 +2,7 @@
 
 The plan for a native Android version of Music Teacher, agreed on 2026-10-15.
 
-> **Status:** Phase 0 (this document). Next: Phase 1, the skeleton.
+> **Status (2026-10-15):** Phases 0–2 shipped: this plan (#13), the skeleton (#14, tried on a Galaxy S24) and the Kotlin port of the music logic with web parity fixtures (#16). Next: Phase 3, the Oboe audio engine (needs NDK and CMake from Android Studio's SDK Manager).
 >
 > **Decided:** app ID `com.perceptronics.musicteacher` (permanent once published) · store name **Bassically** · free, no ads.
 
