@@ -3,3 +3,8 @@ coverage
 playwright-report
 test-results
 package-lock.json
+
+# Android build output and Gradle state
+android/**/build
+android/.gradle
+android/.kotlin
