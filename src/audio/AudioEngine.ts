@@ -10,6 +10,8 @@ export type NoteOptions = {
   a4?: number
   /** Seconds; a short pluck if not given. */
   duration?: number
+  /** Seconds from now, scheduled on the audio clock (e.g. the second note of an interval). */
+  delay?: number
 }
 
 /**

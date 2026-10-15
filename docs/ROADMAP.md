@@ -60,7 +60,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | --- | ---------------------------------------------------- | ----------------------------- | --------------------------- |
 | 1   | ✅ [Arpeggios](#1-arpeggios)                         | nothing; mostly reuses Scales | M                           |
 | 2   | ✅ [Real bass samples](#2-real-bass-samples)         | your recordings               | M + a recording session     |
-| 3   | 🟡 [Ear Training](#3-ear-training): 1 of 3 exercises | benefits from 1 and 2         | L (3 PRs, one per exercise) |
+| 3   | 🟡 [Ear Training](#3-ear-training): 2 of 3 exercises | benefits from 1 and 2         | L (3 PRs, one per exercise) |
 
 The recording for step 2 can happen while step 1 is being built. Ear training comes last because it benefits from both: a realistic tone trains the ear better, and the exercises reuse the fretboard and the tuner's pitch detection.
 
@@ -251,6 +251,13 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
   - Allow hiding note labels, since showing them would give away the answer.
 
 ### Exercise 2: Name the interval
+
+> **Status:** implemented on `feature/ear-intervals`. Details decided while building it:
+>
+> - The URL keeps the open exercise (`ex=interval`) and how notes are played (`play=up|down|together|mixed`, default up). Level, tuning and frets are shared with Find the note.
+> - Notes stay within frets 0–12, where shapes are learned. The shape is the lowest position with the smallest stretch, upper note on the same or a higher string (open strings count).
+> - A wrong answer is also drawn on the neck, next to the right one, so you can compare the two shapes.
+> - Score resets when you switch tabs; per-interval stats are kept (`ear.intervals`).
 
 - The app plays two notes, ascending, descending or together; you pick the interval from answer buttons (m2 … P8).
 - A **Replay** button repeats the notes. You can also replay the root alone.

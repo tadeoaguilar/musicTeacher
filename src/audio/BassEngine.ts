@@ -18,9 +18,9 @@ export class BassEngine implements AudioEngine {
     return { Tone, voice: await this.voice }
   }
 
-  async playNote(midi: number, { a4, duration }: NoteOptions = {}): Promise<void> {
-    const { voice } = await this.ready()
-    voice.triggerAttackRelease(midiToFrequency(midi, a4), duration ?? '8n')
+  async playNote(midi: number, { a4, duration, delay = 0 }: NoteOptions = {}): Promise<void> {
+    const { Tone, voice } = await this.ready()
+    voice.triggerAttackRelease(midiToFrequency(midi, a4), duration ?? '8n', Tone.now() + delay)
   }
 
   async playSequence(midis: number[], { bpm, loop, onNote }: SequenceOptions): Promise<void> {

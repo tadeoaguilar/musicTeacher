@@ -65,3 +65,55 @@ test('is reachable from the navigation', async ({ page }) => {
   await page.getByRole('link', { name: 'Ear training' }).click()
   await expect(page).toHaveURL(/\/en\/ear$/)
 })
+
+test('names intervals, right and wrong, and shows their shape', async ({ page }) => {
+  await page.goto('/en/ear?ex=interval')
+  await expect(page.getByRole('tab', { name: 'Name the interval' })).toHaveAttribute('aria-selected', 'true')
+  const prompt = page.getByRole('region', { name: 'Name the interval' })
+  const answers = page.getByRole('group', { name: 'Which interval?' }).getByRole('button')
+  await expect(answers).toHaveText(['Perfect 4th', 'Perfect 5th', 'Octave'])
+  const progress = page.getByRole('region', { name: 'Progress' })
+
+  // Questions are random: always answer "Perfect 4th" until both outcomes have shown up.
+  const seen = new Set<string>()
+  for (let i = 1; seen.size < 2 && i <= 30; i++) {
+    await page.getByRole('button', { name: 'Perfect 4th' }).click()
+    const asked = await prompt.locator('p').first().textContent()
+    expect(['Perfect 4th', 'Perfect 5th', 'Octave']).toContain(asked)
+    await expect(page.locator('[data-mark="root"]')).toHaveCount(1)
+    await expect(page.locator('[data-mark="target"]')).toHaveCount(1)
+    if (asked === 'Perfect 4th') {
+      await expect(page.getByRole('status')).toHaveText('Correct: Perfect 4th!')
+      await expect(page.locator('[data-mark="wrong"]')).toHaveCount(0)
+      seen.add('right')
+    } else {
+      await expect(page.getByRole('status')).toHaveText(
+        `Not quite: it was ${asked}, not Perfect 4th. Both are on the neck.`,
+      )
+      await expect(page.locator('[data-mark="wrong"]')).toHaveCount(1)
+      seen.add('wrong')
+    }
+    await expect(progress).toContainText(`/${i}`)
+    await page.getByRole('button', { name: 'Next interval' }).click()
+    await expect(page.locator('[data-mark]')).toHaveCount(0)
+  }
+  expect(seen.size).toBe(2)
+})
+
+test('keeps the exercise and direction in the URL, switches tabs and speaks Spanish', async ({ page }) => {
+  await page.goto('/es/ear?ex=interval&play=down&level=2')
+  await expect(page.getByRole('heading', { name: 'Nombra el intervalo' })).toBeVisible()
+  await expect(page.getByText('Bajando. Escucha las dos notas y elige el intervalo.')).toBeVisible()
+  await expect(page.getByRole('group', { name: '¿Qué intervalo es?' }).getByRole('button')).toHaveCount(7)
+
+  await page.getByRole('radio', { name: 'Mezcla' }).click()
+  await expect(page).toHaveURL(/play=mixed/)
+
+  // Arrow keys move between the exercise tabs.
+  await page.getByRole('tab', { name: 'Nombra el intervalo' }).focus()
+  await page.keyboard.press('ArrowLeft')
+  await expect(page.getByRole('tab', { name: 'Encuentra la nota' })).toHaveAttribute('aria-selected', 'true')
+  await expect(page).not.toHaveURL(/ex=/)
+  await expect(page).toHaveURL(/level=2/)
+  await expect(page.getByRole('radio', { name: 'Mezcla' })).toHaveCount(0)
+})

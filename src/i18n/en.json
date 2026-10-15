@@ -118,7 +118,58 @@
       "2": "2 · All notes, frets 0–12",
       "3": "3 · All notes, whole neck"
     },
-    "showName": "Show the note's name"
+    "showName": "Show the note's name",
+    "exercises": "Exercises",
+    "intervals": {
+      "title": "Name the interval",
+      "prompt": "{{direction}}. Listen to the two notes, then pick the interval.",
+      "direction": {
+        "up": "Going up",
+        "down": "Going down",
+        "together": "Played together"
+      },
+      "hearFirst": "First note only",
+      "next": "Next interval",
+      "answers": "Which interval?",
+      "correct": "Correct: {{interval}}!",
+      "wrong": "Not quite: it was {{interval}}, not {{answer}}. Both are on the neck.",
+      "names": {
+        "m2": "Minor 2nd",
+        "M2": "Major 2nd",
+        "m3": "Minor 3rd",
+        "M3": "Major 3rd",
+        "P4": "Perfect 4th",
+        "TT": "Tritone",
+        "P5": "Perfect 5th",
+        "m6": "Minor 6th",
+        "M6": "Major 6th",
+        "m7": "Minor 7th",
+        "M7": "Major 7th",
+        "P8": "Octave"
+      },
+      "marks": {
+        "low": "Lower note, {{note}}, fret {{fret}}",
+        "high": "{{interval}} above, {{note}}, fret {{fret}}",
+        "wrong": "Your answer, {{interval}}, fret {{fret}}"
+      },
+      "legend": {
+        "low": "Lower note",
+        "high": "The interval"
+      },
+      "fretboard": "Bass neck: the interval's shape appears after you answer. Tap a fret to hear it.",
+      "levels": {
+        "1": "1 · 4ths, 5ths and octaves",
+        "2": "2 · Adds 3rds and 6ths",
+        "3": "3 · All intervals"
+      },
+      "play": "Notes",
+      "playModes": {
+        "up": "Going up",
+        "down": "Going down",
+        "together": "Together",
+        "mixed": "Mixed"
+      }
+    }
   },
   "controls": {
     "key": "Key",

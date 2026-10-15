@@ -25,8 +25,10 @@ Learn where every note lives on the neck.
 
 - **Find the note**: the app names and plays a note; tap where it is on the neck. Afterwards every position of that note lights up, including other octaves
 - Three levels (natural notes in the first 5 frets → all notes to fret 12 → the whole neck), or hide the name to find it by ear
-- Score and streaks; notes you miss come up more often, and are remembered on your device
-- More exercises are planned: name the interval, and play it back on your bass
+- **Name the interval**: the app plays two notes (going up, going down, together, or a mix); pick the interval. Afterwards its shape lights up on the neck, next to your answer if it was wrong. Replay both notes or just the first
+- Three levels for intervals too (4ths, 5ths and octaves → adds 3rds and 6ths → all intervals up to the octave)
+- Score and streaks; notes and intervals you miss come up more often, and are remembered on your device
+- One more exercise is planned: play it back on your bass
 
 ## Metronome
 
@@ -68,7 +70,7 @@ npm run samples      # recordings/bass/*.wav → src/assets/samples/bass/*.mp3 (
 ```
 src/
   theory/      pure TypeScript music theory: notes, scales, chords, fretboard (no React, no audio), fully unit-tested
-  ear/         pure TypeScript ear-training logic: seeded question generators, scoring, weighted practice
+  ear/         pure TypeScript ear-training logic: seeded question generators (notes, intervals and their shapes), scoring, weighted practice
   rhythm/      pure TypeScript rhythm: meters, patterns, bar timing, trainers, notation layout
   pitch/       pure TypeScript pitch detection (YIN), note reading and smoothing for the tuner
   audio/       Tone.js (lazy-loaded on first click): bass player and metronome engine; microphone input
