@@ -26,22 +26,19 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #6  | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                   |
 | #7  | Ear Training, exercise 1 "Find the note"                                               |
 
+### In progress (2026-10-15)
+
+**Real bass samples (step 2)**: built on `feature/bass-samples`; waiting for a try on a real bass before merging. The user recorded the 10 notes in Ableton Live (processed with ffmpeg from MacPorts; Homebrew doesn't work on their Intel Mac).
+
 ### Next session: pick one
 
-1. **Real bass samples (step 2)**, if the recordings are done. This is the plan for 2026-10-08.
-   - [ ] `brew install ffmpeg` (not installed yet; the processing script needs it).
-   - [ ] Record the 10 notes from the [recording guide](#recording-guide) somewhere quiet: E1 G1 A♯1 C♯2 E2 G2 A♯2 C♯3 E3 G3.
-   - [ ] Save them as WAV files named `E1.wav`, `G1.wav`, `As1.wav`, `Cs2.wav` … (`s` = sharp) in `recordings/bass/`. That folder is git-ignored, so the raw files stay local.
-   - [ ] Then build, in this order:
-     1. the processing script;
-     2. `SamplerEngine`;
-     3. `loadBassVoice`, so Metronome grooves and Tuner reference tones also use the recorded bass.
-2. **Ear Training, exercise 2 "Name the interval"**, which doesn't need the recordings. See [Exercise 2](#exercise-2-name-the-interval).
+1. **Ear Training, exercise 2 "Name the interval"**. See [Exercise 2](#exercise-2-name-the-interval).
    - Reuse the shared logic in `src/ear/`: `createRandom`, `pickWeighted`, `progress.ts` (score, `ItemStats`, `weightOf`, `weakest`).
    - Reuse `useItemStats`, under a new key such as `ear.intervals`.
    - Reuse the Fretboard quiz mode (`marks`) to show the interval's shape after answering.
    - The page becomes tabbed: "Find the note" and "Intervals", with the URL saying which exercise is open.
-3. **Ear Training, exercise 3 "Play it back"**, after exercise 2. It reuses `micInput`, `createSmoother` and `readNote` from the tuner.
+2. **Ear Training, exercise 3 "Play it back"**, after exercise 2. It reuses `micInput`, `createSmoother` and `readNote` from the tuner.
+3. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
 
 ### Decisions made along the way
 
@@ -65,7 +62,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #   | Feature                                              | Depends on                    | Size                        |
 | --- | ---------------------------------------------------- | ----------------------------- | --------------------------- |
 | 1   | ✅ [Arpeggios](#1-arpeggios)                         | nothing; mostly reuses Scales | M                           |
-| 2   | [Real bass samples](#2-real-bass-samples)            | your recordings               | M + a recording session     |
+| 2   | 🟡 [Real bass samples](#2-real-bass-samples)         | your recordings               | M + a recording session     |
 | 3   | 🟡 [Ear Training](#3-ear-training): 1 of 3 exercises | benefits from 1 and 2         | L (3 PRs, one per exercise) |
 
 The recording for step 2 can happen while step 1 is being built. Ear training comes last because it benefits from both: a realistic tone trains the ear better, and the exercises reuse the fretboard and the tuner's pitch detection.
@@ -149,6 +146,13 @@ Arpeggios need the same note spelling as scales, so `resolveScale` gets generali
 ---
 
 ## 2. Real bass samples
+
+> **Status:** implemented on `feature/bass-samples`. Differences from this plan:
+>
+> - There is no separate `SamplerEngine`. `SynthEngine` became `BassEngine` (`src/audio/BassEngine.ts`), which plays whatever `loadBassVoice` returns, so the sampler and synth share one engine.
+> - The decoded samples are cached in `tone.ts`, so `BassEngine` and `MetronomeEngine` fetch them only once.
+> - Processing also mixes stereo files down to mono, and brings each note to −18 LUFS (peaks capped at −1 dBFS).
+> - Not done yet: the optional "recorded / synth" switch, and B0/D1 (the script and sample map already accept them).
 
 **Goal:** replace the synthesized tone with recordings of **your own bass** everywhere a bass note sounds:
 

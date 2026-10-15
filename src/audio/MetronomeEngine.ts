@@ -3,7 +3,7 @@ import { buildBar, type BarEvent, type BarSettings } from '../rhythm/bar'
 import { getMeter } from '../rhythm/meters'
 import { barPlan, type BarPlan, type TrainerSettings } from '../rhythm/trainer'
 import { midiToFrequency } from '../theory/notes'
-import { createBassSynth, loadTone, type BassSynth, type Tone } from './tone'
+import { loadBassVoice, loadTone, type BassVoice, type Tone } from './tone'
 
 export type EngineSettings = BarSettings &
   TrainerSettings & {
@@ -44,7 +44,9 @@ const gainOf = (volume: number) => (volume / 100) ** 2
 export class MetronomeEngine {
   private Tone: Tone | undefined
   private click: ToneLib.Synth | undefined
-  private bass: BassSynth | undefined
+  private bass: BassVoice | undefined
+  /** Loaded once, on the first start; the recorded bass takes a moment to fetch. */
+  private bassVoice: Promise<BassVoice> | undefined
   private clickGain: ToneLib.Gain | undefined
   private bassGain: ToneLib.Gain | undefined
   private worker: Worker | undefined
@@ -61,6 +63,8 @@ export class MetronomeEngine {
     this.stop()
     const generation = this.generation
     const Tone = (this.Tone = await loadTone())
+    this.bassVoice ??= loadBassVoice(Tone)
+    const bass = await this.bassVoice
     if (generation !== this.generation) return
 
     if (!this.click) {
@@ -70,7 +74,7 @@ export class MetronomeEngine {
         oscillator: { type: 'triangle' },
         envelope: { attack: 0.001, decay: 0.045, sustain: 0, release: 0.02 },
       }).connect(this.clickGain)
-      this.bass = createBassSynth(Tone).connect(this.bassGain)
+      this.bass = bass.connect(this.bassGain)
       this.worker = new Worker(new URL('./ticker.worker.ts', import.meta.url), { type: 'module' })
       this.worker.onmessage = () => this.schedule()
     }

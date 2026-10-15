@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router'
-import { audioEngine } from '../../audio/SynthEngine'
+import { audioEngine } from '../../audio/BassEngine'
 import { ScaleControls } from '../../components/Controls/ScaleControls'
 import { Transport } from '../../components/Controls/Transport'
 import { Fretboard } from '../../components/Fretboard/Fretboard'

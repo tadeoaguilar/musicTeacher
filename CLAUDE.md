@@ -29,6 +29,7 @@ npm run lint           # oxlint
 npm run format         # prettier --write (format:check in CI)
 npm run typecheck      # tsc -b
 npm run build          # tsc -b && vite build → dist/
+npm run samples        # recordings/bass/*.wav → src/assets/samples/bass/*.mp3 (needs ffmpeg)
 ```
 
 **Before considering work done**, run what CI runs (`.github/workflows/ci.yml`):
@@ -42,7 +43,7 @@ src/
   rhythm/      Pure TS rhythm: meters (TICKS_PER_QUARTER = 48), patterns, bar timing, swing, trainers, tap tempo, notation layout
   ear/         Pure TS ear training: seeded RNG (`createRandom`), question generators (`findNote.ts`), score/streak and per-item stats with weighted repetition (`progress.ts`)
   pitch/       Pure TS pitch: YIN detection + downsampling, readNote/matchString, reading smoother
-  audio/       Tone.js engines (lazy-loaded): SynthEngine (scales, reference tones), MetronomeEngine, worker ticker; MicInput (plain Web Audio)
+  audio/       Tone.js engines (lazy-loaded): BassEngine (scales, notes, reference tones), MetronomeEngine, worker ticker; bass sample map (`samples.ts`); MicInput (plain Web Audio)
   components/  Presentational UI: Fretboard (hand-written SVG), Controls (incl. shared TuningFields), Metronome and Tuner widgets
   features/    One folder per section: <Section>Page.tsx + <section>State.ts (Zustand store + URL codec) + tests
   i18n/        en.json / es.json + i18next setup, locale detection
@@ -66,11 +67,11 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
   - Metronome params: `ts bpm sub swing acc pat root click bass count sp gap`
   - Tuner params: `tuning a4`
   - Ear params: `level name tuning frets lefty`
-- **Tone.js is lazy-loaded** through `loadTone()` in `src/audio/tone.ts` (it's most of the bundle) and must be first called from a user gesture. Import it only as `import type * as ToneLib from 'tone'` elsewhere. The bass voice is shared via `createBassSynth()`.
+- **Tone.js is lazy-loaded** through `loadTone()` in `src/audio/tone.ts` (it's most of the bundle) and must be first called from a user gesture. Import it only as `import type * as ToneLib from 'tone'` elsewhere. Every bass note goes through `loadBassVoice()` (also in `tone.ts`).
 - **Metronome timing**: `ticker.worker.ts` posts a tick every 25 ms (workers aren't throttled in background tabs); `MetronomeEngine` schedules sounds ~150 ms ahead on the audio clock. Keep scheduling on the audio clock, not `setTimeout`.
 - **Fretboard quiz mode**: pass `onFretTap` to `Fretboard` and every fret cell becomes a labelled, keyboard-reachable button ("A string, fret 5") that reports the tap instead of playing it; `marks` draws `target` / `octave` / `wrong` answers. Without `onFretTap` the cells stay `aria-hidden` (Scales/Arpeggios shouldn't get 100 extra tab stops). Per-device stats use `useItemStats` (`src/features/ear/`), which wraps `localStorage` in try/catch.
 - **Tuner pipeline**: `MicInput` (`src/audio/MicInput.ts`) opens the mic with echo cancellation, noise suppression and auto gain **off** (they filter out bass), reads an 8192-sample `AnalyserNode` window every 50 ms, downsamples to ~12 kHz and runs YIN (`src/pitch/detect.ts`, 27–500 Hz). The page smooths readings (`createSmoother`) and maps them with `readNote(hz, a4)` / `matchString`. Detection is tuned for quiet, noisy input (an unplugged bass on a laptop mic): a very low RMS gate (0.0003) and a fallback that accepts the clearest dip when noise keeps it above the YIN threshold (`maxAperiodicity`). Room noise and hum are rejected by periodicity, not by the gate, so don't raise the gate to fix false notes. The smoother needs 3 readings before showing a note. Don't swap YIN for FFT peak-picking: low strings have weak fundamentals and FFT reports the wrong octave. The tuner deliberately doesn't load Tone.js; reference tones go through `audioEngine.playNote(midi, { a4, duration })`.
-- **Swappable audio**: `AudioEngine` interface in `src/audio/AudioEngine.ts`. For real bass samples, add a `SamplerEngine` implementing it and export it as `audioEngine`.
+- **Recorded bass**: `loadBassVoice(Tone)` returns a `Tone.Sampler` over the committed MP3s in `src/assets/samples/bass/` (found with `import.meta.glob` in `src/audio/samples.ts`, keyed by MIDI number), or `createBassSynth()` if they fail to load. The decoded buffers are shared, so `BassEngine` and `MetronomeEngine` fetch them once. Samples are one every 3 semitones (E1–G3; optional B0, D1), named with `s` for sharp (`As1.mp3`); a unit test fails if there's a gap over 3. Regenerate them from `recordings/bass/*.wav` (git-ignored) with `npm run samples` (`scripts/process-samples.mjs`: mono, trim leading silence, 3 s with 0.5 s fade, −18 LUFS, 128 kbps MP3). `AudioEngine` (`src/audio/AudioEngine.ts`) is the interface the pages use.
 - **Scales and chords share one model**: a `NoteSetFormula` (`semitones` + letter-step `degrees`) resolved by `resolveNoteSet(key, formula)` in `src/theory/scales.ts` (`resolveScale` wraps it; chord formulas live in `src/theory/chords.ts`). `getFretboardNotes` and `buildPlaySequence` work on any resolved `NoteSet`. Shared UI: `KeyField`/`NeckFields` (`src/components/Controls/NeckFields.tsx`) and `NoteSetHeader`/`NeckLegend` (`src/components/NoteSet/`).
 - **Note spelling is musical**, not just chromatic (F major has Bb, not A#). Use `resolveScale`, `spell`, `formatNote(name, locale)` — never hand-build note names. Spanish uses Do Re Mi.
 - **Styling**: CSS Modules per component (`*.module.css`). Colors are CSS custom properties in `src/index.css` with a `prefers-color-scheme: dark` variant — use the tokens, don't hardcode colors.

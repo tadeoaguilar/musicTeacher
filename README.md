@@ -9,7 +9,7 @@ An interactive bass fretboard that shows every note of a scale across the neck. 
 - 4, 5 and 6-string basses, alternate tunings, 20/21/22/24 frets, left-handed view
 - Major, natural minor and the 7 modes, with note spelling that is correct for each key
 - Note names or interval labels; English (C D E) and Spanish (Do Re Mi)
-- Synthesized bass playback with tempo, direction and loop; tap any fret to hear it
+- Playback with a recorded bass, with tempo, direction and loop; tap any fret to hear it
 
 ## Arpeggios
 
@@ -49,7 +49,7 @@ A chromatic tuner that listens through the microphone.
 
 ## Roadmap
 
-Next up: real bass samples, and more Ear Training exercises. See [docs/ROADMAP.md](docs/ROADMAP.md).
+Next up: more Ear Training exercises. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ## Commands
 
@@ -60,6 +60,7 @@ npm test             # unit tests (Vitest)
 npm run test:e2e     # browser tests (Playwright; run `npx playwright install chromium` once)
 npm run lint && npm run typecheck && npm run format:check
 npm run build        # static site in dist/
+npm run samples      # recordings/bass/*.wav → src/assets/samples/bass/*.mp3 (needs ffmpeg)
 ```
 
 ## Architecture
@@ -70,14 +71,18 @@ src/
   ear/         pure TypeScript ear-training logic: seeded question generators, scoring, weighted practice
   rhythm/      pure TypeScript rhythm: meters, patterns, bar timing, trainers, notation layout
   pitch/       pure TypeScript pitch detection (YIN), note reading and smoothing for the tuner
-  audio/       Tone.js (lazy-loaded on first click): scale player and metronome engine; microphone input
+  audio/       Tone.js (lazy-loaded on first click): bass player and metronome engine; microphone input
   components/  Fretboard (hand-written SVG), Controls, Metronome and Tuner widgets
   features/    one folder per site section (scales/, arpeggios/, ear/, metronome/, tuner/)
   i18n/        en/es UI strings (react-i18next)
   app/         router (/:lang/<section>) and layout
 ```
 
-To use real bass samples later, add a `SamplerEngine` that implements `AudioEngine` and export it as `audioEngine`.
+## Bass sound
+
+Every bass note (Scales, Arpeggios, Ear Training, Metronome grooves, Tuner reference tones) plays a recording of a real bass, with the synth as a fallback if the samples can't load. There is one recording every 3 semitones from E1 to G3, and the sampler shifts each one up to 1.5 semitones to fill the gaps.
+
+To re-record: put `E1.wav G1.wav As1.wav Cs2.wav E2.wav G2.wav As2.wav Cs3.wav E3.wav G3.wav` (`s` = sharp; optionally `B0.wav D1.wav` for 5-string) in `recordings/bass/` (git-ignored) and run `npm run samples`. It trims, evens out the loudness and encodes the MP3s, which are committed. See the recording guide in [docs/ROADMAP.md](docs/ROADMAP.md#recording-guide).
 
 ## Deploy
 
