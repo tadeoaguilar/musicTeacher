@@ -19,6 +19,8 @@ jobs:
       - run: npm run format:check
       - run: npm run typecheck
       - run: npm test
+      # The Android port is tested against these; they must match the current TypeScript logic.
+      - run: npm run android:fixtures && git diff --exit-code android/core/src/test/resources
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - uses: actions/upload-artifact@v4

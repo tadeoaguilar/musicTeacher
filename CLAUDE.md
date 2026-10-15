@@ -30,6 +30,7 @@ npm run format         # prettier --write (format:check in CI)
 npm run typecheck      # tsc -b
 npm run build          # tsc -b && vite build → dist/
 npm run samples        # recordings/bass/*.wav → src/assets/samples/bass/*.mp3 (needs ffmpeg)
+npm run android:fixtures # web results the Kotlin port is tested against (android/core/src/test/resources)
 ```
 
 **Before considering work done**, run what CI runs (`.github/workflows/ci.yml`):
@@ -54,6 +55,7 @@ e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
 ### Layering rules
 
 - `theory/`, `rhythm/`, `pitch/` and `ear/` are **pure**: no React, no Tone.js, no DOM. All musical logic goes here and gets unit tests.
+- **They are also ported line by line to Kotlin** for the Android app (`android/core`). After changing any of them, run `npm run android:fixtures` and update the Kotlin port until `./gradlew :core:test` passes: CI regenerates the fixtures and fails if they're stale (see `android/README.md`).
 - `audio/` depends on `theory/`/`rhythm/` but never on React. Engines are module singletons (`audioEngine`, `metronomeEngine`).
 - `components/` take props; they don't read stores or the URL.
 - `features/<section>/` wires stores, URL, audio and components together.
