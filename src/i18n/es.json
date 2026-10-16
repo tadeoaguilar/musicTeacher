@@ -321,6 +321,14 @@
     }
   },
   "android": {
-    "comingSoon": "Esta sección llegará pronto a la app de Android. Mientras tanto, ya puedes usarla en la web."
+    "comingSoon": "Esta sección llegará pronto a la app de Android. Mientras tanto, ya puedes usarla en la web.",
+    "tuner": {
+      "errors": {
+        "denied": "El acceso al micrófono está desactivado para Bassically. Permítelo para usar el afinador.",
+        "settings": "El acceso al micrófono está bloqueado. Actívalo en los ajustes de la app.",
+        "openSettings": "Abrir ajustes",
+        "no-device": "No se pudo abrir el micrófono. Cierra otras apps que puedan estar usándolo e inténtalo de nuevo."
+      }
+    }
   }
 }
