@@ -16,22 +16,22 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ### Shipped
 
-| PR                      | What                                                                                                                                                                           |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| #1                      | Metronome                                                                                                                                                                      |
-| #2                      | `CLAUDE.md`                                                                                                                                                                    |
-| #3                      | Tuner                                                                                                                                                                          |
-| #4                      | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass                                                                                         |
-| #5                      | This roadmap                                                                                                                                                                   |
-| #6                      | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                                                                                                           |
-| #7                      | Ear Training, exercise 1 "Find the note"                                                                                                                                       |
-| #9                      | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds                                                                                     |
-| #11                     | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                                                                                               |
-| #13, #14, #16, #18, #20 | Android app (Bassically): plan, skeleton, Kotlin port of the music logic with parity tests, the Oboe audio engine with the recorded bass, and the Scales and Arpeggios screens |
+| PR                           | What                                                                                                                                                                                          |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| #1                           | Metronome                                                                                                                                                                                     |
+| #2                           | `CLAUDE.md`                                                                                                                                                                                   |
+| #3                           | Tuner                                                                                                                                                                                         |
+| #4                           | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass                                                                                                        |
+| #5                           | This roadmap                                                                                                                                                                                  |
+| #6                           | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                                                                                                                          |
+| #7                           | Ear Training, exercise 1 "Find the note"                                                                                                                                                      |
+| #9                           | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds                                                                                                    |
+| #11                          | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                                                                                                              |
+| #13, #14, #16, #18, #20, #22 | Android app (Bassically): plan, skeleton, Kotlin port of the music logic with parity tests, the Oboe audio engine with the recorded bass, the Scales and Arpeggios screens, and the Metronome |
 
 ### Next session: pick one
 
-0. **Android app**: phases 0–4 are done (Scales and Arpeggios work on the phone). Next is Phase 5, the Metronome: meters, subdivisions, swing, accents, patterns played by the bass, trainers, tap tempo and count-in, on the same audio engine. See [`ANDROID.md`](ANDROID.md).
+0. **Android app**: phases 0–5 are done (Scales, Arpeggios and the Metronome work on the phone). Next: phase 5b, background playback (a foreground media service with a notification, so the metronome keeps going when the screen is off or another app is open), or Phase 6, the Tuner (Oboe microphone input with the `Unprocessed` preset feeding the ported YIN detector). See [`ANDROID.md`](ANDROID.md).
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
