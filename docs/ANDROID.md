@@ -2,7 +2,7 @@
 
 The plan for a native Android version of Music Teacher, agreed on 2026-10-15.
 
-> **Status (2026-10-15):** Phases 0–2 shipped: this plan (#13), the skeleton (#14, tried on a Galaxy S24) and the Kotlin port of the music logic with web parity fixtures (#16). Next: Phase 3, the Oboe audio engine (needs NDK and CMake from Android Studio's SDK Manager).
+> **Status (2026-10-15):** Phases 0–2 shipped: this plan (#13), the skeleton (#14, tried on a Galaxy S24) and the Kotlin port of the music logic with web parity fixtures (#16). Phase 3, the Oboe audio engine with the recorded bass (#18), passed CI and was tried on the Galaxy S24: the samples, the A major scale and the clicks sounded right. The phone gave it the exclusive low-latency output (MMAP, 48 kHz, 2 ms bursts). **#18 is waiting to be merged.** Next: Phase 4, Scales and Arpeggios (the `Fretboard` composable); it replaces the temporary Sound check card.
 >
 > **Decided:** app ID `com.perceptronics.musicteacher` (permanent once published) · store name **Bassically** · free, no ads.
 
