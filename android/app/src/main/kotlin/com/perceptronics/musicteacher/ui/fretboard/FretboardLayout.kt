@@ -48,7 +48,7 @@ class FretboardLayout(val stringCount: Int, val fretCount: Int, val leftHanded: 
     fun x(rawX: Float) = if (leftHanded) width - rawX else rawX
 
     /** The tappable span of a fret: the open-string column, or between two wires. */
-    private fun cellEdges(fret: Int) = if (fret == 0) nutX - 46 to nutX else fretWireX(fret - 1) to fretWireX(fret)
+    fun cellEdges(fret: Int) = if (fret == 0) nutX - 46 to nutX else fretWireX(fret - 1) to fretWireX(fret)
 
     /** The string and fret under a tap (in layout units), or null outside the neck. */
     fun hit(px: Float, py: Float): Pair<Int, Int>? {

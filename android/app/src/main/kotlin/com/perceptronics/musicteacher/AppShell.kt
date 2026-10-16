@@ -27,9 +27,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.perceptronics.musicteacher.core.theory.Locale
-import com.perceptronics.musicteacher.features.PlaceholderScreen
 import com.perceptronics.musicteacher.features.Section
 import com.perceptronics.musicteacher.features.arpeggios.ArpeggiosScreen
+import com.perceptronics.musicteacher.features.ear.EarScreen
 import com.perceptronics.musicteacher.features.metronome.MetronomeScreen
 import com.perceptronics.musicteacher.features.scales.ScalesScreen
 import com.perceptronics.musicteacher.features.tuner.TunerScreen
@@ -86,8 +86,8 @@ fun AppShell() {
                         Section.SCALES -> ScalesScreen()
                         Section.ARPEGGIOS -> ArpeggiosScreen()
                         Section.METRONOME -> MetronomeScreen()
+                        Section.EAR -> EarScreen()
                         Section.TUNER -> TunerScreen()
-                        else -> PlaceholderScreen(section)
                     }
                 }
             }

@@ -31,6 +31,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import com.perceptronics.musicteacher.core.theory.FretNote
+import com.perceptronics.musicteacher.core.theory.Position
 import com.perceptronics.musicteacher.core.theory.Tuning
 import com.perceptronics.musicteacher.core.theory.formatInterval
 import com.perceptronics.musicteacher.core.theory.formatNote
@@ -64,10 +66,37 @@ private const val DOT_R = 15f
 private const val HIT = 44f
 private val SHADOW = Color.Black.copy(alpha = 0.35f)
 
+/** What a quiz marker shows (FretMark in Fretboard.tsx). */
+enum class MarkKind {
+    /** The answer. */
+    TARGET,
+
+    /** The answer's note in another octave. */
+    OCTAVE,
+
+    /** A wrong tap. */
+    WRONG,
+
+    /** An interval's lower note. */
+    ROOT,
+}
+
+/** A quiz marker, drawn after an answer; TalkBack reads `description`. */
+data class FretMark(
+    override val string: Int,
+    override val fret: Int,
+    val kind: MarkKind,
+    val label: String,
+    val description: String,
+) : Position
+
 /**
  * The bass neck with every note of a scale or chord (port of src/components/Fretboard).
  * Drawn on a Canvas; any fret can be tapped to hear it. Each note marker is also a
  * TalkBack button ("C, root, A string, fret 3").
+ *
+ * Quiz mode (`onFretTap`): a tap reports its string and fret instead of playing, and every
+ * fret becomes a TalkBack button ("A string, fret 5"); `marks` draws the answers on top.
  */
 @Composable
 fun Fretboard(
@@ -83,6 +112,8 @@ fun Fretboard(
     title: String,
     onPlay: (midi: Int) -> Unit,
     modifier: Modifier = Modifier,
+    onFretTap: ((string: Int, fret: Int) -> Unit)? = null,
+    marks: List<FretMark> = emptyList(),
 ) {
     val locale = LocalLocale.current
     val strings = LocalStrings.current
@@ -96,6 +127,8 @@ fun Fretboard(
     }
     val openMidis = remember(tuning) { openStringMidi(tuning) }
     val play by rememberUpdatedState(onPlay)
+    val fretTap by rememberUpdatedState(onFretTap)
+    val tap = { s: Int, fret: Int -> fretTap?.invoke(s, fret) ?: play(openMidis[s] + fret) }
 
     // Text sizes follow the neck's scale, not the font-size setting, so labels fit their dots.
     val measurer = rememberTextMeasurer()
@@ -128,12 +161,15 @@ fun Fretboard(
         }
     }
 
+    val markLabels = remember(marks, u) { marks.map { measurer.measure(it.label, style(12f)) } }
+
     val scroll = rememberScrollState()
     val padX = with(density) { 4.dp.toPx() }
     val start = notes.find { it.isStart }
-    // Keep the starting note, then the note playing, in view.
-    LaunchedEffect(layout, start?.let(::positionKey), active) {
-        val target = notes.find { positionKey(it) == active } ?: start ?: return@LaunchedEffect
+    // Keep the starting note, then the note playing, in view; in a quiz, the answer.
+    val firstMark = marks.firstOrNull()
+    LaunchedEffect(layout, start?.let(::positionKey), active, firstMark) {
+        val target: Position = notes.find { positionKey(it) == active } ?: start ?: firstMark ?: return@LaunchedEffect
         val cx = padX + layout.x(layout.noteX(target.fret)) * u
         val margin = 48 * u
         if (cx < scroll.value + margin || cx > scroll.value + scroll.viewportSize - margin) {
@@ -158,7 +194,7 @@ fun Fretboard(
                     .matchParentSize()
                     .pointerInput(layout, openMidis) {
                         detectTapGestures { o ->
-                            layout.hit(o.x / u, o.y / u)?.let { (s, fret) -> play(openMidis[s] + fret) }
+                            layout.hit(o.x / u, o.y / u)?.let { (s, fret) -> tap(s, fret) }
                         }
                     },
             ) {
@@ -211,6 +247,36 @@ fun Fretboard(
                         center.y,
                     )
                 }
+
+                marks.forEachIndexed { i, m ->
+                    val center = Offset(layout.x(layout.noteX(m.fret)) * u, layout.stringY(m.string) * u)
+                    val r = DOT_R * u
+                    if (m.kind == MarkKind.OCTAVE) {
+                        drawCircle(colors.neckBg, r, center)
+                        val dash = PathEffect.dashPathEffect(floatArrayOf(4 * u, 3 * u))
+                        drawCircle(colors.inTune, r, center, style = Stroke(3 * u, pathEffect = dash))
+                    } else {
+                        val fill = when (m.kind) {
+                            MarkKind.TARGET -> colors.inTune
+                            MarkKind.WRONG -> colors.wrong
+                            else -> colors.root
+                        }
+                        drawCircle(fill, r, center)
+                        drawCircle(SHADOW, r, center, style = Stroke(u))
+                    }
+                    drawCentered(
+                        markLabels[i],
+                        if (m.kind ==
+                            MarkKind.OCTAVE
+                        ) {
+                            textColor
+                        } else {
+                            colors.noteText
+                        },
+                        center.x,
+                        center.y,
+                    )
+                }
             }
 
             if (start !=
@@ -220,6 +286,47 @@ fun Fretboard(
                     Offset(layout.x(layout.noteX(start.fret)), layout.stringY(start.string)),
                     colors.root,
                     Modifier.matchParentSize(),
+                )
+            }
+
+            // Quiz mode, for TalkBack: every fret is a button that answers.
+            if (onFretTap != null) {
+                for (str in tuning.strings.indices) {
+                    for (fret in 0..fretCount) {
+                        val (a, b) = layout.cellEdges(fret).let { (a, b) -> layout.x(a) to layout.x(b) }
+                        val label = strings.t(
+                            "fretboard.cell",
+                            "string" to formatNote(tuning.strings[str], locale),
+                            "fret" to fret,
+                        )
+                        Box(
+                            Modifier
+                                .offset(UNIT * minOf(a, b), UNIT * (layout.stringY(str) - STRING_GAP / 2))
+                                .size(UNIT * kotlin.math.abs(b - a), UNIT * STRING_GAP)
+                                .semantics {
+                                    contentDescription = label
+                                    role = Role.Button
+                                    onClick {
+                                        tap(str, fret)
+                                        true
+                                    }
+                                },
+                        )
+                    }
+                }
+            }
+            marks.forEach { m ->
+                Box(
+                    Modifier
+                        .offset(
+                            UNIT * (layout.x(layout.noteX(m.fret)) - DOT_R),
+                            UNIT * (layout.stringY(m.string) - DOT_R),
+                        )
+                        .size(UNIT * DOT_R * 2)
+                        .semantics {
+                            contentDescription = m.description
+                            role = Role.Image
+                        },
                 )
             }
 

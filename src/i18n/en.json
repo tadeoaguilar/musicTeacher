@@ -321,7 +321,6 @@
     }
   },
   "android": {
-    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web.",
     "tuner": {
       "errors": {
         "denied": "Microphone access is off for Bassically. Allow it to use the tuner.",
