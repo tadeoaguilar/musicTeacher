@@ -2,7 +2,7 @@
 
 The plan for a native Android version of Music Teacher, agreed on 2026-10-15.
 
-> **Status (2026-10-15):** Phases 0–3 shipped: this plan (#13), the skeleton (#14, tried on a Galaxy S24), the Kotlin port of the music logic with web parity fixtures (#16) and the Oboe audio engine with the recorded bass (#18). Phase 3 was tried on the Galaxy S24: the samples, the A major scale and the clicks sounded right, and the phone gave it the exclusive low-latency output (MMAP, 48 kHz, 2 ms bursts). Next: Phase 4, Scales and Arpeggios (the `Fretboard` composable); it replaces the temporary Sound check card on the Scales screen.
+> **Status (2026-10-16):** Phases 0–3 shipped: this plan (#13), the skeleton (#14, tried on a Galaxy S24), the Kotlin port of the music logic with web parity fixtures (#16) and the Oboe audio engine with the recorded bass (#18; on the S24 it got the exclusive low-latency output: MMAP, 48 kHz, 2 ms bursts). Phase 4, Scales and Arpeggios, is in review: the Canvas `Fretboard`, the shared controls and both screens, replacing the temporary Sound check card. Next: Phase 5, the Metronome.
 >
 > **Decided:** app ID `com.perceptronics.musicteacher` (permanent once published) · store name **Bassically** · free, no ads.
 
@@ -22,19 +22,19 @@ Native audio is the main payoff. Android's low-latency audio is more precise tha
 
 ## Decisions (recommended)
 
-| Topic            | Choice                                                                                                                                                                        | Why                                                                                                                         |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Language / UI    | Kotlin 2 + **Jetpack Compose** (Material 3)                                                                                                                                   | Google's current standard; the fretboard, notation and tuner meter are drawn on a `Canvas`, like the web's hand-written SVG |
-| Min / target SDK | minSdk 26 (Android 8), target the latest SDK Play requires (36/37 is installed)                                                                                               | Covers about 97% of devices; Play requires a recent target                                                                  |
-| Audio            | **Oboe** (Google's C++ low-latency library) through a small JNI bridge                                                                                                        | Sample-accurate metronome, low tap-to-sound latency, and an unprocessed microphone for the tuner                            |
-| Repo             | A new **`android/` folder in this repo**                                                                                                                                      | Shares the samples, strings and test fixtures with the web; one CI and one roadmap                                          |
-| Modules          | `:core` (pure Kotlin/JVM: theory, rhythm, ear, pitch), `:audio` (Android library + C++), `:app` (Compose UI)                                                                  | Same layering as the web: `core` = `theory/rhythm/ear/pitch`, `audio` = `audio/`, `app` = `components/features/app`         |
-| Navigation       | Bottom navigation bar with the 5 sections                                                                                                                                     | Also fixes the phone tab-overflow issue the web has                                                                         |
-| State            | One `ViewModel` + `StateFlow` per section; settings saved with **DataStore**                                                                                                  | Replaces "settings in the URL": the app remembers your last settings per section                                            |
-| Settings codec   | Keep the web URL param names (`key scale tuning frets…`)                                                                                                                      | Enables Android App Links later: a shared web link opens the same view in the app                                           |
-| Strings          | Reuse `src/i18n/en.json` / `es.json`, copied into the app's assets at build time, with a small Kotlin `t(key, args)` (with `{{x}}` interpolation and `_one`/`_other` plurals) | One source of truth for both apps; Spanish uses Do Re Mi                                                                    |
-| Language         | Follows the phone's language, with an in-app EN/ES switch (Android per-app language)                                                                                          | Same as the web                                                                                                             |
-| Analytics / ads  | None                                                                                                                                                                          | Keeps the Play "Data safety" form simple: no data collected                                                                 |
+| Topic            | Choice                                                                                                                                                                        | Why                                                                                                                                                                             |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Language / UI    | Kotlin 2 + **Jetpack Compose** (Material 3)                                                                                                                                   | Google's current standard; the fretboard, notation and tuner meter are drawn on a `Canvas`, like the web's hand-written SVG                                                     |
+| Min / target SDK | minSdk 26 (Android 8), target the latest SDK Play requires (36/37 is installed)                                                                                               | Covers about 97% of devices; Play requires a recent target                                                                                                                      |
+| Audio            | **Oboe** (Google's C++ low-latency library) through a small JNI bridge                                                                                                        | Sample-accurate metronome, low tap-to-sound latency, and an unprocessed microphone for the tuner                                                                                |
+| Repo             | A new **`android/` folder in this repo**                                                                                                                                      | Shares the samples, strings and test fixtures with the web; one CI and one roadmap                                                                                              |
+| Modules          | `:core` (pure Kotlin/JVM: theory, rhythm, ear, pitch), `:audio` (Android library + C++), `:app` (Compose UI)                                                                  | Same layering as the web: `core` = `theory/rhythm/ear/pitch`, `audio` = `audio/`, `app` = `components/features/app`                                                             |
+| Navigation       | Bottom navigation bar with the 5 sections                                                                                                                                     | Also fixes the phone tab-overflow issue the web has                                                                                                                             |
+| State            | One `ViewModel` per section, with Compose state; settings saved as the section's web query string (`key=C&scale=major`) in `SharedPreferences`                                | Replaces "settings in the URL": the app remembers your last settings per section, with the web's own codec. DataStore isn't worth a dependency for one short string per section |
+| Settings codec   | Keep the web URL param names (`key scale tuning frets…`)                                                                                                                      | Enables Android App Links later: a shared web link opens the same view in the app                                                                                               |
+| Strings          | Reuse `src/i18n/en.json` / `es.json`, copied into the app's assets at build time, with a small Kotlin `t(key, args)` (with `{{x}}` interpolation and `_one`/`_other` plurals) | One source of truth for both apps; Spanish uses Do Re Mi                                                                                                                        |
+| Language         | Follows the phone's language, with an in-app EN/ES switch (Android per-app language)                                                                                          | Same as the web                                                                                                                                                                 |
+| Analytics / ads  | None                                                                                                                                                                          | Keeps the Play "Data safety" form simple: no data collected                                                                                                                     |
 
 ## Architecture
 
@@ -56,6 +56,8 @@ Mapping from the web code (port these, don't redesign them):
 - Each section's `<section>State.ts` codec becomes a `Settings` data class with `fromParams` / `toParams`, using the same param names and defaults.
 
 ### Audio engine (`:audio`)
+
+As built in Phase 3, explained in detail: [`ANDROID_AUDIO.md`](ANDROID_AUDIO.md).
 
 - **Sampler:**
   - Loads the 10 bass samples as 16-bit WAV from assets.
@@ -99,7 +101,7 @@ Mapping from the web code (port these, don't redesign them):
 7. **Ear Training:**
    - Find the note and Name the interval as tabs.
    - Quiz-mode fretboard: each cell is announced by TalkBack ("A string, fret 5").
-   - Per-device stats (DataStore) and weighted practice.
+   - Per-device stats (saved on the device) and weighted practice.
    - _Play it back_ (web exercise 3) gets built on both platforms afterwards.
 8. **Polish:**
    - TalkBack and font scaling, dark mode, tablets and landscape, performance.

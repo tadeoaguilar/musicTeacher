@@ -5,6 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
 // The color tokens from src/index.css, light and dark, so both apps look alike.
@@ -45,7 +48,32 @@ private val Dark = darkColorScheme(
     error = Color(0xFFFF6B6B),
 )
 
+/** The fretboard tokens from src/index.css. */
+@Immutable
+data class NeckColors(
+    val neckBg: Color,
+    val woodCenter: Color = Color(0xFF6E4226),
+    val woodEdge: Color = Color(0xFF43271A),
+    val fretWire: Color = Color(0xFFCFD3D8),
+    val nut: Color = Color(0xFFEFE8D8),
+    val inlay: Color = Color(0xFFECE4D0),
+    val string: Color = Color(0xFFD9D3C5),
+    val note: Color,
+    val noteText: Color = Color.White,
+    val root: Color,
+    val path: Color = Color(0xFFFFD8A8),
+    val active: Color = Color(0xFFFFD43B),
+    val activeText: Color = Color(0xFF1C1E22),
+)
+
+private val LightNeck = NeckColors(neckBg = Color(0xFFFBFAF7), note = Color(0xFF1F3A5F), root = Color(0xFFE8590C))
+private val DarkNeck = NeckColors(neckBg = Color(0xFF16191D), note = Color(0xFF2A4A75), root = Color(0xFFFF7A2F))
+
+val LocalNeckColors = staticCompositionLocalOf { LightNeck }
+
 @Composable
 fun BassicallyTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
-    MaterialTheme(colorScheme = if (dark) Dark else Light, content = content)
+    CompositionLocalProvider(LocalNeckColors provides if (dark) DarkNeck else LightNeck) {
+        MaterialTheme(colorScheme = if (dark) Dark else Light, content = content)
+    }
 }

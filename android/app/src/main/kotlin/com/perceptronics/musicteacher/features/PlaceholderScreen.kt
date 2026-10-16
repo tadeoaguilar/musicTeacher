@@ -32,7 +32,5 @@ fun PlaceholderScreen(section: Section, modifier: Modifier = Modifier) {
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
-        // Until the Scales screen arrives (phase 4), test the audio engine here.
-        if (section == Section.SCALES) SoundCheck(Modifier.padding(top = 16.dp))
     }
 }

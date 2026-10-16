@@ -27,6 +27,8 @@ import androidx.navigation.compose.rememberNavController
 import com.perceptronics.musicteacher.core.theory.Locale
 import com.perceptronics.musicteacher.features.PlaceholderScreen
 import com.perceptronics.musicteacher.features.Section
+import com.perceptronics.musicteacher.features.arpeggios.ArpeggiosScreen
+import com.perceptronics.musicteacher.features.scales.ScalesScreen
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.setAppLocale
 import com.perceptronics.musicteacher.i18n.t
@@ -68,7 +70,13 @@ fun AppShell() {
     ) { padding ->
         NavHost(nav, startDestination = Section.SCALES.id, modifier = Modifier.padding(padding)) {
             Section.entries.forEach { section ->
-                composable(section.id) { PlaceholderScreen(section) }
+                composable(section.id) {
+                    when (section) {
+                        Section.SCALES -> ScalesScreen()
+                        Section.ARPEGGIOS -> ArpeggiosScreen()
+                        else -> PlaceholderScreen(section)
+                    }
+                }
             }
         }
     }

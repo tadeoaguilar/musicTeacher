@@ -6,6 +6,7 @@ package-lock.json
 
 # Android build output and Gradle state
 android/**/build
+android/**/.cxx
 android/.gradle
 android/.kotlin
 android/core/src/test/resources/fixtures
