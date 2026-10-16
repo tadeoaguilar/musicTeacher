@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
+import com.perceptronics.musicteacher.audio.BassAudio
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.LocalStrings
 import com.perceptronics.musicteacher.i18n.loadStrings
@@ -24,5 +25,16 @@ class MainActivity : AppCompatActivity() {
                 BassicallyTheme { AppShell() }
             }
         }
+    }
+
+    // The audio device is held only while the app is visible.
+    override fun onStart() {
+        super.onStart()
+        BassAudio.start(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        BassAudio.stop()
     }
 }

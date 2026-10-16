@@ -1,8 +1,10 @@
 // Turns the raw bass recordings in recordings/bass/*.wav into the small MP3s the
-// app plays (src/assets/samples/bass/). Run with `npm run samples`; needs ffmpeg.
+// web app plays (src/assets/samples/bass/) and the WAVs the Android app plays
+// (android/audio/src/main/assets/samples/bass/). Run with `npm run samples`; needs ffmpeg.
 //
 // For each note: mix to mono, trim the leading silence, cut to 3 s with a 0.5 s
-// fade-out, bring every note to the same loudness, encode 44.1 kHz 128 kbps MP3.
+// fade-out, bring every note to the same loudness, encode 44.1 kHz 128 kbps MP3
+// and 44.1 kHz 16-bit WAV (no decoder needed, and no MP3 start-up delay to throw off timing).
 
 import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync, rmSync } from 'node:fs'
@@ -10,6 +12,7 @@ import { join } from 'node:path'
 
 const INPUT = 'recordings/bass'
 const OUTPUT = 'src/assets/samples/bass'
+const ANDROID_OUTPUT = 'android/audio/src/main/assets/samples/bass'
 /** One note every 3 semitones, E1–G3 (4-string); B0 and D1 extend it for 5-string basses. */
 const REQUIRED = ['E1', 'G1', 'As1', 'Cs2', 'E2', 'G2', 'As2', 'Cs3', 'E3', 'G3']
 const OPTIONAL = ['B0', 'D1']
@@ -53,8 +56,10 @@ if (unknown.length)
 const missing = REQUIRED.filter((n) => !names.includes(n))
 if (missing.length) fail(`Missing recordings: ${missing.map((n) => `${n}.wav`).join(', ')}`)
 
-mkdirSync(OUTPUT, { recursive: true })
-for (const old of readdirSync(OUTPUT)) rmSync(join(OUTPUT, old))
+for (const dir of [OUTPUT, ANDROID_OUTPUT]) {
+  mkdirSync(dir, { recursive: true })
+  for (const old of readdirSync(dir)) rmSync(join(dir, old))
+}
 
 for (const name of [...OPTIONAL, ...REQUIRED].filter((n) => names.includes(n))) {
   const input = join(INPUT, `${name}.wav`)
@@ -62,25 +67,13 @@ for (const name of [...OPTIONAL, ...REQUIRED].filter((n) => names.includes(n))) 
   if (!(lufs > SILENT_LUFS)) fail(`${name}.wav is silent or nearly silent (${lufs} LUFS).`)
   // Same loudness for every note, but never louder than MAX_PEAK_DB at the peak.
   const gain = Math.min(TARGET_LUFS - lufs, MAX_PEAK_DB - peak)
-  const output = join(OUTPUT, `${name}.mp3`)
-  ffmpeg([
-    '-i',
-    input,
-    '-af',
-    `${shape},volume=${gain.toFixed(2)}dB,afade=t=out:st=${LENGTH - FADE}:d=${FADE}`,
-    '-ar',
-    '44100',
-    '-c:a',
-    'libmp3lame',
-    '-b:a',
-    '128k',
-    '-map_metadata',
-    '-1',
-    '-y',
-    output,
-  ])
+  const filters = `${shape},volume=${gain.toFixed(2)}dB,afade=t=out:st=${LENGTH - FADE}:d=${FADE}`
+  const encode = (codec, output) =>
+    ffmpeg(['-i', input, '-af', filters, '-ar', '44100', ...codec, '-map_metadata', '-1', '-y', output])
+  encode(['-c:a', 'libmp3lame', '-b:a', '128k'], join(OUTPUT, `${name}.mp3`))
+  encode(['-c:a', 'pcm_s16le', '-bitexact'], join(ANDROID_OUTPUT, `${name}.wav`))
   console.log(
     `✓ ${name.padEnd(4)} ${lufs.toFixed(1)} LUFS → gain ${gain >= 0 ? '+' : ''}${gain.toFixed(1)} dB`,
   )
 }
-console.log(`\nWrote ${OUTPUT}/`)
+console.log(`\nWrote ${OUTPUT}/ and ${ANDROID_OUTPUT}/`)

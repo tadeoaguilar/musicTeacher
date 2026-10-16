@@ -1,6 +1,6 @@
 # Bassically (Android)
 
-The native Android version of Music Teacher: Kotlin, Jetpack Compose and, from phase 3, the Oboe audio library. The plan, phases and decisions are in [`docs/ANDROID.md`](../docs/ANDROID.md).
+The native Android version of Music Teacher: Kotlin, Jetpack Compose and the Oboe audio library (C++). The plan, phases and decisions are in [`docs/ANDROID.md`](../docs/ANDROID.md).
 
 - App ID: `com.perceptronics.musicteacher` · store name: **Bassically**
 - minSdk 26 (Android 8), target/compile SDK 37
@@ -10,10 +10,18 @@ The native Android version of Music Teacher: Kotlin, Jetpack Compose and, from p
 | Module  | What                                                                            | Web counterpart                                         |
 | ------- | ------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `core`  | Pure Kotlin (JVM): music theory, rhythm, ear training, pitch detection (ported) | `src/theory`, `src/rhythm`, `src/ear`, `src/pitch`      |
-| `audio` | Android library: the `AudioEngine` interface, and later the Oboe engine and mic | `src/audio`                                             |
+| `audio` | Android library: the C++ Oboe engine (recorded bass + click) and its Kotlin API | `src/audio`                                             |
 | `app`   | Compose UI: shell, theme, sections, strings                                     | `src/components`, `src/features`, `src/app`, `src/i18n` |
 
 The strings are the web app's `src/i18n/en.json` and `es.json`, copied into the app's assets at build time (`buildSrc/.../CopyWebStrings.kt`) and read by `i18n/Strings.kt` the way i18next reads them. Add strings there, in both files, never in Android resources (only the store name `app_name` lives in `res/values/strings.xml`).
+
+## Audio
+
+`audio/src/main/cpp/BassEngine.cpp` renders everything on Oboe's low-latency callback: a sampler that plays each note from the nearest recording (pitch-shifted, at most 1.5 semitones, 0.3 s release like the web's `Tone.Sampler`) and the metronome's triangle click. Kotlin schedules sounds ahead by **frame position** on the engine's own clock (`BassAudio.now()`), the way the web schedules on the Web Audio clock; commands reach the callback through a lock-free queue. `BassEngine` (Kotlin) implements the shared `AudioEngine` interface; sequences are scheduled 150 ms ahead and `onNote` fires when a note is _heard_ (now − output latency).
+
+- Samples: `npm run samples` writes 16-bit WAVs to `audio/src/main/assets/samples/bass/` next to the web MP3s (WAV: no decoder, no MP3 start-up delay). They load once, before the stream first opens.
+- The stream is open only while the app is visible (`MainActivity.onStart/onStop`) and reopens itself when the output changes (headphones).
+- NDK `30.0.16248370` and CMake `4.1.2` (Android Studio → SDK Manager → SDK Tools); CI installs the same.
 
 ## Parity with the web app
 

@@ -12,7 +12,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ## Where we left off (2026-10-15)
 
-**Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
+**Start here when resuming.** Everything in the table is merged into `main`. One pull request is open: **#18** (Android Phase 3, the audio engine). CI passed and it was tried on the phone, so merge it first.
 
 ### Shipped
 
@@ -31,7 +31,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ### Next session: pick one
 
-0. **Android app**: phases 0–2 are done; next is Phase 3, the audio engine. See [`ANDROID.md`](ANDROID.md).
+0. **Android app**: phases 0–2 are merged; Phase 3 (audio engine, #18) is tested and waiting to be merged. Next is Phase 4, Scales and Arpeggios. See [`ANDROID.md`](ANDROID.md).
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
