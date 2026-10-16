@@ -12,26 +12,26 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ## Where we left off (2026-10-15)
 
-**Start here when resuming.** Everything in the table is merged into `main`. One pull request is open: **#18** (Android Phase 3, the audio engine). CI passed and it was tried on the phone, so merge it first.
+**Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
 
 ### Shipped
 
-| PR            | What                                                                                               |
-| ------------- | -------------------------------------------------------------------------------------------------- |
-| #1            | Metronome                                                                                          |
-| #2            | `CLAUDE.md`                                                                                        |
-| #3            | Tuner                                                                                              |
-| #4            | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass             |
-| #5            | This roadmap                                                                                       |
-| #6            | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                               |
-| #7            | Ear Training, exercise 1 "Find the note"                                                           |
-| #9            | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds         |
-| #11           | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                   |
-| #13, #14, #16 | Android app (Bassically): plan, skeleton, and the Kotlin port of the music logic with parity tests |
+| PR                 | What                                                                                                                                         |
+| ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| #1                 | Metronome                                                                                                                                    |
+| #2                 | `CLAUDE.md`                                                                                                                                  |
+| #3                 | Tuner                                                                                                                                        |
+| #4                 | Tuner sensitivity fix: quiet, unplugged bass on a laptop mic. Confirmed on a real bass                                                       |
+| #5                 | This roadmap                                                                                                                                 |
+| #6                 | Arpeggios (step 1): done, except the diatonic-arpeggios stretch goal                                                                         |
+| #7                 | Ear Training, exercise 1 "Find the note"                                                                                                     |
+| #9                 | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds                                                   |
+| #11                | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                                                             |
+| #13, #14, #16, #18 | Android app (Bassically): plan, skeleton, Kotlin port of the music logic with parity tests, and the Oboe audio engine with the recorded bass |
 
 ### Next session: pick one
 
-0. **Android app**: phases 0–2 are merged; Phase 3 (audio engine, #18) is tested and waiting to be merged. Next is Phase 4, Scales and Arpeggios. See [`ANDROID.md`](ANDROID.md).
+0. **Android app**: phases 0–3 are done. Next is Phase 4, Scales and Arpeggios: the `Fretboard` composable, key and scale/chord controls, and playback that highlights each note. See [`ANDROID.md`](ANDROID.md).
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
