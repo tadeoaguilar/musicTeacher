@@ -6,6 +6,8 @@ plugins {
 android {
     namespace = "com.perceptronics.musicteacher"
     compileSdk = 37
+    // The same NDK as :audio, so release builds can strip the native libraries' debug symbols.
+    ndkVersion = "30.0.16248370"
 
     defaultConfig {
         applicationId = "com.perceptronics.musicteacher"
@@ -20,6 +22,8 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            // Symbol tables go into the App Bundle, so Play can show native crash stack traces.
+            ndk { debugSymbolLevel = "SYMBOL_TABLE" }
         }
     }
 

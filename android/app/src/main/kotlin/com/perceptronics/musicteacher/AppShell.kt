@@ -1,11 +1,17 @@
 package com.perceptronics.musicteacher
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -14,7 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -37,13 +45,31 @@ import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.setAppLocale
 import com.perceptronics.musicteacher.i18n.t
 
-/** The app frame: title and language switch on top, the five sections in a bottom bar. */
+/** Wider than this (tablets, phones in landscape), the sections move to a side rail. */
+private const val RAIL_MIN_WIDTH_DP = 600
+
+/** Content stops growing here, so lines and controls stay readable on tablets. */
+private val CONTENT_MAX_WIDTH = 840.dp
+
+/**
+ * The app frame: title and language switch on top, the five sections in a bottom bar, or
+ * in a side rail on wide screens.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppShell() {
     val nav = rememberNavController()
     val current by nav.currentBackStackEntryAsState()
     val route = current?.destination?.route
+    val wide = LocalConfiguration.current.screenWidthDp >= RAIL_MIN_WIDTH_DP
+    val go = { section: Section ->
+        nav.navigate(section.id) {
+            // Standard navigation-bar behavior: one copy of each section, state kept.
+            popUpTo(nav.graph.findStartDestination().id) { saveState = true }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -53,46 +79,64 @@ fun AppShell() {
             )
         },
         bottomBar = {
-            NavigationBar {
-                Section.entries.forEach { section ->
-                    NavigationBarItem(
-                        selected = route == section.id,
-                        onClick = {
-                            nav.navigate(section.id) {
-                                // Standard bottom-bar behavior: one copy of each section, state kept.
-                                popUpTo(nav.graph.findStartDestination().id) { saveState = true }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        },
-                        icon = { Icon(painterResource(section.icon), contentDescription = null) },
-                        // Long names ("Metrónomo") shrink to fit instead of being cut off.
-                        label = {
-                            Text(
-                                t("app.nav.${section.id}"),
-                                maxLines = 1,
-                                autoSize = TextAutoSize.StepBased(minFontSize = 9.sp, maxFontSize = 12.sp),
-                            )
-                        },
-                    )
+            if (!wide) {
+                NavigationBar {
+                    Section.entries.forEach { section ->
+                        NavigationBarItem(
+                            selected = route == section.id,
+                            onClick = { go(section) },
+                            icon = { Icon(painterResource(section.icon), contentDescription = null) },
+                            label = { SectionLabel(section) },
+                        )
+                    }
                 }
             }
         },
     ) { padding ->
-        NavHost(nav, startDestination = Section.SCALES.id, modifier = Modifier.padding(padding)) {
-            Section.entries.forEach { section ->
-                composable(section.id) {
-                    when (section) {
-                        Section.SCALES -> ScalesScreen()
-                        Section.ARPEGGIOS -> ArpeggiosScreen()
-                        Section.METRONOME -> MetronomeScreen()
-                        Section.EAR -> EarScreen()
-                        Section.TUNER -> TunerScreen()
+        Row(Modifier.padding(padding)) {
+            if (wide) {
+                NavigationRail {
+                    Section.entries.forEach { section ->
+                        NavigationRailItem(
+                            selected = route == section.id,
+                            onClick = { go(section) },
+                            icon = { Icon(painterResource(section.icon), contentDescription = null) },
+                            label = { SectionLabel(section) },
+                        )
+                    }
+                }
+            }
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+                NavHost(
+                    nav,
+                    startDestination = Section.SCALES.id,
+                    modifier = Modifier.widthIn(max = CONTENT_MAX_WIDTH).fillMaxSize(),
+                ) {
+                    Section.entries.forEach { section ->
+                        composable(section.id) {
+                            when (section) {
+                                Section.SCALES -> ScalesScreen()
+                                Section.ARPEGGIOS -> ArpeggiosScreen()
+                                Section.METRONOME -> MetronomeScreen()
+                                Section.EAR -> EarScreen()
+                                Section.TUNER -> TunerScreen()
+                            }
+                        }
                     }
                 }
             }
         }
     }
+}
+
+/** Long names ("Metrónomo") shrink to fit instead of being cut off. */
+@Composable
+private fun SectionLabel(section: Section) {
+    Text(
+        t("app.nav.${section.id}"),
+        maxLines = 1,
+        autoSize = TextAutoSize.StepBased(minFontSize = 9.sp, maxFontSize = 12.sp),
+    )
 }
 
 @Composable
