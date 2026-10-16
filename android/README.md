@@ -17,6 +17,8 @@ The strings are the web app's `src/i18n/en.json` and `es.json`, copied into the 
 
 ## Audio
 
+A detailed walkthrough with diagrams (architecture, threads, the lock-free queue, the sampler and the JNI bridge) is in [`docs/ANDROID_AUDIO.md`](../docs/ANDROID_AUDIO.md).
+
 `audio/src/main/cpp/BassEngine.cpp` renders everything on Oboe's low-latency callback: a sampler that plays each note from the nearest recording (pitch-shifted, at most 1.5 semitones, 0.3 s release like the web's `Tone.Sampler`) and the metronome's triangle click. Kotlin schedules sounds ahead by **frame position** on the engine's own clock (`BassAudio.now()`), the way the web schedules on the Web Audio clock; commands reach the callback through a lock-free queue. `BassEngine` (Kotlin) implements the shared `AudioEngine` interface; sequences are scheduled 150 ms ahead and `onNote` fires when a note is _heard_ (now − output latency).
 
 - Samples: `npm run samples` writes 16-bit WAVs to `audio/src/main/assets/samples/bass/` next to the web MP3s (WAV: no decoder, no MP3 start-up delay). They load once, before the stream first opens.

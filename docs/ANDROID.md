@@ -57,6 +57,8 @@ Mapping from the web code (port these, don't redesign them):
 
 ### Audio engine (`:audio`)
 
+As built in Phase 3, explained in detail: [`ANDROID_AUDIO.md`](ANDROID_AUDIO.md).
+
 - **Sampler:**
   - Loads the 10 bass samples as 16-bit WAV from assets.
   - Plays each note from the nearest sample, shifted at most 1.5 semitones (rate 2^(n/12), interpolated).
