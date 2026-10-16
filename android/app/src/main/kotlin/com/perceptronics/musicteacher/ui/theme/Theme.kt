@@ -66,6 +66,8 @@ data class NeckColors(
     val activeText: Color = Color(0xFF1C1E22),
     /** The tuner's in-tune green (--in-tune). */
     val inTune: Color = Color(0xFF2B8A3E),
+    /** A wrong answer (--wrong). */
+    val wrong: Color = Color(0xFFC92A2A),
 )
 
 private val LightNeck = NeckColors(neckBg = Color(0xFFFBFAF7), note = Color(0xFF1F3A5F), root = Color(0xFFE8590C))
@@ -74,6 +76,7 @@ private val DarkNeck = NeckColors(
     note = Color(0xFF2A4A75),
     root = Color(0xFFFF7A2F),
     inTune = Color(0xFF69DB7C),
+    wrong = Color(0xFFFF6B6B),
 )
 
 val LocalNeckColors = staticCompositionLocalOf { LightNeck }
