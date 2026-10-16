@@ -32,6 +32,7 @@ Each section is `features/<section>/`: a `<Section>Screen` composable, its `View
 - `ui/fretboard/`: `FretboardLayout` ports `geometry.ts` (same units; one unit = 1 dp) and `Fretboard` draws the neck on a `Canvas`. Any tap is mapped back to a string and fret (`FretboardLayout.hit`); each note marker is also an invisible TalkBack button. The neck scrolls sideways and keeps the starting note, then the note playing, in view.
 - `ui/controls/`: the web's form fields (`Segmented`, `Chips`, `Dropdown`, `Toggle`, `Panel`), `NeckFields`/`KeyField`/`TuningFields` and `Transport`; `ui/noteset/`: the scale/chord header and the marker legend.
 - `features/neck/Player.kt`: plays a sequence through `BassEngine` and tracks the note heard; like the web, tempo changes live and any other change stops playback.
+- `features/metronome/`: the Metronome (port of `MetronomePage.tsx`). `MetronomeEngine` (in `audio`) ports `MetronomeEngine.ts`: a thread wakes every 10 ms and schedules clicks and bass notes 150 ms ahead on the frame clock, reading the settings beat by beat (so tempo, accents and patterns change live). `position()` reports the beat being _heard_; the screen reads it every frame for the pendulum (drawn without recomposing), the beat lights and the notation highlight. `ui/metronome/` holds the Canvas ports of the pendulum, the beat lights and `RhythmStaff`. It stops when the app leaves the screen; background playback is phase 5b.
 
 ## Parity with the web app
 

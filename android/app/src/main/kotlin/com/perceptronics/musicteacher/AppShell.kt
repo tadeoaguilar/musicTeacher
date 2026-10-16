@@ -1,6 +1,7 @@
 package com.perceptronics.musicteacher
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,6 +30,7 @@ import com.perceptronics.musicteacher.core.theory.Locale
 import com.perceptronics.musicteacher.features.PlaceholderScreen
 import com.perceptronics.musicteacher.features.Section
 import com.perceptronics.musicteacher.features.arpeggios.ArpeggiosScreen
+import com.perceptronics.musicteacher.features.metronome.MetronomeScreen
 import com.perceptronics.musicteacher.features.scales.ScalesScreen
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.setAppLocale
@@ -62,7 +65,14 @@ fun AppShell() {
                             }
                         },
                         icon = { Icon(painterResource(section.icon), contentDescription = null) },
-                        label = { Text(t("app.nav.${section.id}"), maxLines = 1) },
+                        // Long names ("Metrónomo") shrink to fit instead of being cut off.
+                        label = {
+                            Text(
+                                t("app.nav.${section.id}"),
+                                maxLines = 1,
+                                autoSize = TextAutoSize.StepBased(minFontSize = 9.sp, maxFontSize = 12.sp),
+                            )
+                        },
                     )
                 }
             }
@@ -74,6 +84,7 @@ fun AppShell() {
                     when (section) {
                         Section.SCALES -> ScalesScreen()
                         Section.ARPEGGIOS -> ArpeggiosScreen()
+                        Section.METRONOME -> MetronomeScreen()
                         else -> PlaceholderScreen(section)
                     }
                 }
