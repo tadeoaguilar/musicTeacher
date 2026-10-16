@@ -71,7 +71,7 @@ As built in Phase 3, explained in detail: [`ANDROID_AUDIO.md`](ANDROID_AUDIO.md)
   - The Oboe callback renders them sample-accurately.
   - The beat lights and pendulum use Oboe's output timestamps, like the web's `getPosition()` with `outputLatency`.
 - **Microphone:**
-  - An Oboe input stream with the `Unprocessed` input preset, falling back to `VoiceRecognition`. That turns off automatic gain, noise suppression and echo cancellation, matching the web's settings.
+  - `AudioRecord` with the `UNPROCESSED` source, falling back to `VOICE_RECOGNITION`. That turns off automatic gain, noise suppression and echo cancellation, matching the web's settings. (Planned as an Oboe input stream; changed in Phase 6 because a tuner doesn't need low latency and the detector runs in Kotlin anyway.)
   - Frames feed the ported YIN detector every 50 ms.
 - **Background playback:** the screen stays on during the metronome. A foreground "media playback" service with a notification keeps the metronome running when the app is in the background (Phase 4b).
 

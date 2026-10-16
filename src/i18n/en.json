@@ -321,6 +321,14 @@
     }
   },
   "android": {
-    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web."
+    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web.",
+    "tuner": {
+      "errors": {
+        "denied": "Microphone access is off for Bassically. Allow it to use the tuner.",
+        "settings": "Microphone access is blocked. Turn it on in the app's settings.",
+        "openSettings": "Open settings",
+        "no-device": "The microphone couldn't be opened. Close other apps that may be using it and try again."
+      }
+    }
   }
 }
