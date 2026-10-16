@@ -29,7 +29,7 @@ npm run lint           # oxlint
 npm run format         # prettier --write (format:check in CI)
 npm run typecheck      # tsc -b
 npm run build          # tsc -b && vite build → dist/
-npm run samples        # recordings/bass/*.wav → src/assets/samples/bass/*.mp3 (needs ffmpeg)
+npm run samples        # recordings/bass/*.wav → web MP3s + Android WAVs (needs ffmpeg)
 npm run android:fixtures # web results the Kotlin port is tested against (android/core/src/test/resources)
 ```
 

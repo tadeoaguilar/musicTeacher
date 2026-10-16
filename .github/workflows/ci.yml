@@ -41,6 +41,8 @@ jobs:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v4
+      # The audio engine is C++ (Oboe): the same NDK and CMake as android/audio/build.gradle.kts.
+      - run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install "ndk;30.0.16248370" "cmake;4.1.2" > /dev/null
       - run: ./gradlew ktlintCheck test lint assembleDebug --console=plain
       - uses: actions/upload-artifact@v4
         with:

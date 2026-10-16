@@ -321,6 +321,15 @@
     }
   },
   "android": {
-    "comingSoon": "Esta sección llegará pronto a la app de Android. Mientras tanto, ya puedes usarla en la web."
+    "comingSoon": "Esta sección llegará pronto a la app de Android. Mientras tanto, ya puedes usarla en la web.",
+    "soundCheck": {
+      "title": "Prueba de sonido",
+      "description": "El nuevo motor de audio, con tu bajo grabado. Toca una cuerda, reproduce una escala a tempo o escucha un compás de clics del metrónomo.",
+      "strings": "Cuerdas al aire",
+      "playScale": "Tocar La mayor",
+      "stop": "Detener",
+      "clicks": "Clics del metrónomo",
+      "latency": "Latencia de salida: unos {{ms}} ms a {{rate}} Hz"
+    }
   }
 }
