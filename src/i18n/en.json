@@ -321,15 +321,6 @@
     }
   },
   "android": {
-    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web.",
-    "soundCheck": {
-      "title": "Sound check",
-      "description": "The new audio engine, playing your recorded bass. Tap a string, play a scale in time, or hear a bar of metronome clicks.",
-      "strings": "Open strings",
-      "playScale": "Play A major",
-      "stop": "Stop",
-      "clicks": "Metronome clicks",
-      "latency": "Output latency: about {{ms}} ms at {{rate}} Hz"
-    }
+    "comingSoon": "This section is on its way to the Android app. Meanwhile, it's ready to use on the web."
   }
 }

@@ -23,6 +23,14 @@ The strings are the web app's `src/i18n/en.json` and `es.json`, copied into the 
 - The stream is open only while the app is visible (`MainActivity.onStart/onStop`) and reopens itself when the output changes (headphones).
 - NDK `30.0.16248370` and CMake `4.1.2` (Android Studio → SDK Manager → SDK Tools); CI installs the same.
 
+## Screens
+
+Each section is `features/<section>/`: a `<Section>Screen` composable, its `ViewModel`, and a `<Section>Settings` data class whose `fromParams`/`toParams` port the web's `<section>State.ts` codec, param names included. Settings are saved per section as that query string (`features/neck/Player.kt`, `SavedSettings`), so a web link could later open the same view.
+
+- `ui/fretboard/`: `FretboardLayout` ports `geometry.ts` (same units; one unit = 1 dp) and `Fretboard` draws the neck on a `Canvas`. Any tap is mapped back to a string and fret (`FretboardLayout.hit`); each note marker is also an invisible TalkBack button. The neck scrolls sideways and keeps the starting note, then the note playing, in view.
+- `ui/controls/`: the web's form fields (`Segmented`, `Chips`, `Dropdown`, `Toggle`, `Panel`), `NeckFields`/`KeyField`/`TuningFields` and `Transport`; `ui/noteset/`: the scale/chord header and the marker legend.
+- `features/neck/Player.kt`: plays a sequence through `BassEngine` and tracks the note heard; like the web, tempo changes live and any other change stops playback.
+
 ## Parity with the web app
 
 `core` is a line-by-line port of `src/theory`, `src/rhythm`, `src/ear` and `src/pitch`: same names, same comments, same number types (32-bit samples in pitch detection, `Math.round` semantics). Two kinds of tests keep it honest:
