@@ -329,5 +329,25 @@
         "no-device": "No se pudo abrir el micrófono. Cierra otras apps que puedan estar usándolo e inténtalo de nuevo."
       }
     }
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "updated": "Última actualización: {{date}}",
+    "intro": "Esta política cubre el sitio web Music Teacher y la app Bassically para Android. Ambos funcionan igual: todo ocurre en tu dispositivo.",
+    "summaryTitle": "En resumen",
+    "summary": "Sin cuentas, sin anuncios, sin analíticas y sin rastreo. Nada de lo que haces en la app o en el sitio web se nos envía, ni a nosotros ni a nadie.",
+    "micTitle": "Micrófono",
+    "mic": "Solo el Afinador usa el micrófono, y solo después de que pulses Iniciar y permitas el acceso. El sonido se analiza en tu dispositivo a medida que llega, para encontrar la nota que tocas. Nunca se graba, se guarda ni se envía a ningún sitio. Deja de escuchar cuando pulsas Detener o sales del Afinador.",
+    "storageTitle": "Qué se guarda en tu dispositivo",
+    "storage": "Tus ajustes (como la tonalidad, el tempo y la afinación) y tus puntuaciones de Entrenamiento auditivo se guardan en tu dispositivo, para que puedas seguir donde lo dejaste. Nunca salen de él. Al desinstalar la app, o al borrar los datos de este sitio en tu navegador, se eliminan.",
+    "hostingTitle": "Alojamiento del sitio web",
+    "hosting": "El sitio web está alojado en Vercel, que, como cualquier servicio de alojamiento, maneja información técnica estándar (como tu dirección IP y el tipo de navegador) para entregar las páginas. El sitio en sí no usa cookies ni carga nada de otros sitios.",
+    "childrenTitle": "Niños",
+    "children": "La app es apta para todas las edades. No recopila información personal de nadie, tampoco de niños.",
+    "changesTitle": "Cambios",
+    "changes": "Si esta política cambia, la nueva versión se publicará en esta página con una fecha nueva.",
+    "contactTitle": "Contacto",
+    "contact": "¿Preguntas sobre esta política? Escribe al correo de contacto de la página de Bassically en Google Play.",
+    "link": "Privacidad"
   }
 }

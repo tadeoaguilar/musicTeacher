@@ -2,6 +2,7 @@ import { Navigate, createBrowserRouter } from 'react-router'
 import { ArpeggiosPage } from '../features/arpeggios/ArpeggiosPage'
 import { EarPage } from '../features/ear/EarPage'
 import { MetronomePage } from '../features/metronome/MetronomePage'
+import { PrivacyPage } from '../features/privacy/PrivacyPage'
 import { ScalesPage } from '../features/scales/ScalesPage'
 import { TunerPage } from '../features/tuner/TunerPage'
 import { detectLocale } from '../i18n'
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { path: 'ear', element: <EarPage /> },
       { path: 'metronome', element: <MetronomePage /> },
       { path: 'tuner', element: <TunerPage /> },
+      { path: 'privacy', element: <PrivacyPage /> },
       // Future sections (grooves, lessons) are added here.
       { path: '*', element: <Navigate to="scales" replace /> },
     ],

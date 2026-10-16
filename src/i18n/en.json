@@ -329,5 +329,25 @@
         "no-device": "The microphone couldn't be opened. Close other apps that may be using it and try again."
       }
     }
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "updated": "Last updated: {{date}}",
+    "intro": "This policy covers the Music Teacher website and the Bassically app for Android. Both work the same way: everything happens on your device.",
+    "summaryTitle": "In short",
+    "summary": "No accounts, no ads, no analytics and no tracking. Nothing you do in the app or on the website is sent to us or to anyone else.",
+    "micTitle": "Microphone",
+    "mic": "Only the Tuner uses the microphone, and only after you press Start and allow access. The sound is analyzed as it arrives, on your device, to find the note you're playing. It is never recorded, stored or sent anywhere. Listening stops when you press Stop or leave the Tuner.",
+    "storageTitle": "What is saved on your device",
+    "storage": "Your settings (such as key, tempo and tuning) and your Ear Training scores are saved on your device, so you can pick up where you left off. They never leave it. Uninstalling the app, or clearing this site's data in your browser, deletes them.",
+    "hostingTitle": "Website hosting",
+    "hosting": "The website is hosted by Vercel, which, like any web host, handles standard technical information (such as your IP address and browser type) to deliver the pages. The website itself sets no cookies and loads nothing from other sites.",
+    "childrenTitle": "Children",
+    "children": "The app is suitable for all ages. It collects no personal information from anyone, children included.",
+    "changesTitle": "Changes",
+    "changes": "If this policy changes, the new version will be posted on this page with a new date.",
+    "contactTitle": "Contact",
+    "contact": "Questions about this policy? Write to the contact email on Bassically's Google Play page.",
+    "link": "Privacy"
   }
 }
