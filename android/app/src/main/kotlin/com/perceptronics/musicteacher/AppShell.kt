@@ -28,6 +28,7 @@ import com.perceptronics.musicteacher.core.theory.Locale
 import com.perceptronics.musicteacher.features.PlaceholderScreen
 import com.perceptronics.musicteacher.features.Section
 import com.perceptronics.musicteacher.features.arpeggios.ArpeggiosScreen
+import com.perceptronics.musicteacher.features.metronome.MetronomeScreen
 import com.perceptronics.musicteacher.features.scales.ScalesScreen
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.setAppLocale
@@ -74,6 +75,7 @@ fun AppShell() {
                     when (section) {
                         Section.SCALES -> ScalesScreen()
                         Section.ARPEGGIOS -> ArpeggiosScreen()
+                        Section.METRONOME -> MetronomeScreen()
                         else -> PlaceholderScreen(section)
                     }
                 }

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -19,9 +20,11 @@ import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,10 +38,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.perceptronics.musicteacher.R
+import kotlin.math.roundToInt
 
 // The web's form fields (src/components/Controls/fields.tsx) in Material 3.
 
@@ -157,5 +162,61 @@ fun Toggle(label: String, checked: Boolean, onChange: (Boolean) -> Unit) {
     ) {
         Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
         Switch(checked = checked, onCheckedChange = null)
+    }
+}
+
+/** A labelled slider showing its value as text ("60 %", "Straight"). */
+@Composable
+fun LabeledSlider(
+    label: String,
+    display: String,
+    value: Int,
+    range: IntRange,
+    onChange: (Int) -> Unit,
+    enabled: Boolean = true,
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(
+            "$label · $display",
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Slider(
+            value = value.toFloat(),
+            onValueChange = { onChange(it.roundToInt()) },
+            valueRange = range.first.toFloat()..range.last.toFloat(),
+            enabled = enabled,
+            modifier = Modifier.semantics {
+                contentDescription = label
+                stateDescription = display
+            },
+        )
+    }
+}
+
+/** A whole number in a range, nudged with − and + (the web's number input, easier to hit on a phone). */
+@Composable
+fun Stepper(label: String, value: Int, range: IntRange, onChange: (Int) -> Unit, enabled: Boolean = true) {
+    Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+        Text(label, style = MaterialTheme.typography.labelLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            OutlinedIconButton(
+                onClick = { onChange((value - 1).coerceIn(range)) },
+                enabled = enabled && value > range.first,
+                modifier = Modifier.semantics { contentDescription = "$label −1" },
+            ) { Text("−", style = MaterialTheme.typography.titleLarge) }
+            Text(
+                value.toString(),
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.run { if (enabled) onSurface else onSurfaceVariant },
+                modifier = Modifier.width(56.dp).semantics { contentDescription = "$label: $value" },
+            )
+            OutlinedIconButton(
+                onClick = { onChange((value + 1).coerceIn(range)) },
+                enabled = enabled && value < range.last,
+                modifier = Modifier.semantics { contentDescription = "$label +1" },
+            ) { Text("+", style = MaterialTheme.typography.titleLarge) }
+        }
     }
 }
