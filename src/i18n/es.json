@@ -349,5 +349,27 @@
     "contactTitle": "Contacto",
     "contact": "¿Preguntas sobre esta política? Escribe al correo de contacto de la página de Bassically en Google Play.",
     "link": "Privacidad"
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Bassically Pro",
+    "intro": "Todo lo que usas hoy sigue siendo gratis. Pro añade material nuevo para quienes quieren ir más lejos:",
+    "comingSoon": "Bassically Pro llegará pronto.",
+    "learnMore": "Saber más",
+    "close": "Cerrar",
+    "features": {
+      "scales": {
+        "more": {
+          "title": "Más escalas",
+          "description": "Modos de la menor armónica y melódica, blues, bebop y más, en todo el mástil."
+        }
+      },
+      "rhythm": {
+        "programs": {
+          "title": "Programas de ritmo",
+          "description": "Ejercicios paso a paso para mejorar tu tempo y tu groove, con seguimiento de progreso."
+        }
+      }
+    }
   }
 }

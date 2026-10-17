@@ -65,6 +65,7 @@ import com.perceptronics.musicteacher.core.theory.KEY_IDS
 import com.perceptronics.musicteacher.core.theory.formatNote
 import com.perceptronics.musicteacher.core.theory.keySpellings
 import com.perceptronics.musicteacher.features.neck.SavedSettings
+import com.perceptronics.musicteacher.features.pro.ProSlot
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.t
 import com.perceptronics.musicteacher.ui.controls.Chips
@@ -285,6 +286,7 @@ fun MetronomeScreen() {
 
         RhythmControls(s, vm::change)
         TrainerControls(s, vm::change)
+        ProSlot("rhythm.programs")
     }
 }
 

@@ -1,7 +1,18 @@
-// Runs the web app's pure logic (src/theory, rhythm, ear, pitch) over many inputs and returns the
+// Runs the web app's pure logic (src/theory, rhythm, ear, pitch, access) over many inputs and returns the
 // results. scripts/android-fixtures.mjs writes them as JSON for the Android port's tests
 // (android/core/src/test/resources/fixtures), which must reproduce every value.
 
+import {
+  FEATURE_IDS,
+  PRO_FEATURE_IDS,
+  accessTo,
+  isPro,
+  parseFlags,
+  rolloutBucket,
+  tierOf,
+  type Entitlement,
+  type Flags,
+} from '../src/access/access'
 import { addToScore, EMPTY_SCORE, recordAnswer, weakest, weightOf, type ItemStats } from '../src/ear/progress'
 import { candidates, judge, maxFretFor, nextQuestion, otherOctaves, positionsOf } from '../src/ear/findNote'
 import {
@@ -353,6 +364,54 @@ function pitch() {
   }
 }
 
+function access() {
+  const now = Date.UTC(2026, 9, 17)
+  const entitlements: Entitlement[] = [
+    { pro: false, expiresAt: null },
+    { pro: true, expiresAt: null },
+    { pro: true, expiresAt: now - 1 },
+    { pro: true, expiresAt: now + 1000 },
+  ]
+  const flagSets: Flags[] = [
+    {},
+    { 'scales.more': { enabled: true }, tuner: { enabled: false } },
+    { 'scales.more': { enabled: true, free: true }, 'rhythm.programs': { enabled: true, rollout: 50 } },
+    { 'scales.more': { enabled: true, minVersion: 5 }, metronome: { rollout: 0 } },
+  ]
+  const rawFlags: unknown[] = [
+    null,
+    'x',
+    [1, 2],
+    { 'scales.more': { enabled: true, rollout: 140.4, minVersion: 3, extra: 1 } },
+    { tuner: { enabled: 'yes', free: true, rollout: -5.5, minVersion: 2.5 }, unknown: { enabled: true } },
+    { metronome: 'on', 'rhythm.programs': { rollout: 49.5, free: false, minVersion: 12 } },
+  ]
+  return {
+    catalog: FEATURE_IDS.map((id) => [id, tierOf(id)]),
+    pro: PRO_FEATURE_IDS,
+    isPro: entitlements.map((e) => ({ entitlement: e, now, pro: isPro(e, now) })),
+    buckets: ['', 'a', 'abc', 'user-1', 'ñandú', '6f1c2a0e-9d7b-4c1e-8a7f-2b9d3e4f5a6b'].map((k) => [
+      k,
+      rolloutBucket(k),
+    ]),
+    parsed: rawFlags.map((raw) => ({ raw, flags: parseFlags(raw) })),
+    access: entitlements.flatMap((entitlement) =>
+      flagSets.flatMap((flags) =>
+        [0, 49, 99].flatMap((bucket) =>
+          [undefined, 3, 7].map((version) => ({
+            entitlement,
+            flags,
+            bucket,
+            now,
+            version: version ?? null,
+            access: FEATURE_IDS.map((id) => accessTo(id, { entitlement, flags, bucket, now, version })),
+          })),
+        ),
+      ),
+    ),
+  }
+}
+
 export function fixtures(): Record<string, unknown> {
-  return { theory: theory(), rhythm: rhythm(), ear: ear(), pitch: pitch() }
+  return { theory: theory(), rhythm: rhythm(), ear: ear(), pitch: pitch(), access: access() }
 }

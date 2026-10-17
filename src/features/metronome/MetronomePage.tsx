@@ -24,6 +24,7 @@ import {
   type MetronomeSettings,
 } from './metronomeState'
 import controls from '../../components/Controls/Controls.module.css'
+import { ProSlot } from '../pro/ProSlot'
 import styles from './MetronomePage.module.css'
 
 /** What the UI shows about the moment being heard. */
@@ -299,6 +300,7 @@ export function MetronomePage() {
 
       <RhythmControls settings={settings} locale={locale} onChange={change} onMeter={changeMeter} />
       <TrainerControls settings={settings} onChange={change} />
+      <ProSlot feature="rhythm.programs" />
     </div>
   )
 }

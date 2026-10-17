@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, Navigate, Outlet, useLocation, useParams } from 'react-router'
+import { PaywallHost } from '../features/pro/ProSlot'
 import { LOCALES, isLocale } from '../i18n'
 import styles from './Layout.module.css'
 
@@ -78,6 +79,7 @@ export function Layout() {
       <footer className={styles.footer}>
         <Link to={`/${lang}/privacy`}>{t('privacy.link')}</Link>
       </footer>
+      <PaywallHost />
     </div>
   )
 }

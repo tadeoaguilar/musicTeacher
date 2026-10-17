@@ -13,6 +13,7 @@ import { resolveScale } from '../../theory/scales'
 import { buildPlaySequence } from '../../theory/sequence'
 import { getTuning } from '../../theory/tunings'
 import { useUrlSync } from '../../app/useUrlSync'
+import { ProSlot } from '../pro/ProSlot'
 import {
   pickSettings,
   settingsFromParams,
@@ -96,6 +97,7 @@ export function ScalesPage() {
       />
 
       <ScaleControls settings={settings} locale={locale} onChange={change} />
+      <ProSlot feature="scales.more" />
     </div>
   )
 }
