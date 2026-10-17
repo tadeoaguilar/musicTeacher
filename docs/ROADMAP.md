@@ -53,6 +53,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
    - Move the oscillator microphone stub from `e2e/tuner.spec.ts` to `e2e/helpers/fakeMicrophone.ts`.
 2. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
+3. **Bassically Pro** (paid features on Android and web, one account): plan agreed in [`MONETIZATION.md`](MONETIZATION.md). Waiting on the user's setup and decisions (Play payments profile, Stripe, RevenueCat, Supabase, prices, the first Pro pack); Phase 1 (feature management, no money yet) can start any time.
 
 ### Decisions made along the way
 
