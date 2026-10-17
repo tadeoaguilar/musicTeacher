@@ -12,7 +12,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ## Where we left off (2026-10-17)
 
-**Start here when resuming.** Two pull requests are open, with CI green, waiting for the user to say "merge": **#28** (website privacy page, `/:lang/privacy`) and **#29** (Android Phases 8 and 9, branch `feature/android-polish`). Merge #28 first, then #29, then delete the branches. Everything else is in `main`.
+**Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
 
 ### Shipped
 
@@ -28,11 +28,13 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #9                                     | Real bass samples (step 2): recorded in Ableton Live, played everywhere a bass note sounds                                                                                                                            |
 | #11                                    | Ear Training, exercise 2 "Name the interval", with tabs on the Ear Training page                                                                                                                                      |
 | #13, #14, #16, #18, #20, #22, #24, #26 | Android app (Bassically): plan, skeleton, Kotlin port of the music logic with parity tests, the Oboe audio engine with the recorded bass, and all five sections: Scales, Arpeggios, Metronome, Tuner and Ear Training |
+| #28                                    | Website privacy policy page (`/:lang/privacy`), needed for the Play listing                                                                                                                                           |
+| #29                                    | Android polish and release setup: smaller build, wide screens, large text and landscape, version 1.0.0 with upload-key signing, and the Play release kit (`docs/play-store/`)                                         |
 
 ### Next session: pick one
 
 0. **Android app: publish on Google Play.** Phases 0–9 (app side) are done; the signed release build was checked on the Galaxy S24. Steps:
-   1. Merge #28 and #29 (see above), then deploy the website so the privacy page is live.
+   1. Check the website deployment so the privacy page is live at `/en/privacy` and `/es/privacy`.
    2. **From the user:**
       - the website's permanent address, to replace `<your domain>` in [`play-store/README.md`](play-store/README.md);
       - a public contact email for the listing;
