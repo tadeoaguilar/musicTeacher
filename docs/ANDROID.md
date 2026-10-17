@@ -2,7 +2,7 @@
 
 The plan for a native Android version of Music Teacher, agreed on 2026-10-15.
 
-> **Status (2026-10-16):** Phases 0–7 shipped; all five sections of the web app work on Android: this plan (#13), the skeleton (#14), the Kotlin port of the music logic with web parity fixtures (#16), the Oboe audio engine with the recorded bass (#18; explained in [`ANDROID_AUDIO.md`](ANDROID_AUDIO.md)), Scales and Arpeggios (#20), the Metronome (#22), the Tuner (#24) and Ear Training (#26). Next: phase 5b (background playback), Phase 8 (polish) and Phase 9 (release).
+> **Status (2026-10-17):** Phases 0–7 shipped; all five sections of the web app work on Android: this plan (#13), the skeleton (#14), the Kotlin port of the music logic with web parity fixtures (#16), the Oboe audio engine with the recorded bass (#18; explained in [`ANDROID_AUDIO.md`](ANDROID_AUDIO.md)), Scales and Arpeggios (#20), the Metronome (#22), the Tuner (#24) and Ear Training (#26). Phases 8 and 9 (app side) are done and waiting to merge: polish and the release setup (#29: stripped native libraries, 54 → 11 MB; side rail and max width on wide screens; large-text and landscape fixes; version 1.0.0 signed with the upload key; the release kit in [`play-store/README.md`](play-store/README.md)) and the website's privacy page (#28). Next: the Play Console steps in the release kit (user's side), then phase 5b (background playback). App Links are skipped for now.
 >
 > **Decided:** app ID `com.perceptronics.musicteacher` (permanent once published) · store name **Bassically** · free, no ads.
 

@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -70,9 +71,13 @@ private fun Field(label: String, content: @Composable () -> Unit) {
     }
 }
 
-/** A few options side by side. */
+/** From this text size up, side-by-side segments would break words, so they wrap as chips instead. */
+private const val LARGE_FONT_SCALE = 1.3f
+
+/** A few options side by side (as wrapping chips when the text size is large). */
 @Composable
 fun <T> Segmented(label: String, value: T, options: List<Option<T>>, onChange: (T) -> Unit) {
+    if (LocalDensity.current.fontScale >= LARGE_FONT_SCALE) return Chips(label, value, options, onChange)
     Field(label) {
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().semantics { contentDescription = label }) {
             options.forEachIndexed { i, option ->

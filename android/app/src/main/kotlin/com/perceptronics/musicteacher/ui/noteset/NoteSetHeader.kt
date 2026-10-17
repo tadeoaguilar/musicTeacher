@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -46,7 +46,13 @@ fun NoteSetHeader(title: String, description: String, notes: List<String>, inter
 private fun ChipRow(label: String, items: List<String>) {
     val root = LocalNeckColors.current.root
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text(label, style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(end = 12.dp).width(72.dp))
+        // A minimum, not a fixed width: with large text, "Formula" grows instead of breaking mid-word.
+        Text(
+            label,
+            style = MaterialTheme.typography.labelLarge,
+            softWrap = false,
+            modifier = Modifier.padding(end = 12.dp).widthIn(min = 72.dp),
+        )
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
             items.forEachIndexed { i, item ->
                 Text(

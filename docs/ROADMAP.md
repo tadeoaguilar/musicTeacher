@@ -10,9 +10,9 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 - an e2e spec;
 - README and `CLAUDE.md` updates.
 
-## Where we left off (2026-10-15)
+## Where we left off (2026-10-17)
 
-**Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
+**Start here when resuming.** Two pull requests are open, with CI green, waiting for the user to say "merge": **#28** (website privacy page, `/:lang/privacy`) and **#29** (Android Phases 8 and 9, branch `feature/android-polish`). Merge #28 first, then #29, then delete the branches. Everything else is in `main`.
 
 ### Shipped
 
@@ -31,7 +31,21 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 
 ### Next session: pick one
 
-0. **Android app**: phases 0–7 are done; all five sections work on the phone. Remaining: phase 5b, background playback for the metronome (a foreground media service with a notification); Phase 8, polish (TalkBack and font scaling, tablets and landscape, performance, optional App Links); Phase 9, release (signing, App Bundle, privacy policy page, store listing in EN/ES, then internal → closed testing with 12 testers for 14 days → production). The Play Console account and the 12 testers are on the user's side. See [`ANDROID.md`](ANDROID.md).
+0. **Android app: publish on Google Play.** Phases 0–9 (app side) are done; the signed release build was checked on the Galaxy S24. Steps:
+   1. Merge #28 and #29 (see above), then deploy the website so the privacy page is live.
+   2. **From the user:**
+      - the website's permanent address, to replace `<your domain>` in [`play-store/README.md`](play-store/README.md);
+      - a public contact email for the listing;
+      - confirm `~/.bassically/` (upload key and passwords) is backed up.
+   3. **Play Console (user's side), following [`play-store/README.md`](play-store/README.md):**
+      - create the developer account ($25, identity check) and the app;
+      - fill in the App content forms (answers are in the kit);
+      - add the EN and ES store listings with the graphics and screenshots in `docs/play-store/`;
+      - upload `android/app/build/outputs/bundle/release/app-release.aab` (`./gradlew bundleRelease`) to internal testing;
+      - run the closed test: **12 testers opted in for 14 days in a row**;
+      - apply for production.
+   4. Meanwhile (optional): phase 5b, background playback for the metronome (a foreground media service with a notification). Each new upload needs a higher `versionCode`.
+   5. Skipped for now: Android App Links.
 1. **Ear Training, exercise 3 "Play it back"**. See [Exercise 3](#exercise-3-play-it-back-on-your-bass).
    - Reuse `micInput`, `createSmoother` and `readNote` from the tuner.
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
