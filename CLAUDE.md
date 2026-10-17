@@ -13,7 +13,7 @@ Guidance for Claude Code (and any contributor) working in this repository. `READ
 - **Tuner** (`/:lang/tuner`): microphone pitch detection showing the nearest note, cents off and the matching string for the chosen tuning; reference tones; A4 calibration.
 - **Privacy policy** (`/:lang/privacy`, linked in the footer): static text for the website and the Android app; Google Play links to it. Update it (and `UPDATED` in `PrivacyPage.tsx`) whenever data handling changes, e.g. before adding analytics or an online feature.
 
-Planned sections (see the comment in `src/app/router.tsx`): grooves, lessons. **[`docs/ANDROID.md`](docs/ANDROID.md) is the plan for the native Android app (Kotlin, Compose, Oboe) in `android/`; read it before touching Android work.** **[`docs/ROADMAP.md`](docs/ROADMAP.md) has the agreed plan for real bass samples (recorded by the user) and the remaining Ear Training exercises. Read it before starting either.**
+Planned sections (see the comment in `src/app/router.tsx`): grooves, lessons. **[`docs/ANDROID.md`](docs/ANDROID.md) is the plan for the native Android app (Kotlin, Compose, Oboe) in `android/`; read it before touching Android work.** **[`docs/MONETIZATION.md`](docs/MONETIZATION.md) is the plan for Bassically Pro (accounts, billing, feature management, admin portal): today's features stay free; read it before adding any of those.** **[`docs/ROADMAP.md`](docs/ROADMAP.md) has the agreed plan for real bass samples (recorded by the user) and the remaining Ear Training exercises. Read it before starting either.**
 
 ## Stack
 
