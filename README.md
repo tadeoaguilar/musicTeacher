@@ -49,6 +49,10 @@ A chromatic tuner that listens through the microphone.
 - Tap a string to hear its reference pitch; A4 calibration from 432 to 446 Hz
 - Pitch detection (YIN) finds the right octave even on low B, where the fundamental is weak; audio never leaves the device
 
+## Privacy
+
+The privacy policy (`/:lang/privacy`, linked in the footer) covers the website and the Android app: no accounts, ads, analytics or tracking; the microphone is analyzed on the device and never recorded or sent. Google Play links to it.
+
 ## Roadmap
 
 Next up: more Ear Training exercises. See [docs/ROADMAP.md](docs/ROADMAP.md).

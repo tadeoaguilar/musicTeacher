@@ -74,6 +74,10 @@ export function Layout() {
       <main className={styles.main}>
         <Outlet />
       </main>
+
+      <footer className={styles.footer}>
+        <Link to={`/${lang}/privacy`}>{t('privacy.link')}</Link>
+      </footer>
     </div>
   )
 }

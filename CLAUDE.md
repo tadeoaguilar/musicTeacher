@@ -11,6 +11,7 @@ Guidance for Claude Code (and any contributor) working in this repository. `READ
 - **Ear Training** (`/:lang/ear`): tabs for exercise 1, "Find the note" (tap where a named, played note is), and exercise 2, "Name the interval" (two notes up/down/together; pick the interval, then see its shape on the neck). 3 levels each; weighted practice of missed items. Play-it-back is next (see the roadmap).
 - **Metronome** (`/:lang/metronome`): meters, subdivisions, swing, accents, rhythm patterns in notation played by the bass, speed/gap trainers, tap tempo, count-in.
 - **Tuner** (`/:lang/tuner`): microphone pitch detection showing the nearest note, cents off and the matching string for the chosen tuning; reference tones; A4 calibration.
+- **Privacy policy** (`/:lang/privacy`, linked in the footer): static text for the website and the Android app; Google Play links to it. Update it (and `UPDATED` in `PrivacyPage.tsx`) whenever data handling changes, e.g. before adding analytics or an online feature.
 
 Planned sections (see the comment in `src/app/router.tsx`): grooves, lessons. **[`docs/ANDROID.md`](docs/ANDROID.md) is the plan for the native Android app (Kotlin, Compose, Oboe) in `android/`; read it before touching Android work.** **[`docs/ROADMAP.md`](docs/ROADMAP.md) has the agreed plan for real bass samples (recorded by the user) and the remaining Ear Training exercises. Read it before starting either.**
 

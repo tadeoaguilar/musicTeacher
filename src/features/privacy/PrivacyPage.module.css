@@ -1,0 +1,22 @@
+.page {
+  max-width: 68ch;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.page h2 {
+  margin: 28px 0 6px;
+  font-size: 20px;
+}
+.page p {
+  margin: 0 0 12px;
+}
+.title {
+  margin: 0;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.updated {
+  color: var(--muted);
+  font-size: 14px;
+}
