@@ -1,6 +1,6 @@
 # Bassically Pro: plan for free + paid features
 
-> **Status (2026-10-17):** plan agreed (#31). Phase 1, feature management, in progress: the catalog and `accessTo` (`src/access/`, ported to `android/core` with parity fixtures), the Pro badge, teaser and a "coming soon" paywall on both platforms, behind local flags. Waiting on the user's setup (Play payments profile, Stripe, RevenueCat, Supabase, prices, first Pro pack) for Phases 2–4. Read this before adding accounts, billing or paid content.
+> **Status (2026-10-17):** plan agreed (#31). Phase 1, feature management, shipped (#32): the catalog and `accessTo` (`src/access/`, ported to `android/core` with parity fixtures), the Pro badge, teaser and a "coming soon" paywall on both platforms, hidden behind local flags. Next: Phase 2 (backend), waiting on the user's Supabase project; Phase 4 (billing) also needs the Play payments profile, Stripe, RevenueCat and prices; Phase 5 needs the first Pro pack's contents.
 
 ## Context
 
