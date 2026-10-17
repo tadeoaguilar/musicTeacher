@@ -30,6 +30,7 @@ import com.perceptronics.musicteacher.core.theory.positionKey
 import com.perceptronics.musicteacher.core.theory.resolveScale
 import com.perceptronics.musicteacher.features.neck.Player
 import com.perceptronics.musicteacher.features.neck.SavedSettings
+import com.perceptronics.musicteacher.features.pro.ProSlot
 import com.perceptronics.musicteacher.i18n.LocalLocale
 import com.perceptronics.musicteacher.i18n.t
 import com.perceptronics.musicteacher.ui.controls.Dropdown
@@ -121,5 +122,6 @@ fun ScalesScreen() {
             }
             NeckFields(s.neck) { vm.change(s.copy(neck = it)) }
         }
+        ProSlot("scales.more")
     }
 }

@@ -349,5 +349,27 @@
     "contactTitle": "Contact",
     "contact": "Questions about this policy? Write to the contact email on Bassically's Google Play page.",
     "link": "Privacy"
+  },
+  "pro": {
+    "badge": "Pro",
+    "title": "Bassically Pro",
+    "intro": "Everything you use today stays free. Pro adds new material for players who want to go further:",
+    "comingSoon": "Bassically Pro is coming soon.",
+    "learnMore": "Learn more",
+    "close": "Close",
+    "features": {
+      "scales": {
+        "more": {
+          "title": "More scales",
+          "description": "Harmonic and melodic minor modes, blues, bebop and more, across the whole neck."
+        }
+      },
+      "rhythm": {
+        "programs": {
+          "title": "Rhythm programs",
+          "description": "Step-by-step exercises that build your time and groove, with progress tracking."
+        }
+      }
+    }
   }
 }

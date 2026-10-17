@@ -43,6 +43,7 @@ import com.perceptronics.musicteacher.features.Section
 import com.perceptronics.musicteacher.features.arpeggios.ArpeggiosScreen
 import com.perceptronics.musicteacher.features.ear.EarScreen
 import com.perceptronics.musicteacher.features.metronome.MetronomeScreen
+import com.perceptronics.musicteacher.features.pro.PaywallHost
 import com.perceptronics.musicteacher.features.scales.ScalesScreen
 import com.perceptronics.musicteacher.features.tuner.TunerScreen
 import com.perceptronics.musicteacher.i18n.LocalLocale
@@ -134,6 +135,7 @@ fun AppShell() {
             }
         }
     }
+    PaywallHost()
 }
 
 /**
