@@ -30,6 +30,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #13, #14, #16, #18, #20, #22, #24, #26 | Android app (Bassically): plan, skeleton, Kotlin port of the music logic with parity tests, the Oboe audio engine with the recorded bass, and all five sections: Scales, Arpeggios, Metronome, Tuner and Ear Training |
 | #28                                    | Website privacy policy page (`/:lang/privacy`), needed for the Play listing                                                                                                                                           |
 | #29                                    | Android polish and release setup: smaller build, wide screens, large text and landscape, version 1.0.0 with upload-key signing, and the Play release kit (`docs/play-store/`)                                         |
+| #31, #32                               | Bassically Pro: the plan ([`MONETIZATION.md`](MONETIZATION.md)) and Phase 1, feature management (free/Pro catalog, access rules, coming-soon paywall behind local flags)                                              |
 
 ### Next session: pick one
 
@@ -53,7 +54,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
    - Move the oscillator microphone stub from `e2e/tuner.spec.ts` to `e2e/helpers/fakeMicrophone.ts`.
 2. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
-3. **Bassically Pro** (paid features on Android and web, one account): plan agreed in [`MONETIZATION.md`](MONETIZATION.md). Waiting on the user's setup and decisions (Play payments profile, Stripe, RevenueCat, Supabase, prices, the first Pro pack); Phase 1 (feature management, no money yet) can start any time.
+3. **Bassically Pro** (paid features on Android and web, one account; plan in [`MONETIZATION.md`](MONETIZATION.md)): Phase 1 (feature management) is done. Phase 2 (backend: Supabase schema, row-level security, Edge Functions) starts once the user creates a Supabase project; billing (Phase 4) also needs the Play payments profile, Stripe, RevenueCat and prices; the first Pro pack (Phase 5) needs its contents decided. The Pro UI on the phone hasn't been checked yet (needs a debug install, which replaces the release build).
 
 ### Decisions made along the way
 
