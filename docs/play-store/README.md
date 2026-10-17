@@ -4,14 +4,14 @@ Everything needed to publish **Bassically** (`com.perceptronics.musicteacher`) o
 
 ## Files
 
-| File                                                             | Use                                | Spec                               |
-| ---------------------------------------------------------------- | ---------------------------------- | ---------------------------------- |
-| `icon-512.png`                                                   | App icon                           | 512 × 512 PNG, no transparency     |
-| `feature-graphic-en.png`, `feature-graphic-es.png`               | Feature graphic (one per language) | 1024 × 500 PNG                     |
-| `screenshots/en/*.png`, `screenshots/es/*.png`                   | Phone screenshots                  | 1080 × 1920 (9:16)                 |
-| `../../android/app/build/outputs/bundle/release/app-release.aab` | The upload                         | Built by `./gradlew bundleRelease` |
+| File                                                             | Use                                | Spec                                                                                     |
+| ---------------------------------------------------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------- |
+| `icon-512.png`                                                   | App icon                           | 512 × 512 PNG, no transparency                                                           |
+| `feature-graphic-en.png`, `feature-graphic-es.png`               | Feature graphic (one per language) | 1024 × 500 PNG                                                                           |
+| `screenshots/en/*.png`, `screenshots/es/*.png`                   | Phone screenshots                  | 1080 × 2080 (taken on the Galaxy S24, release build, status and navigation bars cropped) |
+| `../../android/app/build/outputs/bundle/release/app-release.aab` | The upload                         | Built by `./gradlew bundleRelease`                                                       |
 
-The graphics are rendered by `node scripts/play-graphics.mjs`. Screenshots are taken from the phone with `adb exec-out screencap` and cropped to 9:16 (status bar removed).
+The graphics are rendered by `node scripts/play-graphics.mjs`. Screenshots are taken from the phone with `adb exec-out screencap` and cropped to the app (`ffmpeg -vf crop=1080:2080:0:118`); Play accepts any ratio up to 2:1. Five per language: Scales, Arpeggios, Metronome (running), Ear Training, Tuner.
 
 ## Build the release
 
