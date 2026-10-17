@@ -15,7 +15,8 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "samples": "node scripts/process-samples.mjs",
-    "android:fixtures": "node scripts/android-fixtures.mjs"
+    "android:fixtures": "node scripts/android-fixtures.mjs",
+    "play:graphics": "node scripts/play-graphics.mjs"
   },
   "dependencies": {
     "i18next": "^26.4.2",
