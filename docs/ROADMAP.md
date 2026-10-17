@@ -54,7 +54,14 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
    - Add it as a third tab (`ex=play`) next to the other two, sharing `ScorePanel` and `useItemStats`.
    - Move the oscillator microphone stub from `e2e/tuner.spec.ts` to `e2e/helpers/fakeMicrophone.ts`.
 2. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
-3. **Bassically Pro** (paid features on Android and web, one account; plan in [`MONETIZATION.md`](MONETIZATION.md)): Phase 1 (feature management) is done. Phase 2 (backend: Supabase schema, row-level security, Edge Functions) starts once the user creates a Supabase project; billing (Phase 4) also needs the Play payments profile, Stripe, RevenueCat and prices; the first Pro pack (Phase 5) needs its contents decided. The Pro UI on the phone hasn't been checked yet (needs a debug install, which replaces the release build).
+3. **Bassically Pro** (paid features on Android and web, one account; plan in [`MONETIZATION.md`](MONETIZATION.md)). Phase 1 (feature management) is done. Suggested order: keep the Play release moving (item 0; the 14-day closed test is the longest wait), create Supabase next so Phase 2 can start while billing is set up.
+   1. **Supabase project (user), unblocks Phases 2–3 (backend, sign-in, account page, account deletion):**
+      - sign up at supabase.com and create a project named `bassically` in the region closest to most users, with a strong database password kept in a password manager;
+      - give Claude only the **Project URL** and the **anon public key** (Project Settings → API). **Never** share or commit the `service_role` key;
+      - install the Supabase CLI when asked, for local tests.
+   2. **Billing decisions and accounts (user), for Phase 4:** country and whether to sell as an individual or a business; prices (monthly, yearly, lifetime) and free-trial length; a Google Play payments profile (bank and tax details in Play Console); Stripe; RevenueCat (linked to both, with Claude's help).
+   3. **First Pro pack (user decides), for Phase 5.** Suggested: more scales (harmonic and melodic minor modes, blues, bebop, pentatonic variations) and graded rhythm programs built on the speed and gap trainers, with progress.
+   4. **Optional:** check the Pro teaser and paywall on the phone. Needs the debug build, which replaces the release build and resets the app's settings and scores: ask first. Then `adb shell am start -S -n com.perceptronics.musicteacher/.MainActivity --es access.flags '{"scales.more":{"enabled":true},"rhythm.programs":{"enabled":true}}'`.
 
 ### Decisions made along the way
 
