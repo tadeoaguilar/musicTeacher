@@ -1,4 +1,5 @@
 import { Navigate, createBrowserRouter } from 'react-router'
+import { AccountPage } from '../features/account/AccountPage'
 import { ArpeggiosPage } from '../features/arpeggios/ArpeggiosPage'
 import { EarPage } from '../features/ear/EarPage'
 import { MetronomePage } from '../features/metronome/MetronomePage'
@@ -21,6 +22,7 @@ export const router = createBrowserRouter([
       { path: 'metronome', element: <MetronomePage /> },
       { path: 'tuner', element: <TunerPage /> },
       { path: 'privacy', element: <PrivacyPage /> },
+      { path: 'account', element: <AccountPage /> },
       // Future sections (grooves, lessons) are added here.
       { path: '*', element: <Navigate to="scales" replace /> },
     ],

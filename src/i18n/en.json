@@ -333,17 +333,19 @@
   "privacy": {
     "title": "Privacy policy",
     "updated": "Last updated: {{date}}",
-    "intro": "This policy covers the Music Teacher website and the Bassically app for Android. Both work the same way: everything happens on your device.",
+    "intro": "This policy covers the Music Teacher website and the Bassically app for Android. Both work on your device, and an account is optional.",
     "summaryTitle": "In short",
-    "summary": "No accounts, no ads, no analytics and no tracking. Nothing you do in the app or on the website is sent to us or to anyone else.",
+    "summary": "No ads, no analytics and no tracking. Without an account, nothing you do in the app or on the website is sent to us or to anyone else. If you create an account, we keep only what’s needed to run it.",
     "micTitle": "Microphone",
     "mic": "Only the Tuner uses the microphone, and only after you press Start and allow access. The sound is analyzed as it arrives, on your device, to find the note you're playing. It is never recorded, stored or sent anywhere. Listening stops when you press Stop or leave the Tuner.",
     "storageTitle": "What is saved on your device",
     "storage": "Your settings (such as key, tempo and tuning) and your Ear Training scores are saved on your device, so you can pick up where you left off. They never leave it. Uninstalling the app, or clearing this site's data in your browser, deletes them.",
+    "accountTitle": "Accounts (optional)",
+    "account": "On the website you can sign in with your email address, so Bassically Pro can follow you to all your devices once it’s available. We then store your email address, an account id, when you signed up and, later, whether you have Pro. Our backend provider, Supabase, stores it and keeps standard security logs (such as IP addresses). It’s used only to run your account: we don’t sell it, use it for advertising or send you marketing email. Your settings and scores still stay on your device. You can delete your account at any time on the Account page, which deletes this data.",
     "hostingTitle": "Website hosting",
-    "hosting": "The website is hosted by Vercel, which, like any web host, handles standard technical information (such as your IP address and browser type) to deliver the pages. The website itself sets no cookies and loads nothing from other sites.",
+    "hosting": "The website is hosted by Vercel, which, like any web host, handles standard technical information (such as your IP address and browser type) to deliver the pages. The website sets no cookies, and it contacts our backend (Supabase) only when you sign in or are signed in.",
     "childrenTitle": "Children",
-    "children": "The app is suitable for all ages. It collects no personal information from anyone, children included.",
+    "children": "The app is suitable for all ages. It collects no personal information unless you create an account, which needs an email address.",
     "changesTitle": "Changes",
     "changes": "If this policy changes, the new version will be posted on this page with a new date.",
     "contactTitle": "Contact",
@@ -371,5 +373,29 @@
         }
       }
     }
+  },
+  "account": {
+    "link": "Account",
+    "title": "Account",
+    "loading": "Loading…",
+    "intro": "An account is optional: everything in Bassically is free and works without one. Sign in to keep Bassically Pro on all your devices once it’s available.",
+    "email": "Email",
+    "send": "Email me a sign-in link",
+    "noPassword": "No password needed. The first link you open creates your account.",
+    "sentTitle": "Check your email",
+    "sent": "We sent a sign-in link to {{email}}. Open it to sign in; it works once and expires in an hour.",
+    "useAnother": "Use a different email",
+    "sendFailed": "Couldn’t send the link. Check the address and your connection, and try again.",
+    "rateLimited": "Too many links sent. Wait a few minutes and try again.",
+    "linkError": "That sign-in link has expired or was already used. Send a new one below.",
+    "signedInAs": "Signed in as {{email}}.",
+    "signOut": "Sign out",
+    "deleteTitle": "Delete account",
+    "deleteText": "Deletes your account and everything stored with it. Your settings and scores on this device stay. If you subscribe to Pro, cancel the subscription in Google Play or the billing page too.",
+    "delete": "Delete account…",
+    "deleteConfirm": "Delete my account permanently",
+    "cancel": "Cancel",
+    "deleteFailed": "Couldn’t delete the account. Check your connection and try again.",
+    "deleted": "Your account was deleted."
   }
 }

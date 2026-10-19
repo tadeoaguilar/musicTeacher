@@ -2,9 +2,18 @@ import { useTranslation } from 'react-i18next'
 import styles from './PrivacyPage.module.css'
 
 /** Bump when the policy text changes; shown as "Last updated". */
-const UPDATED = new Date(2026, 9, 16)
+const UPDATED = new Date(2026, 9, 19)
 
-const SECTIONS = ['summary', 'mic', 'storage', 'hosting', 'children', 'changes', 'contact'] as const
+const SECTIONS = [
+  'summary',
+  'mic',
+  'storage',
+  'account',
+  'hosting',
+  'children',
+  'changes',
+  'contact',
+] as const
 
 /**
  * The privacy policy for the website and the Android app (Google Play links to it, as the app

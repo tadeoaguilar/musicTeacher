@@ -333,17 +333,19 @@
   "privacy": {
     "title": "Política de privacidad",
     "updated": "Última actualización: {{date}}",
-    "intro": "Esta política cubre el sitio web Music Teacher y la app Bassically para Android. Ambos funcionan igual: todo ocurre en tu dispositivo.",
+    "intro": "Esta política cubre el sitio web Music Teacher y la app Bassically para Android. Ambos funcionan en tu dispositivo, y la cuenta es opcional.",
     "summaryTitle": "En resumen",
-    "summary": "Sin cuentas, sin anuncios, sin analíticas y sin rastreo. Nada de lo que haces en la app o en el sitio web se nos envía, ni a nosotros ni a nadie.",
+    "summary": "Sin anuncios, sin analíticas y sin rastreo. Sin cuenta, nada de lo que haces en la app o en el sitio web se nos envía, ni a nosotros ni a nadie. Si creas una cuenta, guardamos solo lo necesario para que funcione.",
     "micTitle": "Micrófono",
     "mic": "Solo el Afinador usa el micrófono, y solo después de que pulses Iniciar y permitas el acceso. El sonido se analiza en tu dispositivo a medida que llega, para encontrar la nota que tocas. Nunca se graba, se guarda ni se envía a ningún sitio. Deja de escuchar cuando pulsas Detener o sales del Afinador.",
     "storageTitle": "Qué se guarda en tu dispositivo",
     "storage": "Tus ajustes (como la tonalidad, el tempo y la afinación) y tus puntuaciones de Entrenamiento auditivo se guardan en tu dispositivo, para que puedas seguir donde lo dejaste. Nunca salen de él. Al desinstalar la app, o al borrar los datos de este sitio en tu navegador, se eliminan.",
+    "accountTitle": "Cuentas (opcional)",
+    "account": "En el sitio web puedes iniciar sesión con tu correo electrónico, para que Bassically Pro te acompañe en todos tus dispositivos cuando esté disponible. Entonces guardamos tu correo, un identificador de cuenta, cuándo te registraste y, más adelante, si tienes Pro. Lo guarda nuestro proveedor de backend, Supabase, que también mantiene registros de seguridad estándar (como direcciones IP). Solo se usa para que tu cuenta funcione: no lo vendemos, no lo usamos para publicidad ni te enviamos correos de marketing. Tus ajustes y puntuaciones siguen en tu dispositivo. Puedes eliminar tu cuenta cuando quieras en la página Cuenta, y con ella estos datos.",
     "hostingTitle": "Alojamiento del sitio web",
-    "hosting": "El sitio web está alojado en Vercel, que, como cualquier servicio de alojamiento, maneja información técnica estándar (como tu dirección IP y el tipo de navegador) para entregar las páginas. El sitio en sí no usa cookies ni carga nada de otros sitios.",
+    "hosting": "El sitio web está alojado en Vercel, que, como cualquier servicio de alojamiento, maneja información técnica estándar (como tu dirección IP y el tipo de navegador) para entregar las páginas. El sitio no usa cookies y solo contacta con nuestro backend (Supabase) cuando inicias sesión o tienes la sesión iniciada.",
     "childrenTitle": "Niños",
-    "children": "La app es apta para todas las edades. No recopila información personal de nadie, tampoco de niños.",
+    "children": "La app es apta para todas las edades. No recopila información personal salvo que crees una cuenta, que requiere un correo electrónico.",
     "changesTitle": "Cambios",
     "changes": "Si esta política cambia, la nueva versión se publicará en esta página con una fecha nueva.",
     "contactTitle": "Contacto",
@@ -371,5 +373,29 @@
         }
       }
     }
+  },
+  "account": {
+    "link": "Cuenta",
+    "title": "Cuenta",
+    "loading": "Cargando…",
+    "intro": "La cuenta es opcional: todo en Bassically es gratis y funciona sin ella. Inicia sesión para tener Bassically Pro en todos tus dispositivos cuando esté disponible.",
+    "email": "Correo electrónico",
+    "send": "Envíame un enlace para entrar",
+    "noPassword": "No necesitas contraseña. El primer enlace que abras crea tu cuenta.",
+    "sentTitle": "Revisa tu correo",
+    "sent": "Enviamos un enlace para entrar a {{email}}. Ábrelo para iniciar sesión; funciona una vez y caduca en una hora.",
+    "useAnother": "Usar otro correo",
+    "sendFailed": "No se pudo enviar el enlace. Revisa la dirección y tu conexión, y vuelve a intentarlo.",
+    "rateLimited": "Se enviaron demasiados enlaces. Espera unos minutos y vuelve a intentarlo.",
+    "linkError": "Ese enlace caducó o ya se usó. Envía uno nuevo abajo.",
+    "signedInAs": "Sesión iniciada como {{email}}.",
+    "signOut": "Cerrar sesión",
+    "deleteTitle": "Eliminar cuenta",
+    "deleteText": "Elimina tu cuenta y todo lo guardado con ella. Tus ajustes y puntuaciones en este dispositivo se mantienen. Si te suscribes a Pro, cancela también la suscripción en Google Play o en la página de pagos.",
+    "delete": "Eliminar cuenta…",
+    "deleteConfirm": "Eliminar mi cuenta para siempre",
+    "cancel": "Cancelar",
+    "deleteFailed": "No se pudo eliminar la cuenta. Revisa tu conexión y vuelve a intentarlo.",
+    "deleted": "Tu cuenta se eliminó."
   }
 }

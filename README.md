@@ -49,9 +49,13 @@ A chromatic tuner that listens through the microphone.
 - Tap a string to hear its reference pitch; A4 calibration from 432 to 446 Hz
 - Pitch detection (YIN) finds the right octave even on low B, where the fundamental is weak; audio never leaves the device
 
+## Account
+
+Optional (`/:lang/account`, linked in the footer): sign in with a link emailed to you, no password. Everything free works without an account; it's there for Bassically Pro on every device. You can sign out or delete the account on the same page.
+
 ## Privacy
 
-The privacy policy (`/:lang/privacy`, linked in the footer) covers the website and the Android app: no accounts, ads, analytics or tracking; the microphone is analyzed on the device and never recorded or sent. Google Play links to it.
+The privacy policy (`/:lang/privacy`, linked in the footer) covers the website and the Android app: no ads, analytics or tracking, and an optional account that stores only your email; the microphone is analyzed on the device and never recorded or sent. Google Play links to it.
 
 ## Roadmap
 

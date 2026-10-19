@@ -19,6 +19,7 @@
     "play:graphics": "node scripts/play-graphics.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "i18next": "^26.4.2",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

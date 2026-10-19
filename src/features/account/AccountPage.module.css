@@ -1,0 +1,107 @@
+.page {
+  max-width: 60ch;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.page h2 {
+  margin: 0 0 6px;
+  font-size: 20px;
+}
+.page p {
+  margin: 0 0 12px;
+}
+.title {
+  margin: 0 0 16px;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+.muted {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.form {
+  display: grid;
+  gap: 6px;
+  margin: 20px 0 12px;
+}
+.form label {
+  font-weight: 600;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.form input {
+  flex: 1 1 220px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+}
+
+.primary,
+.secondary,
+.destructive {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.secondary {
+  background: var(--control-bg);
+  color: var(--text);
+}
+.secondary:hover {
+  background: var(--control-hover);
+}
+.destructive {
+  background: var(--wrong);
+  color: var(--surface);
+}
+.primary:disabled,
+.destructive:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+.form input:focus-visible,
+.primary:focus-visible,
+.secondary:focus-visible,
+.destructive:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.box {
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+.box p:last-of-type {
+  margin-bottom: 12px;
+}
+p.box {
+  margin-bottom: 20px;
+}
+.error {
+  color: var(--wrong);
+  font-weight: 600;
+}
+.danger {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, NavLink, Navigate, Outlet, useLocation, useParams } from 'react-router'
+import { useAccountStore } from '../account/accountStore'
 import { PaywallHost } from '../features/pro/ProSlot'
 import { LOCALES, isLocale } from '../i18n'
 import styles from './Layout.module.css'
@@ -14,6 +15,9 @@ export function Layout() {
   const { lang } = useParams()
   const { t, i18n } = useTranslation()
   const location = useLocation()
+  const startAccount = useAccountStore((s) => s.start)
+
+  useEffect(startAccount, [startAccount])
 
   useEffect(() => {
     if (isLocale(lang)) {
@@ -77,6 +81,7 @@ export function Layout() {
       </main>
 
       <footer className={styles.footer}>
+        <Link to={`/${lang}/account`}>{t('account.link')}</Link>
         <Link to={`/${lang}/privacy`}>{t('privacy.link')}</Link>
       </footer>
       <PaywallHost />
