@@ -1,6 +1,6 @@
 # Bassically Pro: plan for free + paid features
 
-> **Status (2026-10-19):** plan agreed (#31). Phase 1, feature management, shipped (#32). Phase 2, the backend, built in `supabase/` (see [`supabase/README.md`](../supabase/README.md)): schema with row level security, tested in CI; the RevenueCat webhook, account deletion and admin grant Edge Functions. Not yet deployed to the real project: the user runs `supabase login`/`link`/`db push`/`functions deploy`. Next: Phase 3 (accounts in the apps). Billing (Phase 4) still needs the yearly and lifetime prices, individual or business, the Play payments profile, Stripe and RevenueCat.
+> **Status (2026-10-19):** plan agreed (#31). Phase 1, feature management, shipped (#32). Phase 2, the backend, built in `supabase/` (see [`supabase/README.md`](../supabase/README.md)): schema with row level security, tested in CI; the RevenueCat webhook, account deletion and admin grant Edge Functions. Shipped (#35) and deployed to the Supabase project. Next: Phase 3 (accounts in the apps). Billing (Phase 4) still needs the yearly and lifetime prices, individual or business, the Play payments profile, Stripe and RevenueCat.
 
 ## Context
 
