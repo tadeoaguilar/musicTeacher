@@ -1,6 +1,6 @@
 # Bassically Pro: plan for free + paid features
 
-> **Status (2026-10-17):** plan agreed (#31). Phase 1, feature management, shipped (#32): the catalog and `accessTo` (`src/access/`, ported to `android/core` with parity fixtures), the Pro badge, teaser and a "coming soon" paywall on both platforms, hidden behind local flags. Next: Phase 2 (backend), waiting on the user's Supabase project; Phase 4 (billing) also needs the Play payments profile, Stripe, RevenueCat and prices; Phase 5 needs the first Pro pack's contents.
+> **Status (2026-10-19):** plan agreed (#31). Phase 1, feature management, shipped (#32). Phase 2, the backend, built in `supabase/` (see [`supabase/README.md`](../supabase/README.md)): schema with row level security, tested in CI; the RevenueCat webhook, account deletion and admin grant Edge Functions. Not yet deployed to the real project: the user runs `supabase login`/`link`/`db push`/`functions deploy`. Next: Phase 3 (accounts in the apps). Billing (Phase 4) still needs the yearly and lifetime prices, individual or business, the Play payments profile, Stripe and RevenueCat.
 
 ## Context
 
@@ -21,6 +21,7 @@ The user wants to:
 - **Pricing:** a "Bassically Pro" subscription, monthly and yearly, plus a lifetime one-time unlock.
 - **Backend:** managed services. Supabase for login, database and admin data; RevenueCat for billing and entitlements.
 - **Timing:** the Android app launches free now (the Play release carries on as planned); Pro ships later as an update.
+- **2026-10-19:** selling from **Canada**; **Pro monthly is 2 CAD**. Supabase project `dobthafewrdpeddpwgzu` created.
 
 **Outcome:**
 
@@ -188,9 +189,25 @@ Admins are listed in an `admins` table and checked by RLS and in the Edge Functi
 - **Offline:** Pro content stays usable in airplane mode during the grace period.
 - **Admin portal:** a non-admin account is refused. Granting promo access unlocks Pro on the phone within a minute.
 
-## Open questions (not blocking Phase 0–1)
+### At 2 CAD a month
 
-- Your country and whether you'll sell as an individual or a business. This affects tax, payouts and the Play merchant profile.
-- Prices: monthly, yearly, lifetime, and whether to offer a free trial (e.g. 7 days).
+Fixed fees weigh a lot on a small price:
+
+- **Google Play** keeps 15%, so you get about 1.70 CAD.
+- **Stripe** on the web keeps about 2.9% + 0.30 CAD, so you get about 1.64 CAD.
+
+A yearly plan (for example 18–20 CAD, two months free) pays the fixed fee once a year instead of twelve times.
+
+### Sales tax, from Canada (confirm with an accountant)
+
+- **Google Play** collects and remits sales tax for buyers in Canada and most other countries, so in-app purchases need nothing extra from you.
+- **Web sales (Stripe)**: you are the seller.
+  - In Canada, GST/HST registration is only required above 30,000 CAD of sales in four consecutive quarters (the small supplier threshold).
+  - Buyers in other countries (for example the EU) can be taxable from the first sale. The simplest options are to start web sales in Canada only, or to use a merchant of record that handles worldwide tax.
+
+## Open questions (not blocking Phases 0–3)
+
+- Whether you'll sell as an individual (sole proprietor) or a business. This affects tax, payouts and the Play merchant profile.
+- Prices still open: yearly and lifetime, and whether to offer a free trial (e.g. 7 days).
 - The first Pro pack: what exactly is in it.
 - Discounts for students or teachers (promo codes in Play and Stripe coupons).

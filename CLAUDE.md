@@ -32,6 +32,7 @@ npm run typecheck      # tsc -b
 npm run build          # tsc -b && vite build → dist/
 npm run samples        # recordings/bass/*.wav → web MP3s + Android WAVs (needs ffmpeg)
 npm run android:fixtures # web results the Kotlin port is tested against (android/core/src/test/resources)
+npx supabase db start && npx supabase test db  # backend row level security tests (needs Docker)
 ```
 
 **Before considering work done**, run what CI runs (`.github/workflows/ci.yml`):
@@ -52,6 +53,7 @@ src/
   i18n/        en.json / es.json + i18next setup, locale detection
   app/         Router (/:lang/<section>), Layout (header, nav, language switch), useUrlSync
 e2e/           Playwright specs, one per section (desktop + Pixel 7 projects)
+supabase/      Bassically Pro backend: SQL migrations with row level security, pgTAP tests, Edge Functions (see supabase/README.md)
 ```
 
 ### Layering rules
