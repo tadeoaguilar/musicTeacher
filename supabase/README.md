@@ -56,6 +56,12 @@ npx supabase db push                                 # applies new migrations
 npx supabase functions deploy                        # all three functions
 ```
 
+### Sign-in settings (dashboard)
+
+- **Authentication → URL Configuration:** Site URL is the website's address. Under Redirect URLs, add `https://<your domain>/**` and `http://localhost:5173/**` (local dev). Sign-in links can only return to these; any other address falls back to the Site URL.
+- **Email:** the built-in mailer only sends to members of your Supabase organization and a few emails per hour. That's enough to test; before the public launch, set up custom SMTP (Authentication → Emails → SMTP Settings, e.g. Resend or Postmark).
+- Optional: edit the Confirm signup (first sign-in) and Magic Link (later sign-ins) email templates in Authentication → Emails → Templates, e.g. to add Spanish; each template serves both languages.
+
 Then add yourself as an admin. Sign in once through the app, so your account exists, then run this in the dashboard's SQL editor:
 
 ```sql
