@@ -10,7 +10,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 - an e2e spec;
 - README and `CLAUDE.md` updates.
 
-## Where we left off (2026-10-19)
+## Where we left off (2026-10-20)
 
 **Start here when resuming.** Everything below is merged into `main`; there are no open branches or pull requests.
 
@@ -32,6 +32,7 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
 | #29                                    | Android polish and release setup: smaller build, wide screens, large text and landscape, version 1.0.0 with upload-key signing, and the Play release kit (`docs/play-store/`)                                         |
 | #31, #32                               | Bassically Pro: the plan ([`MONETIZATION.md`](MONETIZATION.md)) and Phase 1, feature management (free/Pro catalog, access rules, coming-soon paywall behind local flags)                                              |
 | #35                                    | Bassically Pro Phase 2, the backend (`supabase/`): schema with row level security tested in CI, and the RevenueCat webhook, account deletion and admin grant Edge Functions. Deployed to the Supabase project         |
+| #37                                    | Bassically Pro Phase 3, website part: optional accounts with an emailed sign-in link (`/:lang/account`), sign out, account deletion, privacy policy update                                                            |
 
 ### Next session: pick one
 
@@ -56,7 +57,11 @@ Each feature gets its own branch and pull request and follows the "Adding a new 
    - Move the oscillator microphone stub from `e2e/tuner.spec.ts` to `e2e/helpers/fakeMicrophone.ts`.
 2. Optional for the samples: a "Sound: recorded / synth" switch, and B0/D1 recordings for 5-string basses.
 3. **Bassically Pro** (paid features on Android and web, one account; plan in [`MONETIZATION.md`](MONETIZATION.md)). Phases 1 (feature management) and 2 (backend, deployed to project `dobthafewrdpeddpwgzu`) are done. Selling from Canada; Pro monthly is 2 CAD.
-   1. **Phase 3, accounts (Claude, next):** sign-in with Google on both platforms (Credential Manager on Android) and an email magic link on the web; account page; account deletion through the `delete-account` function. Needs the privacy policy update (accounts, email) and `UPDATED` in `PrivacyPage.tsx`, the Android `INTERNET` permission, and a new Data safety answer. User's part: a Google Cloud OAuth client (web + Android) turned on under Supabase → Authentication → Providers → Google, and the site URL and redirect URLs set in Supabase → Authentication → URL Configuration. Optional: add yourself as admin (SQL in [`supabase/README.md`](../supabase/README.md)).
+   1. **Phase 3, accounts.** Website sign-in with an emailed link, account page and account deletion are done (#37). Next (Claude): Google sign-in on the website, then accounts in the Android app (Credential Manager, `INTERNET` permission, Data safety update). User's part:
+      - Supabase → Authentication → URL Configuration: add the redirect URLs `http://localhost:5173/**` and `https://<your domain>/**`, then try a real sign-in link at `/en/account`;
+      - for Google sign-in: a Google Cloud OAuth client (web and Android), turned on under Supabase → Authentication → Providers → Google;
+      - before the public launch: custom SMTP in Supabase (the built-in mailer only sends to organization members, a few per hour);
+      - optional: add yourself as admin (SQL in [`supabase/README.md`](../supabase/README.md)).
    2. **Billing decisions and accounts (user), for Phase 4:** whether to sell as an individual or a business; yearly and lifetime prices (suggested yearly 18–20 CAD) and free-trial length; whether web sales start Canada-only (sales tax); a Google Play payments profile (bank and tax details in Play Console); Stripe; RevenueCat (linked to both, with Claude's help).
    3. **First Pro pack (user decides), for Phase 5.** Suggested: more scales (harmonic and melodic minor modes, blues, bebop, pentatonic variations) and graded rhythm programs built on the speed and gap trainers, with progress.
    4. **Optional:** check the Pro teaser and paywall on the phone. Needs the debug build, which replaces the release build and resets the app's settings and scores: ask first. Then `adb shell am start -S -n com.perceptronics.musicteacher/.MainActivity --es access.flags '{"scales.more":{"enabled":true},"rhythm.programs":{"enabled":true}}'`.
